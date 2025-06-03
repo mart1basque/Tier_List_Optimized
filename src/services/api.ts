@@ -8,7 +8,11 @@ export const fetchCharacters = async (
   universe: UniverseType,
   filters: string[]
 ): Promise<Character[]> => {
-  // For demonstration, we'll simulate an API request with a timeout
+  if (universe === 'pokemon') {
+    return fetchPokemonCharacters(filters);
+  }
+
+  // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(getMockCharacters(universe, filters));
@@ -21,9 +25,6 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
   let characters: Character[] = [];
   
   switch (universe) {
-    case 'pokemon':
-      characters = generatePokemonCharacters(filters);
-      break;
     case 'naruto':
       characters = generateNarutoCharacters(filters);
       break;
@@ -41,33 +42,56 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
   return characters;
 }
 
-function generatePokemonCharacters(filters: string[]): Character[] {
-  const pokemonByGen: Record<string, { names: string[], offset: number }> = {
-    'gen1': { names: ['Bulbasaur', 'Charmander', 'Squirtle', 'Pikachu', 'Eevee', 'Mewtwo', 'Mew', 'Snorlax', 'Gyarados'], offset: 0 },
-    'gen2': { names: ['Chikorita', 'Cyndaquil', 'Totodile', 'Pichu', 'Togepi', 'Lugia', 'Ho-Oh'], offset: 151 },
-    'gen3': { names: ['Treecko', 'Torchic', 'Mudkip', 'Rayquaza', 'Groudon', 'Kyogre', 'Deoxys'], offset: 251 },
-    'gen4': { names: ['Turtwig', 'Chimchar', 'Piplup', 'Lucario', 'Dialga', 'Palkia', 'Giratina'], offset: 386 },
-    'gen5': { names: ['Snivy', 'Tepig', 'Oshawott', 'Zoroark', 'Reshiram', 'Zekrom', 'Kyurem'], offset: 493 },
+async function fetchPokemonCharacters(filters: string[]): Promise<Character[]> {
+  const generationIds: Record<string, number> = {
+    gen1: 1,
+    gen2: 2,
+    gen3: 3,
+    gen4: 4,
+    gen5: 5,
+    gen6: 6,
+    gen7: 7,
+    gen8: 8,
+    gen9: 9,
   };
 
-  let result: Character[] = [];
-  
-  filters.forEach(filter => {
-    if (pokemonByGen[filter]) {
-      const { names, offset } = pokemonByGen[filter];
-      
-      names.forEach((name, index) => {
+  const result: Character[] = [];
+
+  await Promise.all(
+    filters.map(async (filter) => {
+      const genId = generationIds[filter];
+      if (!genId) return;
+
+      const { data } = await axios.get(`https://pokeapi.co/api/v2/generation/${genId}`);
+
+      data.pokemon_species.forEach((species: { name: string; url: string }) => {
+        const id = parseInt(
+          species.url.split('/').filter(Boolean).pop() ?? '0',
+          10
+        );
         result.push({
-          id: `pokemon-${offset + index + 1}`,
-          name,
-          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${offset + index + 1}.png`,
+          id: `pokemon-${id}`,
+          name: formatPokemonName(species.name),
+          image:
+            `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
           universe: 'pokemon',
         });
       });
-    }
+    })
+  );
+
+  return result.sort((a, b) => {
+    const idA = parseInt(a.id.split('-')[1], 10);
+    const idB = parseInt(b.id.split('-')[1], 10);
+    return idA - idB;
   });
-  
-  return result;
+}
+
+function formatPokemonName(value: string): string {
+  return value
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
 }
 
 function generateNarutoCharacters(filters: string[]): Character[] {
