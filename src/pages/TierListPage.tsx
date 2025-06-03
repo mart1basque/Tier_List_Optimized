@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { UniverseType } from '../data/universes';
@@ -18,7 +18,10 @@ const TierListPage: React.FC = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const tierListRef = useRef<HTMLDivElement>(null);
-  const unknownContainerRef = useRef<HTMLDivElement>(null);
+  const [unknownContainer, setUnknownContainer] = useState<HTMLDivElement | null>(null);
+  const setUnknownContainerRef = useCallback((node: HTMLDivElement | null) => {
+    setUnknownContainer(node);
+  }, []);
 
   // Get selected filters from URL
   const filtersParam = searchParams.get('filters') ?? '';
@@ -118,14 +121,14 @@ const TierListPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div ref={tierListRef} className="bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl p-6">
-              <TierListGrid characters={characters} unknownContainer={unknownContainerRef.current} />
+              <TierListGrid characters={characters} unknownContainer={unknownContainer} />
             </div>
           </div>
           
           <div className="space-y-6">
             <ImageUploader onImageUploaded={handleAddCustomCharacter} />
             <ExportPanel tierListRef={tierListRef} tierListData={tierListData} />
-            <div ref={unknownContainerRef} />
+            <div ref={setUnknownContainerRef} />
           </div>
         </div>
       </div>
