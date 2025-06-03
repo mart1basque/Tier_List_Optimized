@@ -19,6 +19,7 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
+import type { Modifier } from '@dnd-kit/core';
 import CharacterPool from './CharacterPool';
 import { Character } from '../types/types';
 
@@ -35,6 +36,17 @@ const defaultTiers = [
   { id: 'D', label: 'D', color: '#A29BFE' },
   { id: 'F', label: 'F', color: '#636E72' }
 ];
+
+const centerToCursor: Modifier = ({ transform, activeNodeRect }) => {
+  if (activeNodeRect) {
+    return {
+      ...transform,
+      x: transform.x - activeNodeRect.width / 2,
+      y: transform.y - activeNodeRect.height / 2,
+    };
+  }
+  return transform;
+};
 
 const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
   const { themeColors } = useTheme();
@@ -211,7 +223,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay modifiers={[centerToCursor]}>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
