@@ -37,6 +37,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'demon-slayer') {
+    try {
+      return await fetchDemonSlayerCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching Demon Slayer characters:', error);
+      return generateDemonSlayerCharacters(filters);
+    }
+  }
+
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -134,6 +143,45 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
     image: item.image || item.avatar || createPlaceholderImage(item.name, '#FF9232'),
     universe: 'dragon-ball',
   }));
+}
+
+// Fetch Demon Slayer characters using MyAnimeList/Jikan API
+async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[]> {
+  const seasonIds: Record<string, number> = {
+    season1: 38000, // Kimetsu no Yaiba
+    season2: 47778, // Entertainment District Arc
+    season3: 50857, // Swordsmith Village Arc
+    season4: 56240, // Hashira Training Arc
+  };
+
+  const results: Character[] = [];
+  const seen = new Set<number>();
+
+  await Promise.all(
+    (filters.length ? filters : Object.keys(seasonIds)).map(async (filter) => {
+      const id = seasonIds[filter];
+      if (!id) return;
+      const { data } = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
+      const characters = Array.isArray(data?.data) ? data.data : data.results || [];
+
+      characters.forEach((item: any) => {
+        const charId = item.character?.mal_id ?? item.mal_id;
+        if (seen.has(charId)) return;
+        seen.add(charId);
+        results.push({
+          id: `demonslayer-${charId}`,
+          name: item.character?.name ?? item.name,
+          image:
+            item.character?.images?.jpg?.image_url ||
+            item.character?.images?.webp?.image_url ||
+            createPlaceholderImage(item.character?.name ?? item.name, '#28593C'),
+          universe: 'demon-slayer',
+        });
+      });
+    })
+  );
+
+  return results;
 }
 
 function generateNarutoCharacters(filters: string[]): Character[] {
