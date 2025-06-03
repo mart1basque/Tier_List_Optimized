@@ -37,6 +37,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'naruto') {
+    try {
+      return await fetchNarutoCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching Naruto characters:', error);
+      return generateNarutoCharacters(filters);
+    }
+  }
+
   if (universe === 'demon-slayer') {
     try {
       return await fetchDemonSlayerCharacters(filters);
@@ -176,6 +185,44 @@ async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[
             item.character?.images?.webp?.image_url ||
             createPlaceholderImage(item.character?.name ?? item.name, '#28593C'),
           universe: 'demon-slayer',
+        });
+      });
+    })
+  );
+
+  return results;
+}
+
+// Fetch Naruto characters using MyAnimeList/Jikan API
+async function fetchNarutoCharacters(filters: string[]): Promise<Character[]> {
+  const seriesIds: Record<string, number> = {
+    original: 20, // Naruto
+    shippuden: 1735, // Naruto Shippuden
+    boruto: 34566, // Boruto: Naruto Next Generations
+  };
+
+  const results: Character[] = [];
+  const seen = new Set<number>();
+
+  await Promise.all(
+    (filters.length ? filters : Object.keys(seriesIds)).map(async (filter) => {
+      const id = seriesIds[filter];
+      if (!id) return;
+      const { data } = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
+      const characters = Array.isArray(data?.data) ? data.data : data.results || [];
+
+      characters.forEach((item: any) => {
+        const charId = item.character?.mal_id ?? item.mal_id;
+        if (seen.has(charId)) return;
+        seen.add(charId);
+        results.push({
+          id: `naruto-${charId}`,
+          name: item.character?.name ?? item.name,
+          image:
+            item.character?.images?.jpg?.image_url ||
+            item.character?.images?.webp?.image_url ||
+            createPlaceholderImage(item.character?.name ?? item.name, '#FF7800'),
+          universe: 'naruto',
         });
       });
     })
