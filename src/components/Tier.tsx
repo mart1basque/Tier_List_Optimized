@@ -25,7 +25,6 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     attributes,
     listeners,
     setNodeRef,
-    setActivatorNodeRef,
     transform,
     transition,
   } = useSortable({ id });
@@ -50,7 +49,6 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     >
       <div className="flex items-stretch">
         <div
-          ref={setActivatorNodeRef}
           className="w-24 flex items-center justify-center cursor-move"
           style={{ backgroundColor: color }}
           {...attributes}
