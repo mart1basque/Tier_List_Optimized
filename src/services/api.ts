@@ -27,6 +27,16 @@ export const fetchCharacters = async (
     return fetchPokemonCharacters(filters);
   }
 
+  if (universe === 'dragon-ball') {
+    try {
+      return await fetchDragonBallCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching Dragon Ball characters:', error);
+      // Fall back to mock data if the API call fails
+      return generateDragonBallCharacters(filters);
+    }
+  }
+
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -107,6 +117,23 @@ function formatPokemonName(value: string): string {
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+// Fetch Dragon Ball characters from a public API
+async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]> {
+  const url = 'https://dragonball-api.com/api/characters?limit=1000';
+  const { data } = await axios.get(url);
+
+  const results = Array.isArray(data)
+    ? data
+    : data.items || data.results || [];
+
+  return results.map((item: any) => ({
+    id: `dragonball-${item.id ?? item._id ?? item.name}`,
+    name: item.name,
+    image: item.image || item.avatar || createPlaceholderImage(item.name, '#FF9232'),
+    universe: 'dragon-ball',
+  }));
 }
 
 function generateNarutoCharacters(filters: string[]): Character[] {
