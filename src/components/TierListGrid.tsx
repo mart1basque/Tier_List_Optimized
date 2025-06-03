@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   DndContext, 
   DragOverlay,
@@ -20,11 +21,13 @@ import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import CharacterPool from './CharacterPool';
+import UnknownCharactersPanel from './UnknownCharactersPanel';
 import { Character } from '../types/types';
 
 interface TierListGridProps {
   characters: Character[];
   onUnknownChange?: (chars: Character[]) => void;
+  unknownContainer?: HTMLElement | null;
 }
 
 // Default tier ranks
@@ -37,7 +40,7 @@ const defaultTiers = [
   { id: 'F', label: 'F', color: '#636E72' }
 ];
 
-const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange }) => {
+const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange, unknownContainer }) => {
   const { themeColors } = useTheme();
   const [tiers, setTiers] = useState(defaultTiers);
   const [characterMap, setCharacterMap] = useState<Record<string, string[]>>(() => {
@@ -182,16 +185,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     ));
   };
 
-  const markUnknown = (character: Character) => {
-    setCharacterMap(prev => {
-      const result: Record<string, string[]> = {};
-      Object.keys(prev).forEach(key => {
-        result[key] = prev[key].filter(id => id !== character.id);
-      });
-      result.unknown = [...(prev.unknown || []), character.id];
-      return result;
-    });
-  };
 
   return (
     <DndContext
@@ -228,7 +221,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         <CharacterPool
           id="pool"
           characters={characterMap.pool.map(id => characters.find(c => c.id === id)!)}
-          onMarkUnknown={markUnknown}
         />
       </div>
       
@@ -237,6 +229,16 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
       </DragOverlay>
+      {unknownContainer &&
+        createPortal(
+          <UnknownCharactersPanel
+            id="unknown"
+            characters={characterMap.unknown.map(
+              id => characters.find(c => c.id === id)!
+            )}
+          />,
+          unknownContainer
+        )}
     </DndContext>
   );
 };

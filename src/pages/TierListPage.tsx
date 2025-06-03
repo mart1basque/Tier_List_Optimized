@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, Save } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { UniverseType } from '../data/universes';
 import { Character } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
@@ -8,7 +8,6 @@ import UniverseBackground from '../components/UniverseBackground';
 import TierListGrid from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
-import UnknownCharactersPanel from '../components/UnknownCharactersPanel';
 import { fetchCharacters } from '../services/api';
 
 const TierListPage: React.FC = () => {
@@ -17,9 +16,9 @@ const TierListPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [unknownCharacters, setUnknownCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const tierListRef = useRef<HTMLDivElement>(null);
+  const unknownContainerRef = useRef<HTMLDivElement>(null);
 
   // Get selected filters from URL
   const filtersParam = searchParams.get('filters') ?? '';
@@ -113,14 +112,14 @@ const TierListPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div ref={tierListRef} className="bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl p-6">
-              <TierListGrid characters={characters} onUnknownChange={setUnknownCharacters} />
+              <TierListGrid characters={characters} unknownContainer={unknownContainerRef.current} />
             </div>
           </div>
           
           <div className="space-y-6">
             <ImageUploader onImageUploaded={handleAddCustomCharacter} />
             <ExportPanel tierListRef={tierListRef} tierListData={tierListData} />
-            <UnknownCharactersPanel characters={unknownCharacters} />
+            <div ref={unknownContainerRef} />
           </div>
         </div>
       </div>

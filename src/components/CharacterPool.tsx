@@ -8,10 +8,9 @@ import { useTheme } from '../context/ThemeContext';
 interface CharacterPoolProps {
   id: string;
   characters: Character[];
-  onMarkUnknown?: (character: Character) => void;
 }
 
-const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters, onMarkUnknown }) => {
+const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
   const { themeColors } = useTheme();
   const { setNodeRef } = useDroppable({ id });
   
@@ -32,11 +31,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters, onMarkUnk
           <div className="flex flex-wrap gap-3">
             {characters.length > 0 ? (
               characters.map((character) => (
-                <CharacterCard
-                  key={character.id}
-                  character={character}
-                  onMarkUnknown={onMarkUnknown ? () => onMarkUnknown(character) : undefined}
-                />
+                <CharacterCard key={character.id} character={character} />
               ))
             ) : (
               <span className="text-gray-400 italic">
