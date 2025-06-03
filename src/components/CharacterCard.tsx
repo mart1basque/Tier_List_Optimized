@@ -38,6 +38,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = f
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
   } = useSortable({ id: character.id });
@@ -50,7 +51,10 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = f
   
   return (
     <div
-      ref={setNodeRef}
+      ref={(node) => {
+        setNodeRef(node);
+        setActivatorNodeRef(node);
+      }}
       style={style}
       {...attributes}
       {...listeners}
