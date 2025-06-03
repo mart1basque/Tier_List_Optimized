@@ -18,7 +18,7 @@ import {
 } from '@dnd-kit/sortable';
 import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
-import CharacterCard from './CharacterCard';
+import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import CharacterPool from './CharacterPool';
 import { Character } from '../types/types';
 
@@ -213,10 +213,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
       
       <DragOverlay>
         {activeId && activeCharacter ? (
-          <CharacterCard 
-            character={activeCharacter}
-            isDragging={true}
-          />
+          <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
       </DragOverlay>
     </DndContext>
