@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, Save } from 'lucide-react';
 import { UniverseType } from '../data/universes';
@@ -18,9 +18,17 @@ const TierListPage: React.FC = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const tierListRef = useRef<HTMLDivElement>(null);
-  
+
   // Get selected filters from URL
-  const filters = searchParams.get('filters')?.split(',') || [];
+  const filtersParam = searchParams.get('filters') ?? '';
+  const filters = useMemo(
+    () =>
+      filtersParam
+        .split(',')
+        .map(f => f.trim())
+        .filter(f => f.length > 0),
+    [filtersParam]
+  );
   
   useEffect(() => {
     if (universe && Object.keys(universeConfig).includes(universe as UniverseType)) {
@@ -45,7 +53,7 @@ const TierListPage: React.FC = () => {
     } else {
       navigate('/');
     }
-  }, [universe, filters, setCurrentUniverse, navigate]);
+  }, [universe, filtersParam, setCurrentUniverse, navigate]);
   
   const handleAddCustomCharacter = (character: Character) => {
     setCharacters(prev => [...prev, character]);
