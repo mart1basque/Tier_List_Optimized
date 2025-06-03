@@ -61,7 +61,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         {...attributes}
         {...listeners}
         className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-        onDoubleClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen(true)}
       >
         <img
           src={character.image}
