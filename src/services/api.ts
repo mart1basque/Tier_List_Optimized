@@ -28,13 +28,11 @@ export const fetchCharacters = async (
   }
 
   if (universe === 'dragon-ball') {
-    try {
-      return await fetchDragonBallCharacters(filters);
-    } catch (error) {
-      console.error('Error fetching Dragon Ball characters:', error);
-      // Fall back to mock data if the API call fails
-      return generateDragonBallCharacters(filters);
-    }
+    // Use a static dataset organized by series. The external API
+    // does not expose filtering by show and may fail in offline
+    // environments, so we rely on local data to keep the
+    // categories unique and show character images consistently.
+    return generateDragonBallCharacters(filters);
   }
 
   if (universe === 'demon-slayer') {
@@ -288,19 +286,165 @@ function generateOnePieceCharacters(filters: string[]): Character[] {
 }
 
 function generateDragonBallCharacters(filters: string[]): Character[] {
-  const characters: Character[] = [
-    { id: 'dragonball-1', name: 'Goku', image: createPlaceholderImage('Goku', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-2', name: 'Vegeta', image: createPlaceholderImage('Vegeta', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-3', name: 'Gohan', image: createPlaceholderImage('Gohan', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-4', name: 'Piccolo', image: createPlaceholderImage('Piccolo', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-5', name: 'Frieza', image: createPlaceholderImage('Frieza', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-6', name: 'Cell', image: createPlaceholderImage('Cell', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-7', name: 'Majin Buu', image: createPlaceholderImage('Majin Buu', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-8', name: 'Trunks', image: createPlaceholderImage('Trunks', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-9', name: 'Krillin', image: createPlaceholderImage('Krillin', '#FF9232'), universe: 'dragon-ball' },
-    { id: 'dragonball-10', name: 'Bulma', image: createPlaceholderImage('Bulma', '#FF9232'), universe: 'dragon-ball' },
-  ];
-  
+  const bySeries: Record<string, Character[]> = {
+    'dragon-ball': [
+      {
+        id: 'db-kid-goku',
+        name: 'Kid Goku',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/1/17/KidGoku.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'db-bulma',
+        name: 'Bulma',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/5/50/Bulma_DB.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'db-krillin',
+        name: 'Krillin',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/f/f6/Krillin_Infobox_Arc1.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'db-roshi',
+        name: 'Master Roshi',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/0/0d/MasterRoshi.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'db-yamcha',
+        name: 'Yamcha',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/a/a1/Yamcha.png',
+        universe: 'dragon-ball',
+      },
+    ],
+    'dragon-ball-z': [
+      {
+        id: 'dbz-goku',
+        name: 'Goku',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/c/c7/GokuDBZ.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbz-vegeta',
+        name: 'Vegeta',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/2/28/VegetaDBZ.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbz-gohan',
+        name: 'Gohan',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/a/ab/GohanDBZ.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbz-piccolo',
+        name: 'Piccolo',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/7/72/PiccoloDBZ.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbz-frieza',
+        name: 'Frieza',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/2/28/Frieza_1st_Form.png',
+        universe: 'dragon-ball',
+      },
+    ],
+    'dragon-ball-gt': [
+      {
+        id: 'dbgt-goku',
+        name: 'Goku (GT)',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/2/2e/GokuGT.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbgt-pan',
+        name: 'Pan',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/9/99/PanGT.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbgt-trunks',
+        name: 'Trunks (GT)',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/8/80/TrunksGT.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbgt-baby',
+        name: 'Baby Vegeta',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/9/93/BabyVegeta.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbgt-super17',
+        name: 'Super 17',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/7/70/Super17.png',
+        universe: 'dragon-ball',
+      },
+    ],
+    'dragon-ball-super': [
+      {
+        id: 'dbs-goku',
+        name: 'Goku (Super)',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/8/82/GokuSuper.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbs-vegeta',
+        name: 'Vegeta (Super)',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/1/16/VegetaSuper.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbs-beerus',
+        name: 'Beerus',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/a/ae/Beerus_Infobox.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbs-whis',
+        name: 'Whis',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/9/93/Whis.png',
+        universe: 'dragon-ball',
+      },
+      {
+        id: 'dbs-jiren',
+        name: 'Jiren',
+        image:
+          'https://static.wikia.nocookie.net/dragonball/images/3/30/Jiren_Infobox.png',
+        universe: 'dragon-ball',
+      },
+    ],
+  };
+
+  const characters: Character[] = [];
+  (filters.length ? filters : Object.keys(bySeries)).forEach((filter) => {
+    const seriesChars = bySeries[filter];
+    if (seriesChars) {
+      characters.push(...seriesChars);
+    }
+  });
+
   return characters;
 }
 
