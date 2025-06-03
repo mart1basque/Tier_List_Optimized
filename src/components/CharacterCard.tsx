@@ -6,6 +6,7 @@ import { Character } from '../types/types';
 interface CharacterCardProps {
   character: Character;
   isDragging?: boolean;
+  onMarkUnknown?: (id: string) => void;
 }
 
 /**
@@ -33,7 +34,11 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
   </div>
 );
 
-const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = false }) => {
+const CharacterCard: React.FC<CharacterCardProps> = ({
+  character,
+  isDragging = false,
+  onMarkUnknown,
+}) => {
   const {
     attributes,
     listeners,
@@ -56,11 +61,30 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = f
       {...listeners}
       className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
     >
-      <img 
-        src={character.image} 
-        alt={character.name} 
+      <img
+        src={character.image}
+        alt={character.name}
         className="w-full h-full object-cover"
       />
+      {onMarkUnknown && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onMarkUnknown(character.id);
+          }}
+          className="absolute top-0 right-0 m-0.5 p-0.5 rounded bg-white bg-opacity-80 hover:bg-opacity-100"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="currentColor"
+          >
+            <path d="M3 6h18M9 6V4h6v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h12z" />
+          </svg>
+        </button>
+      )}
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
         <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
           {character.name}
