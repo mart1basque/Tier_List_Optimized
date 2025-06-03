@@ -8,6 +8,31 @@ interface CharacterCardProps {
   isDragging?: boolean;
 }
 
+/**
+ * Simple presentation component used for both the sortable item and the drag
+ * overlay. This component itself does not register with dnd-kit.
+ */
+export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
+  character,
+  isDragging = false,
+}) => (
+  <div
+    className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+    style={{ opacity: isDragging ? 0.8 : 1 }}
+  >
+    <img
+      src={character.image}
+      alt={character.name}
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
+      <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
+        {character.name}
+      </span>
+    </div>
+  </div>
+);
+
 const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = false }) => {
   const {
     attributes,
