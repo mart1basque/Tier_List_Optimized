@@ -1,0 +1,117 @@
+import React, { useState } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { Trash2, Edit2 } from 'lucide-react';
+import { Character } from '../types/types';
+import CharacterCard from './CharacterCard';
+import { useTheme } from '../context/ThemeContext';
+
+interface TierProps {
+  id: string;
+  label: string;
+  color: string;
+  characters: Character[];
+  onRemove: () => void;
+  onUpdate: (label: string, color: string) => void;
+}
+
+const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onUpdate }) => {
+  const { themeColors } = useTheme();
+  const [isEditing, setIsEditing] = useState(false);
+  const [newLabel, setNewLabel] = useState(label);
+  const [newColor, setNewColor] = useState(color);
+  
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id });
+  
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  
+  const handleEditSave = () => {
+    if (isEditing) {
+      onUpdate(newLabel, newColor);
+    }
+    setIsEditing(!isEditing);
+  };
+  
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex flex-col rounded-lg bg-white shadow-md overflow-hidden"
+    >
+      <div className="flex items-stretch">
+        <div
+          className="w-24 flex items-center justify-center cursor-move"
+          style={{ backgroundColor: color }}
+          {...attributes}
+          {...listeners}
+        >
+          {isEditing ? (
+            <input
+              type="color"
+              value={newColor}
+              onChange={(e) => setNewColor(e.target.value)}
+              className="w-16 h-10 cursor-pointer"
+            />
+          ) : (
+            <span className="text-xl font-bold text-white drop-shadow-sm">
+              {label}
+            </span>
+          )}
+        </div>
+        
+        <div className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50">
+          {isEditing ? (
+            <input
+              type="text"
+              value={newLabel}
+              onChange={(e) => setNewLabel(e.target.value)}
+              className="px-2 py-1 border rounded"
+              autoFocus
+            />
+          ) : (
+            characters.length > 0 ? (
+              characters.map((character) => (
+                <CharacterCard
+                  key={character.id}
+                  character={character}
+                />
+              ))
+            ) : (
+              <span className="text-gray-400 italic">
+                Drag characters here
+              </span>
+            )
+          )}
+        </div>
+        
+        <div className="flex flex-col bg-gray-100 border-l border-gray-200">
+          <button
+            onClick={handleEditSave}
+            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors"
+            title={isEditing ? "Save" : "Edit tier"}
+          >
+            <Edit2 size={18} />
+          </button>
+          <button
+            onClick={onRemove}
+            className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors"
+            title="Delete tier"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Tier;
