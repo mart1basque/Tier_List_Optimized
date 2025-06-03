@@ -185,29 +185,44 @@ async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[
   const results: Character[] = [];
   const seen = new Set<number>();
 
-  await Promise.all(
-    (filters.length ? filters : Object.keys(seasonIds)).map(async (filter) => {
-      const id = seasonIds[filter];
-      if (!id) return;
-      const { data } = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
-      const characters = Array.isArray(data?.data) ? data.data : data.results || [];
+  try {
+    await Promise.all(
+      (filters.length ? filters : Object.keys(seasonIds)).map(async (filter) => {
+        const id = seasonIds[filter];
+        if (!id) return;
+        const { data } = await axios.get(
+          `https://api.jikan.moe/v4/anime/${id}/characters`
+        );
+        const characters = Array.isArray(data?.data)
+          ? data.data
+          : data.results || [];
 
-      characters.forEach((item: any) => {
-        const charId = item.character?.mal_id ?? item.mal_id;
-        if (seen.has(charId)) return;
-        seen.add(charId);
-        results.push({
-          id: `demonslayer-${charId}`,
-          name: item.character?.name ?? item.name,
-          image:
-            item.character?.images?.jpg?.image_url ||
-            item.character?.images?.webp?.image_url ||
-            createPlaceholderImage(item.character?.name ?? item.name, '#28593C'),
-          universe: 'demon-slayer',
+        characters.forEach((item: any) => {
+          const charId = item.character?.mal_id ?? item.mal_id;
+          if (seen.has(charId)) return;
+          seen.add(charId);
+          results.push({
+            id: `demonslayer-${charId}`,
+            name: item.character?.name ?? item.name,
+            image:
+              item.character?.images?.jpg?.image_url ||
+              item.character?.images?.webp?.image_url ||
+              createPlaceholderImage(
+                item.character?.name ?? item.name,
+                '#28593C'
+              ),
+            universe: 'demon-slayer',
+          });
         });
-      });
-    })
-  );
+      })
+    );
+  } catch (error) {
+    console.error('Error fetching Demon Slayer characters:', error);
+  }
+
+  if (results.length === 0) {
+    return generateDemonSlayerCharacters(filters);
+  }
 
   return results;
 }
@@ -517,18 +532,44 @@ function generateDragonBallCharacters(filters: string[]): Character[] {
 }
 
 function generateDemonSlayerCharacters(filters: string[]): Character[] {
-  const characters: Character[] = [
-    { id: 'demonslayer-1', name: 'Tanjiro Kamado', image: createPlaceholderImage('Tanjiro Kamado', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-2', name: 'Nezuko Kamado', image: createPlaceholderImage('Nezuko Kamado', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-3', name: 'Zenitsu Agatsuma', image: createPlaceholderImage('Zenitsu Agatsuma', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-4', name: 'Inosuke Hashibira', image: createPlaceholderImage('Inosuke Hashibira', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-5', name: 'Giyu Tomioka', image: createPlaceholderImage('Giyu Tomioka', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-6', name: 'Shinobu Kocho', image: createPlaceholderImage('Shinobu Kocho', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-7', name: 'Kyojuro Rengoku', image: createPlaceholderImage('Kyojuro Rengoku', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-8', name: 'Tengen Uzui', image: createPlaceholderImage('Tengen Uzui', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-9', name: 'Muzan Kibutsuji', image: createPlaceholderImage('Muzan Kibutsuji', '#28593C'), universe: 'demon-slayer' },
-    { id: 'demonslayer-10', name: 'Akaza', image: createPlaceholderImage('Akaza', '#28593C'), universe: 'demon-slayer' },
-  ];
-  
+  const bySeason: Record<string, Character[]> = {
+    season1: [
+      { id: 'demonslayer-s1-tanjiro', name: 'Tanjiro Kamado', image: createPlaceholderImage('Tanjiro Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s1-nezuko', name: 'Nezuko Kamado', image: createPlaceholderImage('Nezuko Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s1-zenitsu', name: 'Zenitsu Agatsuma', image: createPlaceholderImage('Zenitsu Agatsuma', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s1-inosuke', name: 'Inosuke Hashibira', image: createPlaceholderImage('Inosuke Hashibira', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s1-giyu', name: 'Giyu Tomioka', image: createPlaceholderImage('Giyu Tomioka', '#28593C'), universe: 'demon-slayer' },
+    ],
+    season2: [
+      { id: 'demonslayer-s2-tanjiro', name: 'Tanjiro Kamado', image: createPlaceholderImage('Tanjiro Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s2-nezuko', name: 'Nezuko Kamado', image: createPlaceholderImage('Nezuko Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s2-zenitsu', name: 'Zenitsu Agatsuma', image: createPlaceholderImage('Zenitsu Agatsuma', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s2-inosuke', name: 'Inosuke Hashibira', image: createPlaceholderImage('Inosuke Hashibira', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s2-tengen', name: 'Tengen Uzui', image: createPlaceholderImage('Tengen Uzui', '#28593C'), universe: 'demon-slayer' },
+    ],
+    season3: [
+      { id: 'demonslayer-s3-tanjiro', name: 'Tanjiro Kamado', image: createPlaceholderImage('Tanjiro Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s3-nezuko', name: 'Nezuko Kamado', image: createPlaceholderImage('Nezuko Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s3-muichiro', name: 'Muichiro Tokito', image: createPlaceholderImage('Muichiro Tokito', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s3-mitsuri', name: 'Mitsuri Kanroji', image: createPlaceholderImage('Mitsuri Kanroji', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s3-genya', name: 'Genya Shinazugawa', image: createPlaceholderImage('Genya Shinazugawa', '#28593C'), universe: 'demon-slayer' },
+    ],
+    season4: [
+      { id: 'demonslayer-s4-tanjiro', name: 'Tanjiro Kamado', image: createPlaceholderImage('Tanjiro Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s4-nezuko', name: 'Nezuko Kamado', image: createPlaceholderImage('Nezuko Kamado', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s4-gyomei', name: 'Gyomei Himejima', image: createPlaceholderImage('Gyomei Himejima', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s4-sanemi', name: 'Sanemi Shinazugawa', image: createPlaceholderImage('Sanemi Shinazugawa', '#28593C'), universe: 'demon-slayer' },
+      { id: 'demonslayer-s4-obanai', name: 'Obanai Iguro', image: createPlaceholderImage('Obanai Iguro', '#28593C'), universe: 'demon-slayer' },
+    ],
+  };
+
+  const characters: Character[] = [];
+  (filters.length ? filters : Object.keys(bySeason)).forEach((filter) => {
+    const seasonChars = bySeason[filter];
+    if (seasonChars) {
+      characters.push(...seasonChars);
+    }
+  });
+
   return characters;
 }
