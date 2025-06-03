@@ -18,7 +18,8 @@ import {
 } from '@dnd-kit/sortable';
 import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
-import CharacterCard from './CharacterCard';
+import CharacterCard, { PlainCharacterCard } from './CharacterCard';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import CharacterPool from './CharacterPool';
 import { Character } from '../types/types';
 
@@ -35,6 +36,7 @@ const defaultTiers = [
   { id: 'D', label: 'D', color: '#A29BFE' },
   { id: 'F', label: 'F', color: '#636E72' }
 ];
+
 
 const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
   const { themeColors } = useTheme();
@@ -211,12 +213,9 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay modifiers={[snapCenterToCursor]}>
         {activeId && activeCharacter ? (
-          <CharacterCard 
-            character={activeCharacter}
-            isDragging={true}
-          />
+          <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
       </DragOverlay>
     </DndContext>
