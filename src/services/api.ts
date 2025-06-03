@@ -21,10 +21,11 @@ function createPlaceholderImage(name: string, color: string): string {
 // In a real app, you'd connect to actual APIs
 export const fetchCharacters = async (
   universe: UniverseType,
-  filters: string[]
+  filters: string[],
+  language: 'en' | 'fr' = 'en'
 ): Promise<Character[]> => {
   if (universe === 'pokemon') {
-    return fetchPokemonCharacters(filters);
+    return fetchPokemonCharacters(filters, language);
   }
 
   if (universe === 'dragon-ball') {
@@ -83,7 +84,10 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
   return characters;
 }
 
-async function fetchPokemonCharacters(filters: string[]): Promise<Character[]> {
+async function fetchPokemonCharacters(
+  filters: string[],
+  language: 'en' | 'fr' = 'en'
+): Promise<Character[]> {
   const generationIds: Record<string, number> = {
     gen1: 1,
     gen2: 2,
@@ -105,19 +109,36 @@ async function fetchPokemonCharacters(filters: string[]): Promise<Character[]> {
 
       const { data } = await axios.get(`https://pokeapi.co/api/v2/generation/${genId}`);
 
-      data.pokemon_species.forEach((species: { name: string; url: string }) => {
-        const id = parseInt(
-          species.url.split('/').filter(Boolean).pop() ?? '0',
-          10
-        );
-        result.push({
-          id: `pokemon-${id}`,
-          name: formatPokemonName(species.name),
-          image:
-            `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-          universe: 'pokemon',
-        });
-      });
+      await Promise.all(
+        data.pokemon_species.map(async (species: { name: string; url: string }) => {
+          const id = parseInt(
+            species.url.split('/').filter(Boolean).pop() ?? '0',
+            10
+          );
+
+          let name = formatPokemonName(species.name);
+
+          if (language === 'fr') {
+            try {
+              const { data: speciesData } = await axios.get(species.url);
+              const frName = speciesData.names.find((n: any) => n.language.name === 'fr')?.name;
+              if (frName) {
+                name = frName;
+              }
+            } catch (e) {
+              // fallback to english name
+            }
+          }
+
+          result.push({
+            id: `pokemon-${id}`,
+            name,
+            image:
+              `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            universe: 'pokemon',
+          });
+        })
+      );
     })
   );
 

@@ -10,6 +10,7 @@ const FilterPage: React.FC = () => {
   const navigate = useNavigate();
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [pokemonLanguage, setPokemonLanguage] = useState<'en' | 'fr' | ''>('');
   
   useEffect(() => {
     if (universe && Object.keys(universeConfig).includes(universe as UniverseType)) {
@@ -25,6 +26,29 @@ const FilterPage: React.FC = () => {
 
   const config = universeConfig[currentUniverse];
   const filterOptions = config.filterOptions;
+
+  const languageSelector = currentUniverse === 'pokemon' && (
+    <div className="mb-6">
+      <label htmlFor="pokemon-language" className="block mb-2 font-medium">
+        Select Pokémon Language
+      </label>
+      <select
+        id="pokemon-language"
+        value={pokemonLanguage}
+        onChange={e => {
+          setPokemonLanguage(e.target.value as 'en' | 'fr');
+          setSelectedFilters([]);
+        }}
+        className="border rounded p-2 w-full"
+      >
+        <option value="" disabled>
+          Choose language
+        </option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+  );
   
   const handleFilterToggle = (filterId: string) => {
     setSelectedFilters(prev => 
@@ -36,8 +60,14 @@ const FilterPage: React.FC = () => {
   
   const handleContinue = () => {
     if (selectedFilters.length > 0) {
+      if (currentUniverse === 'pokemon' && !pokemonLanguage) {
+        alert('Please select a language first');
+        return;
+      }
       const filterParams = selectedFilters.join(',');
-      navigate(`/tierlist/${currentUniverse}?filters=${filterParams}`);
+      const langParam =
+        currentUniverse === 'pokemon' ? `&lang=${pokemonLanguage}` : '';
+      navigate(`/tierlist/${currentUniverse}?filters=${filterParams}${langParam}`);
     } else {
       // Show error or notification that at least one filter should be selected
       alert('Please select at least one option to continue');
@@ -69,15 +99,23 @@ const FilterPage: React.FC = () => {
             </h2>
           </div>
           
+          {languageSelector}
+
           <p className="mb-6 text-gray-600">
-            Select which {currentUniverse === 'pokemon' ? 'generations' : 
-                        currentUniverse === 'naruto' ? 'series' : 
-                        currentUniverse === 'one-piece' ? 'sagas' : 
-                        currentUniverse === 'dragon-ball' ? 'series' : 
+            Select which {currentUniverse === 'pokemon' ? 'generations' :
+                        currentUniverse === 'naruto' ? 'series' :
+                        currentUniverse === 'one-piece' ? 'sagas' :
+                        currentUniverse === 'dragon-ball' ? 'series' :
                         'seasons'} you want to include in your tier list:
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 ${
+              currentUniverse === 'pokemon' && !pokemonLanguage
+                ? 'opacity-50 pointer-events-none'
+                : ''
+            }`}
+          >
             {filterOptions.map((option) => (
               <div 
                 key={option.id}
@@ -121,7 +159,10 @@ const FilterPage: React.FC = () => {
                 backgroundColor: themeColors.primary,
                 boxShadow: `0 4px 14px 0 ${themeColors.primary}40`
               }}
-              disabled={selectedFilters.length === 0}
+              disabled={
+                selectedFilters.length === 0 ||
+                (currentUniverse === 'pokemon' && !pokemonLanguage)
+              }
             >
               <span className="mr-2">Continue</span>
               <ArrowRight size={18} />

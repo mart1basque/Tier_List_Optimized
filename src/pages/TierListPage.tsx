@@ -22,6 +22,7 @@ const TierListPage: React.FC = () => {
 
   // Get selected filters from URL
   const filtersParam = searchParams.get('filters') ?? '';
+  const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr';
   const filters = useMemo(
     () =>
       filtersParam
@@ -39,7 +40,11 @@ const TierListPage: React.FC = () => {
       const loadCharacters = async () => {
         setLoading(true);
         try {
-          const data = await fetchCharacters(universe as UniverseType, filters);
+          const data = await fetchCharacters(
+            universe as UniverseType,
+            filters,
+            language
+          );
           setCharacters(data);
         } catch (error) {
           console.error('Error fetching characters:', error);
@@ -54,7 +59,7 @@ const TierListPage: React.FC = () => {
     } else {
       navigate('/');
     }
-  }, [universe, filtersParam, setCurrentUniverse, navigate]);
+  }, [universe, filtersParam, language, setCurrentUniverse, navigate]);
   
   const handleAddCustomCharacter = (character: Character) => {
     setCharacters(prev => [...prev, character]);
@@ -64,6 +69,7 @@ const TierListPage: React.FC = () => {
   const tierListData = {
     universe: currentUniverse,
     filters,
+    language,
     characters,
     // In a real app, you'd include the tier assignments here
   };
