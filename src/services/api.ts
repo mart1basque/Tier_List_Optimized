@@ -128,19 +128,87 @@ function generateNarutoCharacters(filters: string[]): Character[] {
 }
 
 function generateOnePieceCharacters(filters: string[]): Character[] {
-  const characters: Character[] = [
-    { id: 'onepiece-1', name: 'Monkey D. Luffy', image: createPlaceholderImage('Monkey D. Luffy', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-2', name: 'Roronoa Zoro', image: createPlaceholderImage('Roronoa Zoro', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-3', name: 'Nami', image: createPlaceholderImage('Nami', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-4', name: 'Usopp', image: createPlaceholderImage('Usopp', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-5', name: 'Sanji', image: createPlaceholderImage('Sanji', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-6', name: 'Tony Tony Chopper', image: createPlaceholderImage('Tony Tony Chopper', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-7', name: 'Nico Robin', image: createPlaceholderImage('Nico Robin', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-8', name: 'Franky', image: createPlaceholderImage('Franky', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-9', name: 'Brook', image: createPlaceholderImage('Brook', '#00A3E0'), universe: 'one-piece' },
-    { id: 'onepiece-10', name: 'Jinbe', image: createPlaceholderImage('Jinbe', '#00A3E0'), universe: 'one-piece' },
-  ];
-  
+  const bySaga: Record<string, Character[]> = {
+    'east-blue': [
+      { id: 'onepiece-eastblue-1', name: 'Monkey D. Luffy', image: createPlaceholderImage('Monkey D. Luffy', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-eastblue-2', name: 'Roronoa Zoro', image: createPlaceholderImage('Roronoa Zoro', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-eastblue-3', name: 'Nami', image: createPlaceholderImage('Nami', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-eastblue-4', name: 'Usopp', image: createPlaceholderImage('Usopp', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-eastblue-5', name: 'Sanji', image: createPlaceholderImage('Sanji', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'alabasta': [
+      { id: 'onepiece-alabasta-1', name: 'Vivi', image: createPlaceholderImage('Vivi', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-alabasta-2', name: 'Crocodile', image: createPlaceholderImage('Crocodile', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-alabasta-3', name: 'Ace', image: createPlaceholderImage('Ace', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-alabasta-4', name: 'Smoker', image: createPlaceholderImage('Smoker', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-alabasta-5', name: 'Tashigi', image: createPlaceholderImage('Tashigi', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'sky-island': [
+      { id: 'onepiece-sky-1', name: 'Enel', image: createPlaceholderImage('Enel', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-sky-2', name: 'Gan Fall', image: createPlaceholderImage('Gan Fall', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-sky-3', name: 'Conis', image: createPlaceholderImage('Conis', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-sky-4', name: 'Pagaya', image: createPlaceholderImage('Pagaya', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-sky-5', name: 'Wyper', image: createPlaceholderImage('Wyper', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'water-7': [
+      { id: 'onepiece-water7-1', name: 'Iceburg', image: createPlaceholderImage('Iceburg', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-water7-2', name: 'Paulie', image: createPlaceholderImage('Paulie', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-water7-3', name: 'Rob Lucci', image: createPlaceholderImage('Rob Lucci', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-water7-4', name: 'Kaku', image: createPlaceholderImage('Kaku', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-water7-5', name: 'Kalifa', image: createPlaceholderImage('Kalifa', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'thriller-bark': [
+      { id: 'onepiece-thriller-1', name: 'Gecko Moria', image: createPlaceholderImage('Gecko Moria', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-thriller-2', name: 'Perona', image: createPlaceholderImage('Perona', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-thriller-3', name: 'Brook', image: createPlaceholderImage('Brook', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-thriller-4', name: 'Oars', image: createPlaceholderImage('Oars', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-thriller-5', name: 'Hogback', image: createPlaceholderImage('Hogback', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'summit-war': [
+      { id: 'onepiece-summit-1', name: 'Whitebeard', image: createPlaceholderImage('Whitebeard', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-summit-2', name: 'Marco', image: createPlaceholderImage('Marco', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-summit-3', name: 'Boa Hancock', image: createPlaceholderImage('Boa Hancock', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-summit-4', name: 'Garp', image: createPlaceholderImage('Garp', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-summit-5', name: 'Sengoku', image: createPlaceholderImage('Sengoku', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'fishman-island': [
+      { id: 'onepiece-fishman-1', name: 'Hody Jones', image: createPlaceholderImage('Hody Jones', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-fishman-2', name: 'Shirahoshi', image: createPlaceholderImage('Shirahoshi', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-fishman-3', name: 'Fisher Tiger', image: createPlaceholderImage('Fisher Tiger', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-fishman-4', name: 'Jinbe', image: createPlaceholderImage('Jinbe', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-fishman-5', name: 'Arlong', image: createPlaceholderImage('Arlong', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'dressrosa': [
+      { id: 'onepiece-dressrosa-1', name: 'Doflamingo', image: createPlaceholderImage('Doflamingo', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-dressrosa-2', name: 'Law', image: createPlaceholderImage('Law', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-dressrosa-3', name: 'Rebecca', image: createPlaceholderImage('Rebecca', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-dressrosa-4', name: 'Sabo', image: createPlaceholderImage('Sabo', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-dressrosa-5', name: 'Kyros', image: createPlaceholderImage('Kyros', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'whole-cake': [
+      { id: 'onepiece-wholecake-1', name: 'Big Mom', image: createPlaceholderImage('Big Mom', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wholecake-2', name: 'Katakuri', image: createPlaceholderImage('Katakuri', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wholecake-3', name: 'Pudding', image: createPlaceholderImage('Pudding', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wholecake-4', name: 'Pedro', image: createPlaceholderImage('Pedro', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wholecake-5', name: 'Carrot', image: createPlaceholderImage('Carrot', '#00A3E0'), universe: 'one-piece' },
+    ],
+    'wano': [
+      { id: 'onepiece-wano-1', name: 'Kaido', image: createPlaceholderImage('Kaido', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wano-2', name: 'Kozuki Oden', image: createPlaceholderImage('Kozuki Oden', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wano-3', name: 'Yamato', image: createPlaceholderImage('Yamato', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wano-4', name: 'Kidd', image: createPlaceholderImage('Kidd', '#00A3E0'), universe: 'one-piece' },
+      { id: 'onepiece-wano-5', name: 'Killer', image: createPlaceholderImage('Killer', '#00A3E0'), universe: 'one-piece' },
+    ],
+  };
+
+  const characters: Character[] = [];
+  filters.forEach((filter) => {
+    const sagaChars = bySaga[filter];
+    if (sagaChars) {
+      characters.push(...sagaChars);
+    }
+  });
+
   return characters;
 }
 
