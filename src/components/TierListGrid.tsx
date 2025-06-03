@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   DndContext, 
   DragOverlay,
@@ -24,6 +24,7 @@ import { Character } from '../types/types';
 
 interface TierListGridProps {
   characters: Character[];
+  onUnknownChange?: (chars: Character[]) => void;
 }
 
 // Default tier ranks
@@ -36,17 +37,25 @@ const defaultTiers = [
   { id: 'F', label: 'F', color: '#636E72' }
 ];
 
-const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
+const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange }) => {
   const { themeColors } = useTheme();
   const [tiers, setTiers] = useState(defaultTiers);
   const [characterMap, setCharacterMap] = useState<Record<string, string[]>>(() => {
     // Initialize with all characters in the pool
-    return { 
+    return {
       pool: characters.map(char => char.id),
+      unknown: [],
       ...Object.fromEntries(tiers.map(tier => [tier.id, []]))
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (onUnknownChange) {
+      const unknownChars = characterMap.unknown.map(id => characters.find(c => c.id === id)!).filter(Boolean);
+      onUnknownChange(unknownChars);
+    }
+  }, [characterMap.unknown, characters, onUnknownChange]);
   
   // Find the active character
   const activeCharacter = activeId ? characters.find(char => char.id === activeId) : null;
@@ -168,9 +177,20 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
   };
   
   const updateTier = (tierId: string, newLabel: string, newColor: string) => {
-    setTiers(tiers.map(tier => 
+    setTiers(tiers.map(tier =>
       tier.id === tierId ? { ...tier, label: newLabel, color: newColor } : tier
     ));
+  };
+
+  const markUnknown = (character: Character) => {
+    setCharacterMap(prev => {
+      const result: Record<string, string[]> = {};
+      Object.keys(prev).forEach(key => {
+        result[key] = prev[key].filter(id => id !== character.id);
+      });
+      result.unknown = [...(prev.unknown || []), character.id];
+      return result;
+    });
   };
 
   return (
@@ -205,9 +225,10 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
       </div>
       
       <div className="mb-16">
-        <CharacterPool 
+        <CharacterPool
           id="pool"
-          characters={characterMap.pool.map(id => characters.find(c => c.id === id)!)} 
+          characters={characterMap.pool.map(id => characters.find(c => c.id === id)!)}
+          onMarkUnknown={markUnknown}
         />
       </div>
       

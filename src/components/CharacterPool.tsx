@@ -8,9 +8,10 @@ import { useTheme } from '../context/ThemeContext';
 interface CharacterPoolProps {
   id: string;
   characters: Character[];
+  onMarkUnknown?: (character: Character) => void;
 }
 
-const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
+const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters, onMarkUnknown }) => {
   const { themeColors } = useTheme();
   const { setNodeRef } = useDroppable({ id });
   
@@ -34,6 +35,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
                 <CharacterCard
                   key={character.id}
                   character={character}
+                  onMarkUnknown={onMarkUnknown ? () => onMarkUnknown(character) : undefined}
                 />
               ))
             ) : (
