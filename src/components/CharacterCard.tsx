@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Character } from '../types/types';
-import CharacterModal from './CharacterModal';
 
 interface CharacterCardProps {
   character: Character;
@@ -27,7 +26,7 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
       className="w-full h-full object-cover"
       draggable={false}
     />
-    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center pointer-events-none">
+    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
       <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
         {character.name}
       </span>
@@ -35,18 +34,14 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
   </div>
 );
 
-const CharacterCard: React.FC<CharacterCardProps> = ({
-  character,
-  isDragging = false,
-}) => {
-  const [modalOpen, setModalOpen] = useState(false);
+const CharacterCard: React.FC<CharacterCardProps> = ({ character, isDragging = false }) => {
   const {
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
-    isDragging: dndDragging,
   } = useSortable({ id: character.id });
   
   const style = {
@@ -56,35 +51,27 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
   };
   
   return (
-    <>
-      <div
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-        onClick={() => {
-          if (!dndDragging) {
-            setModalOpen(true);
-          }
-        }}
-      >
-        <img
-          src={character.image}
-          alt={character.name}
-          className="w-full h-full object-cover"
-          draggable={false}
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
-          <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
-            {character.name}
-          </span>
-        </div>
+    <div
+      ref={(node) => {
+        setNodeRef(node);
+        setActivatorNodeRef(node);
+      }}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+    >
+      <img
+        src={character.image}
+        alt={character.name}
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
+        <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
+          {character.name}
+        </span>
       </div>
-      {modalOpen && (
-        <CharacterModal character={character} onClose={() => setModalOpen(false)} />
-      )}
-    </>
+    </div>
   );
 };
 

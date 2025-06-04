@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useState } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -9,8 +8,7 @@ import {
   useSensor,
   useSensors,
   DragStartEvent,
-  DragEndEvent,
-  type Modifier,
+  DragEndEvent
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -22,13 +20,10 @@ import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import CharacterPool from './CharacterPool';
-import UnknownCharactersPanel from './UnknownCharactersPanel';
 import { Character } from '../types/types';
 
 interface TierListGridProps {
   characters: Character[];
-  onUnknownChange?: (chars: Character[]) => void;
-  unknownContainer?: HTMLElement | null;
 }
 
 // Default tier ranks
@@ -41,19 +36,17 @@ const defaultTiers = [
   { id: 'F', label: 'F', color: '#636E72' }
 ];
 
-const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange, unknownContainer }) => {
+const TierListGrid: React.FC<TierListGridProps> = ({ characters }) => {
   const { themeColors } = useTheme();
   const [tiers, setTiers] = useState(defaultTiers);
   const [characterMap, setCharacterMap] = useState<Record<string, string[]>>(() => {
     // Initialize with all characters in the pool
     return {
       pool: characters.map(char => char.id),
-      unknown: [],
       ...Object.fromEntries(tiers.map(tier => [tier.id, []]))
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   // Add newly loaded characters to the pool
   useEffect(() => {
@@ -69,12 +62,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     });
   }, [characters]);
 
-  useEffect(() => {
-    if (onUnknownChange) {
-      const unknownChars = characterMap.unknown.map(id => characters.find(c => c.id === id)!).filter(Boolean);
-      onUnknownChange(unknownChars);
-    }
-  }, [characterMap.unknown, characters, onUnknownChange]);
   
   // Find the active character
   const activeCharacter = activeId ? characters.find(char => char.id === activeId) : null;
@@ -90,16 +77,8 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     })
   );
 
-  const centerCursorModifier: Modifier = ({ transform }) => ({
-    ...transform,
-    x: transform.x - dragOffset.x,
-    y: transform.y - dragOffset.y,
-  });
-  
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-    const { width, height } = event.active.rect.current.initial;
-    setDragOffset({ x: width / 2, y: height / 2 });
   };
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -169,7 +148,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     }
     
     setActiveId(null);
-    setDragOffset({ x: 0, y: 0 });
   };
   
   const addTier = () => {
@@ -219,7 +197,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col space-y-4 mb-8">
-        <SortableContext items={tiers.map(t => `tier-${t.id}`)} strategy={verticalListSortingStrategy}>
+        <SortableContext items={tiers.map(t => t.id)} strategy={verticalListSortingStrategy}>
           {tiers.map(tier => (
             <Tier
               key={tier.id}
@@ -249,21 +227,11 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay modifiers={[centerCursorModifier]}>
+      <DragOverlay>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
       </DragOverlay>
-      {unknownContainer &&
-        createPortal(
-          <UnknownCharactersPanel
-            id="unknown"
-            characters={characterMap.unknown.map(
-              id => characters.find(c => c.id === id)!
-            )}
-          />,
-          unknownContainer
-        )}
     </DndContext>
   );
 };
