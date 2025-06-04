@@ -192,10 +192,7 @@ export const universeConfig: Record<UniverseType, {
       position: 'relative',
       overflow: 'hidden',
     },
-    filterOptions: [
-      { id: 'original', name: 'Original Series' },
-      { id: 'road-to-2002', name: 'Road to 2002' },
-      { id: '2018', name: '2018' },
-    ],
+    // No filter options for Olive et Tom. All characters are shown.
+    filterOptions: [],
   },
 };

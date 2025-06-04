@@ -17,6 +17,24 @@ function createPlaceholderImage(name: string, color: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
+// Fallback avatar specifically themed for soccer characters
+function createSoccerPlaceholderImage(name: string): string {
+  const initials = name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'>` +
+    `<rect width='100%' height='100%' fill='#1E90FF'/>` +
+    `<circle cx='75' cy='75' r='45' fill='white' stroke='black' stroke-width='4'/>` +
+    `<text x='75' y='75' dominant-baseline='middle' text-anchor='middle' fill='#000' font-size='40' font-family='Arial, sans-serif'>${initials}</text>` +
+    `</svg>`;
+
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
 // For demo purposes, this returns mock data
 // In a real app, you'd connect to actual APIs
 export const fetchCharacters = async (
@@ -335,11 +353,16 @@ function generateNarutoCharacters(filters: string[]): Character[] {
 
 function generateOliveEtTomCharacters(filters: string[]): Character[] {
   const characters: Character[] = [
-    { id: 'olive-1', name: 'Tsubasa Ozora', image: createPlaceholderImage('Tsubasa Ozora', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-2', name: 'Kojiro Hyuga', image: createPlaceholderImage('Kojiro Hyuga', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-3', name: 'Genzo Wakabayashi', image: createPlaceholderImage('Genzo Wakabayashi', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-4', name: 'Taro Misaki', image: createPlaceholderImage('Taro Misaki', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-5', name: 'Hikaru Matsuyama', image: createPlaceholderImage('Hikaru Matsuyama', '#1E90FF'), universe: 'olive-et-tom' },
+    { id: 'olive-1', name: 'Tsubasa Ozora', image: createSoccerPlaceholderImage('Tsubasa Ozora'), universe: 'olive-et-tom' },
+    { id: 'olive-2', name: 'Kojiro Hyuga', image: createSoccerPlaceholderImage('Kojiro Hyuga'), universe: 'olive-et-tom' },
+    { id: 'olive-3', name: 'Genzo Wakabayashi', image: createSoccerPlaceholderImage('Genzo Wakabayashi'), universe: 'olive-et-tom' },
+    { id: 'olive-4', name: 'Taro Misaki', image: createSoccerPlaceholderImage('Taro Misaki'), universe: 'olive-et-tom' },
+    { id: 'olive-5', name: 'Hikaru Matsuyama', image: createSoccerPlaceholderImage('Hikaru Matsuyama'), universe: 'olive-et-tom' },
+    { id: 'olive-6', name: 'Karl-Heinz Schneider', image: createSoccerPlaceholderImage('Karl-Heinz Schneider'), universe: 'olive-et-tom' },
+    { id: 'olive-7', name: 'Ken Wakashimazu', image: createSoccerPlaceholderImage('Ken Wakashimazu'), universe: 'olive-et-tom' },
+    { id: 'olive-8', name: 'Ryo Ishizaki', image: createSoccerPlaceholderImage('Ryo Ishizaki'), universe: 'olive-et-tom' },
+    { id: 'olive-9', name: 'Shingo Aoi', image: createSoccerPlaceholderImage('Shingo Aoi'), universe: 'olive-et-tom' },
+    { id: 'olive-10', name: 'Takeshi Sawada', image: createSoccerPlaceholderImage('Takeshi Sawada'), universe: 'olive-et-tom' },
   ];
 
   return characters;
