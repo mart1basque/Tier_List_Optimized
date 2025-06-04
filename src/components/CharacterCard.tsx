@@ -75,7 +75,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
           className="w-full h-full object-cover"
           draggable={false}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center pointer-events-none">
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
           <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
             {character.name}
           </span>
