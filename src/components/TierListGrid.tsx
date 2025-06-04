@@ -11,6 +11,7 @@ import {
   DragStartEvent,
   DragEndEvent
 } from '@dnd-kit/core';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import {
   SortableContext,
   arrayMove,
@@ -190,6 +191,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      modifiers={[snapCenterToCursor]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
