@@ -28,6 +28,7 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) =
           src={character.image}
           alt={character.name}
           className="w-full h-auto rounded-md mb-4"
+          draggable={false}
         />
         <h2 className="text-lg font-medium text-center">{character.name}</h2>
       </div>
