@@ -75,7 +75,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
         <div className="mb-4">
           <div className="flex items-start gap-4">
             <div className="w-20 h-20 rounded-md overflow-hidden border border-gray-200">
-              <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
+              <img src={previewImage} alt="Preview" className="w-full h-full object-cover" draggable={false} />
             </div>
             
             <div className="flex-1">

@@ -63,6 +63,7 @@ const HomePage: React.FC = () => {
                 src={universe.image}
                 alt={universe.name}
                 className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
+                draggable={false}
               />
               <div className="absolute inset-0 flex flex-col justify-end p-6 z-20">
                 <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-md">
