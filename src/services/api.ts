@@ -45,6 +45,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'olive-et-tom') {
+    try {
+      return await fetchOliveEtTomCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching Olive et Tom characters:', error);
+      return generateOliveEtTomCharacters(filters);
+    }
+  }
+
   if (universe === 'demon-slayer') {
     try {
       return await fetchDemonSlayerCharacters(filters);
@@ -78,6 +87,9 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       break;
     case 'demon-slayer':
       characters = generateDemonSlayerCharacters(filters);
+      break;
+    case 'olive-et-tom':
+      characters = generateOliveEtTomCharacters(filters);
       break;
   }
   
@@ -265,6 +277,44 @@ async function fetchNarutoCharacters(filters: string[]): Promise<Character[]> {
   return results;
 }
 
+// Fetch Olive et Tom characters using MyAnimeList/Jikan API
+async function fetchOliveEtTomCharacters(filters: string[]): Promise<Character[]> {
+  const seriesIds: Record<string, number> = {
+    original: 1867, // Captain Tsubasa (1983)
+    'road-to-2002': 3289, // Road to 2002
+    '2018': 36934, // Captain Tsubasa (2018)
+  };
+
+  const results: Character[] = [];
+  const seen = new Set<number>();
+
+  await Promise.all(
+    (filters.length ? filters : Object.keys(seriesIds)).map(async (filter) => {
+      const id = seriesIds[filter];
+      if (!id) return;
+      const { data } = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
+      const characters = Array.isArray(data?.data) ? data.data : data.results || [];
+
+      characters.forEach((item: any) => {
+        const charId = item.character?.mal_id ?? item.mal_id;
+        if (seen.has(charId)) return;
+        seen.add(charId);
+        results.push({
+          id: `olive-${charId}`,
+          name: item.character?.name ?? item.name,
+          image:
+            item.character?.images?.jpg?.image_url ||
+            item.character?.images?.webp?.image_url ||
+            createPlaceholderImage(item.character?.name ?? item.name, '#1E90FF'),
+          universe: 'olive-et-tom',
+        });
+      });
+    })
+  );
+
+  return results;
+}
+
 function generateNarutoCharacters(filters: string[]): Character[] {
   const characters: Character[] = [
     { id: 'naruto-1', name: 'Naruto Uzumaki', image: createPlaceholderImage('Naruto Uzumaki', '#FF7800'), universe: 'naruto' },
@@ -280,6 +330,18 @@ function generateNarutoCharacters(filters: string[]): Character[] {
   ];
   
   // In a real app, filter based on selected filters
+  return characters;
+}
+
+function generateOliveEtTomCharacters(filters: string[]): Character[] {
+  const characters: Character[] = [
+    { id: 'olive-1', name: 'Tsubasa Ozora', image: createPlaceholderImage('Tsubasa Ozora', '#1E90FF'), universe: 'olive-et-tom' },
+    { id: 'olive-2', name: 'Kojiro Hyuga', image: createPlaceholderImage('Kojiro Hyuga', '#1E90FF'), universe: 'olive-et-tom' },
+    { id: 'olive-3', name: 'Genzo Wakabayashi', image: createPlaceholderImage('Genzo Wakabayashi', '#1E90FF'), universe: 'olive-et-tom' },
+    { id: 'olive-4', name: 'Taro Misaki', image: createPlaceholderImage('Taro Misaki', '#1E90FF'), universe: 'olive-et-tom' },
+    { id: 'olive-5', name: 'Hikaru Matsuyama', image: createPlaceholderImage('Hikaru Matsuyama', '#1E90FF'), universe: 'olive-et-tom' },
+  ];
+
   return characters;
 }
 

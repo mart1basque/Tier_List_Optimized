@@ -100,10 +100,11 @@ const TierListPage: React.FC = () => {
         
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white drop-shadow-md mb-2">
-            {currentUniverse === 'pokemon' ? 'Pokémon' : 
-             currentUniverse === 'one-piece' ? 'One Piece' : 
-             currentUniverse === 'dragon-ball' ? 'Dragon Ball' : 
-             currentUniverse === 'demon-slayer' ? 'Demon Slayer' : 
+            {currentUniverse === 'pokemon' ? 'Pokémon' :
+             currentUniverse === 'one-piece' ? 'One Piece' :
+             currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
+             currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
+             currentUniverse === 'olive-et-tom' ? 'Olive et Tom' :
              'Naruto'} Tier List
           </h1>
           <div className="flex flex-wrap gap-2">
