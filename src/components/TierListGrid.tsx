@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import { 
   DndContext, 
   DragOverlay,
@@ -224,7 +225,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay modifiers={[snapCenterToCursor]}>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
