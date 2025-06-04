@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { 
-  DndContext, 
+import {
+  DndContext,
   DragOverlay,
   closestCenter,
   KeyboardSensor,
@@ -9,7 +9,8 @@ import {
   useSensor,
   useSensors,
   DragStartEvent,
-  DragEndEvent
+  DragEndEvent,
+  type Modifier,
 } from '@dnd-kit/core';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import {
@@ -53,6 +54,21 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
+  // Add newly loaded characters to the pool
+  useEffect(() => {
+    setCharacterMap(prev => {
+      const result = { ...prev };
+      characters.forEach(char => {
+        const exists = Object.values(result).some(ids => ids.includes(char.id));
+        if (!exists) {
+          result.pool.push(char.id);
+        }
+      });
+      return result;
+    });
+  }, [characters]);
 
   useEffect(() => {
     if (onUnknownChange) {
@@ -74,9 +90,17 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const centerCursorModifier: Modifier = ({ transform }) => ({
+    ...transform,
+    x: transform.x - dragOffset.x,
+    y: transform.y - dragOffset.y,
+  });
   
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
+    const { width, height } = event.active.rect.current.initial;
+    setDragOffset({ x: width / 2, y: height / 2 });
   };
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -146,6 +170,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     }
     
     setActiveId(null);
+    setDragOffset({ x: 0, y: 0 });
   };
   
   const addTier = () => {
@@ -226,7 +251,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay modifiers={[centerCursorModifier]}>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
