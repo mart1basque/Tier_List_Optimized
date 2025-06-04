@@ -55,6 +55,20 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
   const [activeId, setActiveId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
+  // Add newly loaded characters to the pool
+  useEffect(() => {
+    setCharacterMap(prev => {
+      const result = { ...prev };
+      characters.forEach(char => {
+        const exists = Object.values(result).some(ids => ids.includes(char.id));
+        if (!exists) {
+          result.pool.push(char.id);
+        }
+      });
+      return result;
+    });
+  }, [characters]);
+
   useEffect(() => {
     if (onUnknownChange) {
       const unknownChars = characterMap.unknown.map(id => characters.find(c => c.id === id)!).filter(Boolean);
