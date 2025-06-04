@@ -226,7 +226,9 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay
+        style={{ position: 'fixed', pointerEvents: 'none', top: 0, left: 0, zIndex: 999 }}
+      >
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
