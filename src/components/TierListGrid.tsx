@@ -10,7 +10,6 @@ import {
   useSensors,
   DragStartEvent,
   DragEndEvent,
-  type Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -21,6 +20,7 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import CharacterPool from './CharacterPool';
 import UnknownCharactersPanel from './UnknownCharactersPanel';
 import { Character } from '../types/types';
@@ -53,7 +53,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   // Add newly loaded characters to the pool
   useEffect(() => {
@@ -90,16 +89,9 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     })
   );
 
-  const centerCursorModifier: Modifier = ({ transform }) => ({
-    ...transform,
-    x: transform.x - dragOffset.x,
-    y: transform.y - dragOffset.y,
-  });
   
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
-    const { width, height } = event.active.rect.current.initial;
-    setDragOffset({ x: width / 2, y: height / 2 });
   };
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -169,7 +161,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     }
     
     setActiveId(null);
-    setDragOffset({ x: 0, y: 0 });
   };
   
   const addTier = () => {
@@ -249,7 +240,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay modifiers={[centerCursorModifier]}>
+      <DragOverlay modifiers={[snapCenterToCursor]}>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
