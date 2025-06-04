@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { 
-  DndContext, 
+import {
+  DndContext,
   DragOverlay,
   closestCenter,
   KeyboardSensor,
@@ -9,7 +9,8 @@ import {
   useSensor,
   useSensors,
   DragStartEvent,
-  DragEndEvent
+  DragEndEvent,
+  type Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -52,6 +53,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (onUnknownChange) {
@@ -73,9 +75,17 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const centerCursorModifier: Modifier = ({ transform }) => ({
+    ...transform,
+    x: transform.x - dragOffset.x,
+    y: transform.y - dragOffset.y,
+  });
   
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
+    const { width, height } = event.active.rect.current.initial;
+    setDragOffset({ x: width / 2, y: height / 2 });
   };
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -145,6 +155,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     }
     
     setActiveId(null);
+    setDragOffset({ x: 0, y: 0 });
   };
   
   const addTier = () => {
@@ -224,7 +235,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         />
       </div>
       
-      <DragOverlay>
+      <DragOverlay modifiers={[centerCursorModifier]}>
         {activeId && activeCharacter ? (
           <PlainCharacterCard character={activeCharacter} isDragging={true} />
         ) : null}
