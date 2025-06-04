@@ -219,7 +219,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col space-y-4 mb-8">
-        <SortableContext items={tiers.map(t => t.id)} strategy={verticalListSortingStrategy}>
+        <SortableContext items={tiers.map(t => `tier-${t.id}`)} strategy={verticalListSortingStrategy}>
           {tiers.map(tier => (
             <Tier
               key={tier.id}

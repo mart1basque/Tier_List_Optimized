@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
+import { useSortable, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Trash2, Edit2 } from 'lucide-react';
 import { Character } from '../types/types';
@@ -27,7 +28,9 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id });
+  } = useSortable({ id: `tier-${id}` });
+
+  const { setNodeRef: setCharactersRef } = useDroppable({ id });
   
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -68,7 +71,10 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
           )}
         </div>
         
-        <div className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50">
+        <div
+          ref={setCharactersRef}
+          className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50"
+        >
           {isEditing ? (
             <input
               type="text"
@@ -78,18 +84,15 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
               autoFocus
             />
           ) : (
-            characters.length > 0 ? (
-              characters.map((character) => (
-                <CharacterCard
-                  key={character.id}
-                  character={character}
-                />
-              ))
-            ) : (
-              <span className="text-gray-400 italic">
-                Drag characters here
-              </span>
-            )
+            <SortableContext items={characters.map(c => c.id)} strategy={rectSortingStrategy}>
+              {characters.length > 0 ? (
+                characters.map((character) => (
+                  <CharacterCard key={character.id} character={character} />
+                ))
+              ) : (
+                <span className="text-gray-400 italic">Drag characters here</span>
+              )}
+            </SortableContext>
           )}
         </div>
         
