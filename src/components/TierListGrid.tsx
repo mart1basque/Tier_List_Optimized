@@ -8,7 +8,7 @@ import {
   useSensor,
   useSensors,
   DragStartEvent,
-  DragEndEvent
+  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -19,6 +19,7 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import CharacterPool from './CharacterPool';
 import { Character } from '../types/types';
 
