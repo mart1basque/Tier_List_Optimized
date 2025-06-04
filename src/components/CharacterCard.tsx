@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Move } from 'lucide-react';
 import { Character } from '../types/types';
 import CharacterModal from './CharacterModal';
 
@@ -59,9 +60,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
       <div
         ref={setNodeRef}
         style={style}
-        {...attributes}
-        {...listeners}
-        className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+        className="relative w-16 h-16 group rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
         onClick={() => setModalOpen(true)}
       >
         <img
@@ -70,11 +69,19 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
           className="w-full h-full object-cover"
           draggable={true}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center pointer-events-none">
           <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
             {character.name}
           </span>
         </div>
+        <button
+          {...attributes}
+          {...listeners}
+          className="absolute top-0 right-0 p-0.5 bg-white bg-opacity-70 rounded-bl cursor-grab active:cursor-grabbing"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Move size={12} />
+        </button>
       </div>
       {modalOpen && (
         <CharacterModal character={character} onClose={() => setModalOpen(false)} />
