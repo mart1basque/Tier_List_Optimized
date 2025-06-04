@@ -27,6 +27,13 @@ const FilterPage: React.FC = () => {
   const config = universeConfig[currentUniverse];
   const filterOptions = config.filterOptions;
 
+  // If there are no filters available, skip this page
+  useEffect(() => {
+    if (filterOptions.length === 0) {
+      navigate(`/tierlist/${currentUniverse}`);
+    }
+  }, [filterOptions, navigate, currentUniverse]);
+
   const languageSelector = currentUniverse === 'pokemon' && (
     <div className="mb-6">
       <label htmlFor="pokemon-language" className="block mb-2 font-medium">

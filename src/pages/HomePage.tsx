@@ -15,7 +15,12 @@ const HomePage: React.FC = () => {
 
   const handleUniverseSelect = (universeId: string) => {
     setCurrentUniverse(universeId as any);
-    navigate(`/filter/${universeId}`);
+    if (universeId === 'olive-et-tom') {
+      // No filters for Olive et Tom, go straight to tier list
+      navigate(`/tierlist/${universeId}`);
+    } else {
+      navigate(`/filter/${universeId}`);
+    }
   };
 
   return (
