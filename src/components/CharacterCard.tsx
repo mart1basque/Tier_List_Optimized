@@ -27,7 +27,7 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
       className="w-full h-full object-cover"
       draggable={false}
     />
-    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
+    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center pointer-events-none">
       <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
         {character.name}
       </span>
@@ -46,6 +46,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
     setNodeRef,
     transform,
     transition,
+    isDragging: dndDragging,
   } = useSortable({ id: character.id });
   
   const style = {
@@ -62,7 +63,11 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         {...attributes}
         {...listeners}
         className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-        onClick={() => setModalOpen(true)}
+        onClick={() => {
+          if (!dndDragging) {
+            setModalOpen(true);
+          }
+        }}
       >
         <img
           src={character.image}
