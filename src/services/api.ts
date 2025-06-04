@@ -335,11 +335,41 @@ function generateNarutoCharacters(filters: string[]): Character[] {
 
 function generateOliveEtTomCharacters(filters: string[]): Character[] {
   const characters: Character[] = [
-    { id: 'olive-1', name: 'Tsubasa Ozora', image: createPlaceholderImage('Tsubasa Ozora', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-2', name: 'Kojiro Hyuga', image: createPlaceholderImage('Kojiro Hyuga', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-3', name: 'Genzo Wakabayashi', image: createPlaceholderImage('Genzo Wakabayashi', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-4', name: 'Taro Misaki', image: createPlaceholderImage('Taro Misaki', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-5', name: 'Hikaru Matsuyama', image: createPlaceholderImage('Hikaru Matsuyama', '#1E90FF'), universe: 'olive-et-tom' },
+    {
+      id: 'olive-1',
+      name: 'Tsubasa Ozora',
+      image:
+        'https://static.wikia.nocookie.net/captain-tsubasa/images/2/21/Tsubasa_Ozora.jpg',
+      universe: 'olive-et-tom',
+    },
+    {
+      id: 'olive-2',
+      name: 'Kojiro Hyuga',
+      image:
+        'https://static.wikia.nocookie.net/captain-tsubasa/images/e/e9/Kojiro_Hyuga.jpg',
+      universe: 'olive-et-tom',
+    },
+    {
+      id: 'olive-3',
+      name: 'Genzo Wakabayashi',
+      image:
+        'https://static.wikia.nocookie.net/captain-tsubasa/images/5/5a/Genzo_Wakabayashi.jpg',
+      universe: 'olive-et-tom',
+    },
+    {
+      id: 'olive-4',
+      name: 'Taro Misaki',
+      image:
+        'https://static.wikia.nocookie.net/captain-tsubasa/images/6/60/Taro_Misaki.jpg',
+      universe: 'olive-et-tom',
+    },
+    {
+      id: 'olive-5',
+      name: 'Hikaru Matsuyama',
+      image:
+        'https://static.wikia.nocookie.net/captain-tsubasa/images/9/99/Hikaru_Matsuyama.jpg',
+      universe: 'olive-et-tom',
+    },
   ];
 
   return characters;
