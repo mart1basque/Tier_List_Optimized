@@ -1,4 +1,10 @@
-export type UniverseType = 'pokemon' | 'naruto' | 'one-piece' | 'dragon-ball' | 'demon-slayer';
+export type UniverseType =
+  | 'pokemon'
+  | 'naruto'
+  | 'one-piece'
+  | 'dragon-ball'
+  | 'demon-slayer'
+  | 'olive-et-tom';
 
 export interface Universe {
   id: UniverseType;
@@ -37,6 +43,12 @@ export const universes: Universe[] = [
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
     image: 'https://images.pexels.com/photos/6538889/pexels-photo-6538889.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  },
+  {
+    id: 'olive-et-tom',
+    name: 'Olive et Tom',
+    description: 'Rank the best players from the Captain Tsubasa series',
+    image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   },
 ];
 
@@ -164,6 +176,26 @@ export const universeConfig: Record<UniverseType, {
       { id: 'season2', name: 'Season 2 (Entertainment District Arc)' },
       { id: 'season3', name: 'Season 3 (Swordsmith Village Arc)' },
       { id: 'season4', name: 'Season 4 (Hashira Training Arc)' },
+    ],
+  },
+  'olive-et-tom': {
+    colors: {
+      primary: '#1E90FF', // blue
+      secondary: '#FFD700', // gold
+      accent: '#32CD32', // green
+      background: '#F8F8F8',
+      text: '#2B2B2B',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #1E90FF, #32CD32)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [
+      { id: 'original', name: 'Original Series' },
+      { id: 'road-to-2002', name: 'Road to 2002' },
+      { id: '2018', name: '2018' },
     ],
   },
 };

@@ -91,10 +91,11 @@ const FilterPage: React.FC = () => {
           <div className="flex items-center mb-6">
             <Filter className="mr-3" style={{ color: themeColors.primary }} />
             <h2 className="text-2xl font-bold" style={{ color: themeColors.text }}>
-              Customize Your {currentUniverse === 'pokemon' ? 'Pokémon' : 
-                            currentUniverse === 'one-piece' ? 'One Piece' : 
-                            currentUniverse === 'dragon-ball' ? 'Dragon Ball' : 
-                            currentUniverse === 'demon-slayer' ? 'Demon Slayer' : 
+              Customize Your {currentUniverse === 'pokemon' ? 'Pokémon' :
+                            currentUniverse === 'one-piece' ? 'One Piece' :
+                            currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
+                            currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
+                            currentUniverse === 'olive-et-tom' ? 'Olive et Tom' :
                             'Naruto'} Tier List
             </h2>
           </div>
@@ -106,6 +107,7 @@ const FilterPage: React.FC = () => {
                         currentUniverse === 'naruto' ? 'series' :
                         currentUniverse === 'one-piece' ? 'sagas' :
                         currentUniverse === 'dragon-ball' ? 'series' :
+                        currentUniverse === 'olive-et-tom' ? 'series' :
                         'seasons'} you want to include in your tier list:
           </p>
           

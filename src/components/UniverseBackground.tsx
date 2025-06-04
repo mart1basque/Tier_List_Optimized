@@ -125,6 +125,27 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
             ))}
           </>
         );
+
+      case 'olive-et-tom':
+        return (
+          <>
+            {/* Simple soccer balls */}
+            {Array.from({ length: 20 }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute rounded-full bg-white border-2 border-black"
+                style={{
+                  width: `${Math.random() * 15 + 10}px`,
+                  height: `${Math.random() * 15 + 10}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random() * 0.5 + 0.2,
+                  animation: `float ${Math.random() * 12 + 6}s infinite ease-in-out ${Math.random() * 5}s`,
+                }}
+              />
+            ))}
+          </>
+        );
         
       default:
         return null;
