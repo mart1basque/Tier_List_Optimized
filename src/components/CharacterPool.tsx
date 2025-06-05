@@ -4,7 +4,6 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Character } from '../types/types';
 import CharacterCard from './CharacterCard';
 import { useTheme } from '../context/ThemeContext';
-import { fetchDokkanCharacters } from '../services/api';
 
 interface CharacterPoolProps {
   id: string;
@@ -12,22 +11,13 @@ interface CharacterPoolProps {
 }
 
 const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
-  const { themeColors, currentUniverse } = useTheme();
+  const { themeColors } = useTheme();
   const { setNodeRef } = useDroppable({ id });
   const [localCharacters, setLocalCharacters] = useState<Character[]>(characters);
 
   useEffect(() => {
-    const loadCharacters = async () => {
-      if (currentUniverse === 'dokkan') {
-        const dokkanChars = await fetchDokkanCharacters();
-        setLocalCharacters(dokkanChars);
-      } else {
-        setLocalCharacters(characters);
-      }
-    };
-
-    loadCharacters();
-  }, [currentUniverse, characters]);
+    setLocalCharacters(characters);
+  }, [characters]);
   
   return (
     <div className="rounded-lg bg-white shadow-md overflow-hidden">
