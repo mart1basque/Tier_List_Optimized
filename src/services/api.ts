@@ -287,8 +287,8 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
   let page = 1;
   let hasMore = true;
 
-  // The API may paginate results, so fetch up to 10 pages just in case
-  while (hasMore && page <= 10) {
+  // Fetch all pages from the API until no more results are available
+  while (hasMore) {
     const { data } = await axios.get(`${baseUrl}?page=${page}&limit=100`);
     const items = Array.isArray(data) ? data : data.items || data.results || [];
     allResults.push(...items);
