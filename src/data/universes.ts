@@ -4,7 +4,8 @@ export type UniverseType =
   | 'one-piece'
   | 'dragon-ball'
   | 'demon-slayer'
-  | 'olive-et-tom';
+  | 'olive-et-tom'
+  | 'dokkan-battle';
 
 export interface Universe {
   id: UniverseType;
@@ -49,6 +50,12 @@ export const universes: Universe[] = [
     name: 'Olive et Tom',
     description: 'Rank the best players from the Captain Tsubasa series',
     image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  },
+  {
+    id: 'dokkan-battle',
+    name: 'Dokkan Battle',
+    description: 'Rank characters from the Dokkan Battle mobile game',
+    image: 'https://images.pexels.com/photos/1812869/pexels-photo-1812869.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   },
 ];
 
@@ -198,5 +205,21 @@ export const universeConfig: Record<UniverseType, {
       { id: 'road-to-2002', name: 'Road to 2002' },
       { id: '2018', name: '2018' },
     ],
+  },
+  'dokkan-battle': {
+    colors: {
+      primary: '#E60012', // red
+      secondary: '#F9A825', // yellow
+      accent: '#0E0E0E', // dark
+      background: '#F8F8F8',
+      text: '#2B2B2B',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #2E2E2E, #000000)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [],
   },
 };

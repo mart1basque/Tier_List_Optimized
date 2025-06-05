@@ -146,6 +146,29 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
             ))}
           </>
         );
+
+      case 'dokkan-battle':
+        return (
+          <>
+            {/* Floating ki orbs */}
+            {Array.from({ length: 25 }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute rounded-full"
+                style={{
+                  width: `${Math.random() * 10 + 6}px`,
+                  height: `${Math.random() * 10 + 6}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random() * 0.6 + 0.3,
+                  backgroundColor: index % 2 === 0 ? '#F9A825' : '#E60012',
+                  boxShadow: `0 0 ${Math.random() * 12 + 6}px ${index % 2 === 0 ? '#F9A82577' : '#E6001277'}`,
+                  animation: `float ${Math.random() * 10 + 5}s infinite ease-in-out ${Math.random() * 5}s`,
+                }}
+              />
+            ))}
+          </>
+        );
         
       default:
         return null;
