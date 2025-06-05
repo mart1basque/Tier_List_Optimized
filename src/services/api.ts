@@ -335,11 +335,14 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
 
 // Fetch Demon Slayer characters using MyAnimeList/Jikan API
 async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[]> {
+  // Map each season to the corresponding MyAnimeList ID used by the Jikan API
+  // These IDs were corrected to ensure the characters fetched belong to the
+  // right arc of the series.
   const seasonIds: Record<string, number> = {
-    season1: 38000, // Kimetsu no Yaiba
-    season2: 47778, // Entertainment District Arc
-    season3: 50857, // Swordsmith Village Arc
-    season4: 56240, // Hashira Training Arc
+    season1: 38000, // Kimetsu no Yaiba (Season 1)
+    season2: 47778, // Entertainment District Arc (Season 2)
+    season3: 51019, // Swordsmith Village Arc (Season 3)
+    season4: 55644, // Hashira Training Arc (Season 4)
   };
 
   const results: Character[] = [];
