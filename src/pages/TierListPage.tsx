@@ -130,7 +130,6 @@ function getImageFromId(id: string) {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white drop-shadow-md mb-2">
             {currentUniverse === 'pokemon' ? 'Pokémon' :
-             currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
              currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
              'Naruto'} Tier List
           </h1>
