@@ -73,6 +73,19 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'dokkan-battle') {
+    try {
+      const chars = await fetchDokkanCharacters();
+      if (chars.length === 0) {
+        return generateDokkanCharacters();
+      }
+      return chars;
+    } catch (error) {
+      console.error('Error fetching Dokkan Battle characters:', error);
+      return generateDokkanCharacters();
+    }
+  }
+
   if (universe === 'demon-slayer') {
     try {
       return await fetchDemonSlayerCharacters(filters);
@@ -109,6 +122,9 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       break;
     case 'olive-et-tom':
       characters = generateOliveEtTomCharacters(filters);
+      break;
+    case 'dokkan-battle':
+      characters = generateDokkanCharacters();
       break;
   }
   
@@ -474,6 +490,55 @@ async function fetchOliveEtTomCharacters(filters: string[]): Promise<Character[]
   return results;
 }
 
+// Fetch Dokkan Battle characters using dokkan.fyi API
+async function fetchDokkanCharacters(): Promise<Character[]> {
+  const endpoints = [
+    'https://dokkan.fyi/api/cards',
+    'https://dokkan.fyi/cards',
+    'https://corsproxy.io/?https://dokkan.fyi/api/cards',
+  ];
+
+  for (const url of endpoints) {
+    try {
+      const { data } = await axios.get(url);
+      const cards = Array.isArray(data) ? data : data.items || data.cards || data.results || [];
+      if (cards.length) {
+        return cards.map((card: any) => {
+          const id = card.id ?? card.cardId ?? card._id ?? card.name;
+          const name = card.name || card.title || `Card ${id}`;
+          const thumb =
+            card.thumbnail ||
+            card.thumb ||
+            card.images?.thumb ||
+            card.image ||
+            '';
+          let image =
+            card.fullImage ||
+            card.image ||
+            card.images?.full ||
+            thumb ||
+            '';
+          if (!image) {
+            image = createPlaceholderImage(name, '#E60012');
+          }
+          return {
+            id: `dokkan-${id}`,
+            name,
+            image,
+            thumbnail: thumb || image,
+            universe: 'dokkan-battle',
+          } as Character;
+        });
+      }
+    } catch (error) {
+      console.warn(`Failed to fetch from ${url}:`, (error as Error).message);
+    }
+  }
+
+  console.error('All Dokkan API endpoints failed');
+  return [];
+}
+
 function generateNarutoCharacters(filters: string[]): Character[] {
   const characters: Character[] = [
     { id: 'naruto-1', name: 'Naruto Uzumaki', image: createPlaceholderImage('Naruto Uzumaki', '#FF7800'), universe: 'naruto' },
@@ -502,6 +567,38 @@ function generateOliveEtTomCharacters(filters: string[]): Character[] {
   ];
 
   return characters;
+}
+
+function generateDokkanCharacters(): Character[] {
+  const names = [
+    'Goku',
+    'Vegeta',
+    'Gohan',
+    'Frieza',
+    'Cell',
+    'Majin Buu',
+    'Trunks',
+    'Goten',
+    'Piccolo',
+    'Broly',
+    'Beerus',
+    'Whis',
+    'Android 17',
+    'Android 18',
+    'Vegito',
+    'Gogeta',
+    'Jiren',
+    'Hit',
+    'Toppo',
+  ];
+
+  return names.map((name, index) => ({
+    id: `dokkan-${index + 1}`,
+    name,
+    image: createPlaceholderImage(name, '#E60012'),
+    thumbnail: createPlaceholderImage(name, '#E60012'),
+    universe: 'dokkan-battle',
+  }));
 }
 
 function generateOnePieceCharacters(filters: string[]): Character[] {
