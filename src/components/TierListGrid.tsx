@@ -89,7 +89,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       
       // Find which container (tier or pool) the items are in
       let activeContainer: string | null = null;
-      let overContainer: string | null = null;
+      let   overContainer: string | null = null;
       
       // Find containers
       Object.entries(characterMap).forEach(([containerId, items]) => {

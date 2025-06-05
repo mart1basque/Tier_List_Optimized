@@ -342,7 +342,7 @@ async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[
     season1: 38000, // Kimetsu no Yaiba (Season 1)
     season2: 47778, // Entertainment District Arc (Season 2)
     season3: 51019, // Swordsmith Village Arc (Season 3)
-    season4: 55644, // Hashira Training Arc (Season 4)
+    season4: 55701, // Hashira Training Arc (Season 4)
   };
 
   const results: Character[] = [];
