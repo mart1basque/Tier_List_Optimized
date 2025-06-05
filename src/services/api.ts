@@ -273,17 +273,18 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
   const allResults: any[] = [];
   let page = 1;
   let hasMore = true;
+  const limit = 1000; // fetch a large number of characters per request
 
   // Fetch all pages from the API until no more results are available
   while (hasMore) {
-    const { data } = await axios.get(`${baseUrl}?page=${page}&limit=100`);
+    const { data } = await axios.get(`${baseUrl}?page=${page}&limit=${limit}`);
     const items = Array.isArray(data) ? data : data.items || data.results || [];
     allResults.push(...items);
 
     const meta = data.meta || {};
     if (meta.next || (meta.totalPages && page < meta.totalPages)) {
       page += 1;
-    } else if (items.length === 100) {
+    } else if (items.length === limit) {
       page += 1;
     } else {
       hasMore = false;
