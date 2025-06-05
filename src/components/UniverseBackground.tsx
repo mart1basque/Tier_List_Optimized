@@ -57,28 +57,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
         );
         
         
-      case 'dragon-ball':
-        return (
-          <>
-            {/* Energy particles */}
-            {Array.from({ length: 30 }).map((_, index) => (
-              <div
-                key={index}
-                className="absolute rounded-full"
-                style={{
-                  width: `${Math.random() * 8 + 4}px`,
-                  height: `${Math.random() * 8 + 4}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  opacity: Math.random() * 0.6 + 0.2,
-                  backgroundColor: index % 3 === 0 ? '#FFC837' : index % 3 === 1 ? '#FF9232' : '#FFDE40',
-                  boxShadow: `0 0 ${Math.random() * 10 + 5}px ${index % 3 === 0 ? '#FFC83777' : index % 3 === 1 ? '#FF923277' : '#FFDE4077'}`,
-                  animation: `float ${Math.random() * 8 + 5}s infinite ease-in-out ${Math.random() * 5}s`,
-                }}
-              />
-            ))}
-          </>
-        );
         
       case 'demon-slayer':
         return (
