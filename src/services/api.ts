@@ -55,14 +55,6 @@ export const fetchCharacters = async (
     }
   }
 
-  if (universe === 'dokkan') {
-    try {
-      return await fetchDokkanCharacters();
-    } catch (error) {
-      console.error('Error fetching Dokkan characters:', error);
-      return [];
-    }
-  }
 
   if (universe === 'naruto') {
     try {
@@ -339,24 +331,6 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
     });
 }
 
-export const fetchDokkanCharacters = async () => {
-  try {
-    const res = await fetch('https://dokkan.fyi/api/all');
-    if (!res.ok) throw new Error('Erreur chargement Dokkan');
-    const raw = await res.json();
-    return raw.map((char: any) => ({
-      id: `dokkan-${char.id}`,
-      name: char.name,
-      image: char.image,
-      universe: 'dokkan',
-      rarity: char.rarity,
-      type: char.type,
-    }));
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
 
 // Fetch Demon Slayer characters using MyAnimeList/Jikan API
 async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[]> {
