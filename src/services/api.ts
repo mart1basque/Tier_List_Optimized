@@ -273,9 +273,6 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
   const allResults: any[] = [];
   let page = 1;
   let hasMore = true;
-  // Request a large batch of characters per page. The API accepts limits up to
-  // 1000, so use that value and continue fetching subsequent pages until no
-  // more characters remain.
   const limit = 1000;
 
   // Fetch all pages from the API until no more results are available
