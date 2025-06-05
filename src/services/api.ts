@@ -302,10 +302,29 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
       return filters.some((f) => race.includes(f));
     })
     .map((item: any) => {
-      const rawImage = item.image || item.avatar || item.img || '';
-      const image = rawImage
-        ? rawImage.replace(/^http:\/\//, 'https://')
-        : createPlaceholderImage(item.name, '#FF9232');
+      const rawImage =
+        item.image ||
+        item.avatar ||
+        item.img ||
+        item.imageUrl ||
+        item.image_url ||
+        (Array.isArray(item.images) ? item.images[0] : '') ||
+        '';
+
+      let image = rawImage;
+      if (
+        image &&
+        image.startsWith('http://') &&
+        typeof window !== 'undefined' &&
+        window.location.protocol === 'https:'
+      ) {
+        image = image.replace(/^http:\/\//, 'https://');
+      }
+
+      if (!image) {
+        image = createPlaceholderImage(item.name, '#FF9232');
+      }
+
       return {
         id: `dragonball-${item.id ?? item._id ?? item.name}`,
         name: item.name,
