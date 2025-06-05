@@ -22,7 +22,7 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
     style={{ opacity: isDragging ? 0.8 : 1 }}
   >
     <img
-      src={character.image}
+      src={character.thumbnail ?? character.image}
       alt={character.name}
       className="w-full h-full object-cover"
     />
@@ -64,7 +64,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         onClick={() => setModalOpen(true)}
       >
         <img
-          src={character.image}
+          src={character.thumbnail ?? character.image}
           alt={character.name}
           className="w-full h-full object-cover"
         />

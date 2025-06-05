@@ -59,7 +59,9 @@ const FilterPage: React.FC = () => {
   };
   
   const handleContinue = () => {
-    if (selectedFilters.length > 0) {
+    if (filterOptions.length === 0) {
+      navigate(`/tierlist/${currentUniverse}?filters=`);
+    } else if (selectedFilters.length > 0) {
       if (currentUniverse === 'pokemon' && !pokemonLanguage) {
         alert('Please select a language first');
         return;
@@ -96,6 +98,7 @@ const FilterPage: React.FC = () => {
                             currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
                             currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
                             currentUniverse === 'olive-et-tom' ? 'Olive et Tom' :
+                            currentUniverse === 'dokkan-battle' ? 'Dokkan Battle' :
                             'Naruto'} Tier List
             </h2>
           </div>
@@ -108,24 +111,26 @@ const FilterPage: React.FC = () => {
                         currentUniverse === 'one-piece' ? 'sagas' :
                         currentUniverse === 'dragon-ball' ? 'species' :
                         currentUniverse === 'olive-et-tom' ? 'series' :
+                        currentUniverse === 'dokkan-battle' ? 'characters' :
                         'seasons'} you want to include in your tier list:
           </p>
           
-          <div
-            className={`grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 ${
-              currentUniverse === 'pokemon' && !pokemonLanguage
-                ? 'opacity-50 pointer-events-none'
-                : ''
-            }`}
-          >
-            {filterOptions.map((option) => (
-              <div 
-                key={option.id}
-                className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                  selectedFilters.includes(option.id) 
-                    ? 'border-2 shadow-md' 
-                    : 'border border-gray-200 hover:border-gray-300'
-                }`}
+          {filterOptions.length > 0 && (
+            <div
+              className={`grid grid-cols-1 md:grid-cols-2 gap-3 mb-8 ${
+                currentUniverse === 'pokemon' && !pokemonLanguage
+                  ? 'opacity-50 pointer-events-none'
+                  : ''
+              }`}
+            >
+              {filterOptions.map((option) => (
+                <div
+                  key={option.id}
+                  className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                    selectedFilters.includes(option.id)
+                      ? 'border-2 shadow-md'
+                      : 'border border-gray-200 hover:border-gray-300'
+                  }`}
                 style={{
                   borderColor: selectedFilters.includes(option.id) ? themeColors.primary : '',
                   backgroundColor: selectedFilters.includes(option.id) ? `${themeColors.primary}15` : ''
@@ -150,8 +155,9 @@ const FilterPage: React.FC = () => {
                   <span className="font-medium">{option.name}</span>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           
           <div className="flex justify-end">
             <button
@@ -162,7 +168,7 @@ const FilterPage: React.FC = () => {
                 boxShadow: `0 4px 14px 0 ${themeColors.primary}40`
               }}
               disabled={
-                selectedFilters.length === 0 ||
+                (filterOptions.length > 0 && selectedFilters.length === 0) ||
                 (currentUniverse === 'pokemon' && !pokemonLanguage)
               }
             >
