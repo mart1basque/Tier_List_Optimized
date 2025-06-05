@@ -73,6 +73,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'dokkan-battle') {
+    try {
+      return await fetchDokkanCharacters();
+    } catch (error) {
+      console.error('Error fetching Dokkan Battle characters:', error);
+      return [];
+    }
+  }
+
   if (universe === 'demon-slayer') {
     try {
       return await fetchDemonSlayerCharacters(filters);
@@ -109,6 +118,10 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       break;
     case 'olive-et-tom':
       characters = generateOliveEtTomCharacters(filters);
+      break;
+    case 'dokkan-battle':
+      // No mock generator yet
+      characters = [];
       break;
   }
   
@@ -472,6 +485,43 @@ async function fetchOliveEtTomCharacters(filters: string[]): Promise<Character[]
   );
 
   return results;
+}
+
+// Fetch Dokkan Battle characters using dokkan.fyi API
+async function fetchDokkanCharacters(): Promise<Character[]> {
+  try {
+    const { data } = await axios.get('https://dokkan.fyi/api/cards');
+    const cards = Array.isArray(data) ? data : data.items || data.cards || [];
+    return cards.map((card: any) => {
+      const id = card.id ?? card.cardId ?? card._id ?? card.name;
+      const name = card.name || card.title || `Card ${id}`;
+      const thumb =
+        card.thumbnail ||
+        card.thumb ||
+        card.images?.thumb ||
+        card.image ||
+        '';
+      let image =
+        card.fullImage ||
+        card.image ||
+        card.images?.full ||
+        thumb ||
+        '';
+      if (!image) {
+        image = createPlaceholderImage(name, '#E60012');
+      }
+      return {
+        id: `dokkan-${id}`,
+        name,
+        image,
+        thumbnail: thumb || image,
+        universe: 'dokkan-battle',
+      } as Character;
+    });
+  } catch (error) {
+    console.error('Error fetching Dokkan characters:', error);
+    return [];
+  }
 }
 
 function generateNarutoCharacters(filters: string[]): Character[] {
