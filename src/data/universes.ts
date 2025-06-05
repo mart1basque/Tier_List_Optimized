@@ -1,7 +1,6 @@
 export type UniverseType =
   | 'pokemon'
   | 'naruto'
-  | 'dragon-ball'
   | 'demon-slayer';
 
 export interface Universe {
@@ -23,12 +22,6 @@ export const universes: Universe[] = [
     name: 'Naruto',
     description: 'Rank ninjas from the Naruto universe by arc or series',
     image: 'https://images.pexels.com/photos/1671324/pexels-photo-1671324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: 'dragon-ball',
-    name: 'Dragon Ball',
-    description: 'Rank fighters from Dragon Ball Z, Super, GT, and more',
-    image: 'https://images.pexels.com/photos/1341279/pexels-photo-1341279.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   },
   {
     id: 'demon-slayer',
@@ -93,28 +86,6 @@ export const universeConfig: Record<UniverseType, {
       { id: 'original', name: 'Naruto' },
       { id: 'shippuden', name: 'Shippuden' },
       { id: 'boruto', name: 'Boruto' },
-    ],
-  },
-  'dragon-ball': {
-    colors: {
-      primary: '#FF9232', // Dragon Ball orange
-      secondary: '#0066CC', // Dragon Ball blue
-      accent: '#00983A', // Dragon Ball green
-      background: '#F8F8F8',
-      text: '#2B2B2B',
-    },
-    backgroundStyle: {
-      background: 'linear-gradient(to bottom, #FF9232, #FFC837)',
-      backgroundSize: 'cover',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    filterOptions: [
-      { id: 'saiyan', name: 'Saiyan' },
-      { id: 'human', name: 'Human' },
-      { id: 'namekian', name: 'Namekian' },
-      { id: 'android', name: 'Android' },
-      { id: 'other', name: 'Other Species' },
     ],
   },
   'demon-slayer': {

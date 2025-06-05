@@ -17,14 +17,6 @@ function createPlaceholderImage(name: string, color: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-function getDragonBallApiImage(name: string): string {
-  const slug = name
-    .toLowerCase()
-    .replace(/\(.*?\)/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-  return `https://dragonball-api.com/characters/${slug}.png`;
-}
 
 // For demo purposes, this returns mock data
 // In a real app, you'd connect to actual APIs
@@ -42,18 +34,6 @@ export const fetchCharacters = async (
     }
   }
 
-  if (universe === 'dragon-ball') {
-    try {
-      // Fetch all Dragon Ball characters from the public API. The API does not
-      // expose filtering by series, so we simply return the full list for any
-      // selected category.
-      return await fetchDragonBallCharacters(filters);
-    } catch (error) {
-      console.error('Error fetching Dragon Ball characters:', error);
-      // Fallback to the small static dataset if the API request fails.
-      return generateDragonBallCharacters(filters);
-    }
-  }
 
 
   if (universe === 'naruto') {
@@ -90,9 +70,6 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
   switch (universe) {
     case 'naruto':
       characters = generateNarutoCharacters(filters);
-      break;
-    case 'dragon-ball':
-      characters = generateDragonBallCharacters(filters);
       break;
     case 'demon-slayer':
       characters = generateDemonSlayerCharacters(filters);
@@ -267,72 +244,6 @@ function formatPokemonName(value: string): string {
     .join(' ');
 }
 
-// Fetch Dragon Ball characters from a public API
-async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]> {
-  const baseUrl = 'https://dragonball-api.com/api/characters';
-  const allResults: any[] = [];
-  let page = 1;
-  let hasMore = true;
-  const limit = 1000;
-
-  // Fetch all pages from the API until no more results are available
-  while (hasMore) {
-    const { data } = await axios.get(`${baseUrl}?page=${page}&limit=${limit}`);
-    const items = Array.isArray(data) ? data : data.items || data.results || [];
-    allResults.push(...items);
-
-    const meta = data.meta || {};
-    if (meta.next || (meta.totalPages && page < meta.totalPages)) {
-      page += 1;
-    } else if (items.length === limit) {
-      page += 1;
-    } else {
-      hasMore = false;
-    }
-  }
-
-  return allResults
-    .filter((item) => {
-      if (filters.length === 0) return true;
-      const race = (item.race || item.species || '').toLowerCase();
-      if (!race) return filters.includes('other');
-      return filters.some((f) => race.includes(f));
-    })
-    .map((item: any) => {
-
-      const rawImage =
-        item.image ||
-        item.avatar ||
-        item.img ||
-        item.imageUrl ||
-        item.image_url ||
-        (Array.isArray(item.images) ? item.images[0] : '') ||
-        '';
-
-      let image = rawImage;
-      if (
-        image &&
-        image.startsWith('http://') &&
-        typeof window !== 'undefined' &&
-        window.location.protocol === 'https:'
-      ) {
-        image = image.replace(/^http:\/\//, 'https://');
-      }
-
-      if (!image) {
-        image = createPlaceholderImage(item.name, '#FF9232');
-      }
-
-      return {
-        id: `dragonball-${item.id ?? item._id ?? item.name}`,
-        name: item.name,
-        image,
-        universe: 'dragon-ball',
-      };
-    });
-}
-
-
 // Fetch Demon Slayer characters using MyAnimeList/Jikan API
 async function fetchDemonSlayerCharacters(filters: string[]): Promise<Character[]> {
   // Map each season to the corresponding MyAnimeList ID used by the Jikan API
@@ -448,150 +359,6 @@ function generateNarutoCharacters(filters: string[]): Character[] {
 }
 
 
-function generateDragonBallCharacters(filters: string[]): Character[] {
-  const bySpecies: Record<string, Character[]> = {
-    saiyan: [
-      {
-        id: 'db-kid-goku',
-        name: 'Kid Goku',
-        image: getDragonBallApiImage('Kid Goku'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbz-goku',
-        name: 'Goku',
-        image: getDragonBallApiImage('Goku'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbz-vegeta',
-        name: 'Vegeta',
-        image: getDragonBallApiImage('Vegeta'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbz-gohan',
-        name: 'Gohan',
-        image: getDragonBallApiImage('Gohan'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbgt-goku',
-        name: 'Goku (GT)',
-        image: getDragonBallApiImage('Goku GT'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbgt-pan',
-        name: 'Pan',
-        image: getDragonBallApiImage('Pan'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbgt-trunks',
-        name: 'Trunks (GT)',
-        image: getDragonBallApiImage('Trunks GT'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbs-goku',
-        name: 'Goku (Super)',
-        image: getDragonBallApiImage('Goku Super'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbs-vegeta',
-        name: 'Vegeta (Super)',
-        image: getDragonBallApiImage('Vegeta Super'),
-        universe: 'dragon-ball',
-      },
-    ],
-    human: [
-      {
-        id: 'db-bulma',
-        name: 'Bulma',
-        image: getDragonBallApiImage('Bulma'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'db-krillin',
-        name: 'Krillin',
-        image: getDragonBallApiImage('Krillin'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'db-roshi',
-        name: 'Master Roshi',
-        image: getDragonBallApiImage('Master Roshi'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'db-yamcha',
-        name: 'Yamcha',
-        image: getDragonBallApiImage('Yamcha'),
-        universe: 'dragon-ball',
-      },
-    ],
-    namekian: [
-      {
-        id: 'dbz-piccolo',
-        name: 'Piccolo',
-        image: getDragonBallApiImage('Piccolo'),
-        universe: 'dragon-ball',
-      },
-    ],
-    android: [
-      {
-        id: 'dbgt-super17',
-        name: 'Super 17',
-        image: getDragonBallApiImage('Super 17'),
-        universe: 'dragon-ball',
-      },
-    ],
-    other: [
-      {
-        id: 'dbz-frieza',
-        name: 'Frieza',
-        image: getDragonBallApiImage('Frieza'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbgt-baby',
-        name: 'Baby Vegeta',
-        image: getDragonBallApiImage('Baby Vegeta'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbs-beerus',
-        name: 'Beerus',
-        image: getDragonBallApiImage('Beerus'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbs-whis',
-        name: 'Whis',
-        image: getDragonBallApiImage('Whis'),
-        universe: 'dragon-ball',
-      },
-      {
-        id: 'dbs-jiren',
-        name: 'Jiren',
-        image: getDragonBallApiImage('Jiren'),
-        universe: 'dragon-ball',
-      },
-    ],
-  };
-
-  const characters: Character[] = [];
-  (filters.length ? filters : Object.keys(bySpecies)).forEach((filter) => {
-    const speciesChars = bySpecies[filter];
-    if (speciesChars) {
-      characters.push(...speciesChars);
-    }
-  });
-
-  return characters;
-}
 
 function generateDemonSlayerCharacters(filters: string[]): Character[] {
   const bySeason: Record<string, Character[]> = {
