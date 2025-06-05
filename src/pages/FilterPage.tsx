@@ -94,11 +94,8 @@ const FilterPage: React.FC = () => {
             <Filter className="mr-3" style={{ color: themeColors.primary }} />
             <h2 className="text-2xl font-bold" style={{ color: themeColors.text }}>
               Customize Your {currentUniverse === 'pokemon' ? 'Pokémon' :
-                            currentUniverse === 'one-piece' ? 'One Piece' :
                             currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
                             currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
-                            currentUniverse === 'olive-et-tom' ? 'Olive et Tom' :
-                            currentUniverse === 'dokkan-battle' ? 'Dokkan Battle' :
                             'Naruto'} Tier List
             </h2>
           </div>
@@ -108,10 +105,7 @@ const FilterPage: React.FC = () => {
           <p className="mb-6 text-gray-600">
             Select which {currentUniverse === 'pokemon' ? 'generations' :
                         currentUniverse === 'naruto' ? 'series' :
-                        currentUniverse === 'one-piece' ? 'sagas' :
                         currentUniverse === 'dragon-ball' ? 'species' :
-                        currentUniverse === 'olive-et-tom' ? 'series' :
-                        currentUniverse === 'dokkan-battle' ? 'characters' :
                         'seasons'} you want to include in your tier list:
           </p>
           
