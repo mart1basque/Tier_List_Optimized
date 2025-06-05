@@ -34,11 +34,13 @@ export const fetchCharacters = async (
   }
 
   if (universe === 'dragon-ball') {
-    // Use a static dataset organized by series. The external API
-    // does not expose filtering by show and may fail in offline
-    // environments, so we rely on local data to keep the
-    // categories unique and show character images consistently.
-    return generateDragonBallCharacters(filters);
+    try {
+      return await fetchDragonBallCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching Dragon Ball characters:', error);
+      // Fallback to local dataset to keep the categories consistent
+      return generateDragonBallCharacters(filters);
+    }
   }
 
   if (universe === 'naruto') {
@@ -268,7 +270,7 @@ function formatPokemonName(value: string): string {
 
 // Fetch Dragon Ball characters from a public API
 async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]> {
-  const url = 'https://dragonball-api.com/api/characters?limit=1000';
+  const url = 'https://web.dragonball-api.com/api/characters?limit=1000';
   const { data } = await axios.get(url);
 
   const results = Array.isArray(data)
