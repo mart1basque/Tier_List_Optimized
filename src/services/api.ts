@@ -74,11 +74,11 @@ export const fetchCharacters = async (
   }
 
   if (universe === 'dokkan-battle') {
-    try {
-      return await fetchDokkanCharacters();
+      const chars = await fetchDokkanCharacters();
+      return chars.length > 0 ? chars : generateDokkanCharacters();
     } catch (error) {
       console.error('Error fetching Dokkan Battle characters:', error);
-      return [];
+      return generateDokkanCharacters();
     }
   }
 
@@ -120,8 +120,7 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       characters = generateOliveEtTomCharacters(filters);
       break;
     case 'dokkan-battle':
-      // No mock generator yet
-      characters = [];
+      characters = generateDokkanCharacters();
       break;
   }
   
@@ -552,6 +551,17 @@ function generateOliveEtTomCharacters(filters: string[]): Character[] {
   ];
 
   return characters;
+}
+
+function generateDokkanCharacters(): Character[] {
+  const names = ['Goku', 'Vegeta', 'Gohan', 'Frieza', 'Cell', 'Majin Buu', 'Trunks', 'Goten', 'Piccolo', 'Broly'];
+  return names.map((name, index) => ({
+    id: `dokkan-${index + 1}`,
+    name,
+    image: createPlaceholderImage(name, '#E60012'),
+    thumbnail: createPlaceholderImage(name, '#E60012'),
+    universe: 'dokkan-battle',
+  }));
 }
 
 function generateOnePieceCharacters(filters: string[]): Character[] {
