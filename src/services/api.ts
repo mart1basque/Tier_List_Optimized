@@ -64,27 +64,6 @@ export const fetchCharacters = async (
     }
   }
 
-  if (universe === 'olive-et-tom') {
-    try {
-      return await fetchOliveEtTomCharacters(filters);
-    } catch (error) {
-      console.error('Error fetching Olive et Tom characters:', error);
-      return generateOliveEtTomCharacters(filters);
-    }
-  }
-
-  if (universe === 'dokkan-battle') {
-    try {
-      const chars = await fetchDokkanCharacters();
-      if (chars.length === 0) {
-        return generateDokkanCharacters();
-      }
-      return chars;
-    } catch (error) {
-      console.error('Error fetching Dokkan Battle characters:', error);
-      return generateDokkanCharacters();
-    }
-  }
 
   if (universe === 'demon-slayer') {
     try {
@@ -111,20 +90,11 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
     case 'naruto':
       characters = generateNarutoCharacters(filters);
       break;
-    case 'one-piece':
-      characters = generateOnePieceCharacters(filters);
-      break;
     case 'dragon-ball':
       characters = generateDragonBallCharacters(filters);
       break;
     case 'demon-slayer':
       characters = generateDemonSlayerCharacters(filters);
-      break;
-    case 'olive-et-tom':
-      characters = generateOliveEtTomCharacters(filters);
-      break;
-    case 'dokkan-battle':
-      characters = generateDokkanCharacters();
       break;
   }
   
@@ -452,80 +422,6 @@ async function fetchNarutoCharacters(filters: string[]): Promise<Character[]> {
   return results;
 }
 
-// Fetch Olive et Tom characters using MyAnimeList/Jikan API
-async function fetchOliveEtTomCharacters(filters: string[]): Promise<Character[]> {
-  const seriesIds: Record<string, number> = {
-    original: 1867, // Captain Tsubasa (1983)
-    'road-to-2002': 3289, // Road to 2002
-    '2018': 36934, // Captain Tsubasa (2018)
-  };
-
-  const results: Character[] = [];
-  const seen = new Set<number>();
-
-  await Promise.all(
-    (filters.length ? filters : Object.keys(seriesIds)).map(async (filter) => {
-      const id = seriesIds[filter];
-      if (!id) return;
-      const { data } = await axios.get(`https://api.jikan.moe/v4/anime/${id}/characters`);
-      const characters = Array.isArray(data?.data) ? data.data : data.results || [];
-
-      characters.forEach((item: any) => {
-        const charId = item.character?.mal_id ?? item.mal_id;
-        if (seen.has(charId)) return;
-        seen.add(charId);
-        results.push({
-          id: `olive-${charId}`,
-          name: item.character?.name ?? item.name,
-          image:
-            item.character?.images?.jpg?.image_url ||
-            item.character?.images?.webp?.image_url ||
-            createPlaceholderImage(item.character?.name ?? item.name, '#1E90FF'),
-          universe: 'olive-et-tom',
-        });
-      });
-    })
-  );
-
-  return results;
-}
-
-// Fetch Dokkan Battle characters using dokkan.fyi API
-async function fetchDokkanCharacters(): Promise<Character[]> {
-  try {
-    const { data } = await axios.get('https://dokkan.fyi/api/cards');
-    const cards = Array.isArray(data) ? data : data.items || data.cards || [];
-    return cards.map((card: any) => {
-      const id = card.id ?? card.cardId ?? card._id ?? card.name;
-      const name = card.name || card.title || `Card ${id}`;
-      const thumb =
-        card.thumbnail ||
-        card.thumb ||
-        card.images?.thumb ||
-        card.image ||
-        '';
-      let image =
-        card.fullImage ||
-        card.image ||
-        card.images?.full ||
-        thumb ||
-        '';
-      if (!image) {
-        image = createPlaceholderImage(name, '#E60012');
-      }
-      return {
-        id: `dokkan-${id}`,
-        name,
-        image,
-        thumbnail: thumb || image,
-        universe: 'dokkan-battle',
-      } as Character;
-    });
-  } catch (error) {
-    console.error('Error fetching Dokkan characters:', error);
-    return [];
-  }
-}
 
 function generateNarutoCharacters(filters: string[]): Character[] {
   const characters: Character[] = [
@@ -545,113 +441,6 @@ function generateNarutoCharacters(filters: string[]): Character[] {
   return characters;
 }
 
-function generateOliveEtTomCharacters(filters: string[]): Character[] {
-  const characters: Character[] = [
-    { id: 'olive-1', name: 'Tsubasa Ozora', image: createPlaceholderImage('Tsubasa Ozora', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-2', name: 'Kojiro Hyuga', image: createPlaceholderImage('Kojiro Hyuga', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-3', name: 'Genzo Wakabayashi', image: createPlaceholderImage('Genzo Wakabayashi', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-4', name: 'Taro Misaki', image: createPlaceholderImage('Taro Misaki', '#1E90FF'), universe: 'olive-et-tom' },
-    { id: 'olive-5', name: 'Hikaru Matsuyama', image: createPlaceholderImage('Hikaru Matsuyama', '#1E90FF'), universe: 'olive-et-tom' },
-  ];
-
-  return characters;
-}
-
-function generateDokkanCharacters(): Character[] {
-  const names = ['Goku', 'Vegeta', 'Gohan', 'Frieza', 'Cell', 'Majin Buu', 'Trunks', 'Goten', 'Piccolo', 'Broly'];
-  return names.map((name, index) => ({
-    id: `dokkan-${index + 1}`,
-    name,
-    image: createPlaceholderImage(name, '#E60012'),
-    thumbnail: createPlaceholderImage(name, '#E60012'),
-    universe: 'dokkan-battle',
-  }));
-}
-
-function generateOnePieceCharacters(filters: string[]): Character[] {
-  const bySaga: Record<string, Character[]> = {
-    'east-blue': [
-      { id: 'onepiece-eastblue-1', name: 'Monkey D. Luffy', image: createPlaceholderImage('Monkey D. Luffy', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-eastblue-2', name: 'Roronoa Zoro', image: createPlaceholderImage('Roronoa Zoro', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-eastblue-3', name: 'Nami', image: createPlaceholderImage('Nami', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-eastblue-4', name: 'Usopp', image: createPlaceholderImage('Usopp', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-eastblue-5', name: 'Sanji', image: createPlaceholderImage('Sanji', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'alabasta': [
-      { id: 'onepiece-alabasta-1', name: 'Vivi', image: createPlaceholderImage('Vivi', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-alabasta-2', name: 'Crocodile', image: createPlaceholderImage('Crocodile', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-alabasta-3', name: 'Ace', image: createPlaceholderImage('Ace', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-alabasta-4', name: 'Smoker', image: createPlaceholderImage('Smoker', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-alabasta-5', name: 'Tashigi', image: createPlaceholderImage('Tashigi', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'sky-island': [
-      { id: 'onepiece-sky-1', name: 'Enel', image: createPlaceholderImage('Enel', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-sky-2', name: 'Gan Fall', image: createPlaceholderImage('Gan Fall', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-sky-3', name: 'Conis', image: createPlaceholderImage('Conis', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-sky-4', name: 'Pagaya', image: createPlaceholderImage('Pagaya', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-sky-5', name: 'Wyper', image: createPlaceholderImage('Wyper', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'water-7': [
-      { id: 'onepiece-water7-1', name: 'Iceburg', image: createPlaceholderImage('Iceburg', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-water7-2', name: 'Paulie', image: createPlaceholderImage('Paulie', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-water7-3', name: 'Rob Lucci', image: createPlaceholderImage('Rob Lucci', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-water7-4', name: 'Kaku', image: createPlaceholderImage('Kaku', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-water7-5', name: 'Kalifa', image: createPlaceholderImage('Kalifa', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'thriller-bark': [
-      { id: 'onepiece-thriller-1', name: 'Gecko Moria', image: createPlaceholderImage('Gecko Moria', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-thriller-2', name: 'Perona', image: createPlaceholderImage('Perona', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-thriller-3', name: 'Brook', image: createPlaceholderImage('Brook', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-thriller-4', name: 'Oars', image: createPlaceholderImage('Oars', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-thriller-5', name: 'Hogback', image: createPlaceholderImage('Hogback', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'summit-war': [
-      { id: 'onepiece-summit-1', name: 'Whitebeard', image: createPlaceholderImage('Whitebeard', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-summit-2', name: 'Marco', image: createPlaceholderImage('Marco', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-summit-3', name: 'Boa Hancock', image: createPlaceholderImage('Boa Hancock', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-summit-4', name: 'Garp', image: createPlaceholderImage('Garp', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-summit-5', name: 'Sengoku', image: createPlaceholderImage('Sengoku', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'fishman-island': [
-      { id: 'onepiece-fishman-1', name: 'Hody Jones', image: createPlaceholderImage('Hody Jones', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-fishman-2', name: 'Shirahoshi', image: createPlaceholderImage('Shirahoshi', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-fishman-3', name: 'Fisher Tiger', image: createPlaceholderImage('Fisher Tiger', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-fishman-4', name: 'Jinbe', image: createPlaceholderImage('Jinbe', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-fishman-5', name: 'Arlong', image: createPlaceholderImage('Arlong', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'dressrosa': [
-      { id: 'onepiece-dressrosa-1', name: 'Doflamingo', image: createPlaceholderImage('Doflamingo', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-dressrosa-2', name: 'Law', image: createPlaceholderImage('Law', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-dressrosa-3', name: 'Rebecca', image: createPlaceholderImage('Rebecca', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-dressrosa-4', name: 'Sabo', image: createPlaceholderImage('Sabo', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-dressrosa-5', name: 'Kyros', image: createPlaceholderImage('Kyros', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'whole-cake': [
-      { id: 'onepiece-wholecake-1', name: 'Big Mom', image: createPlaceholderImage('Big Mom', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wholecake-2', name: 'Katakuri', image: createPlaceholderImage('Katakuri', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wholecake-3', name: 'Pudding', image: createPlaceholderImage('Pudding', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wholecake-4', name: 'Pedro', image: createPlaceholderImage('Pedro', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wholecake-5', name: 'Carrot', image: createPlaceholderImage('Carrot', '#00A3E0'), universe: 'one-piece' },
-    ],
-    'wano': [
-      { id: 'onepiece-wano-1', name: 'Kaido', image: createPlaceholderImage('Kaido', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wano-2', name: 'Kozuki Oden', image: createPlaceholderImage('Kozuki Oden', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wano-3', name: 'Yamato', image: createPlaceholderImage('Yamato', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wano-4', name: 'Kidd', image: createPlaceholderImage('Kidd', '#00A3E0'), universe: 'one-piece' },
-      { id: 'onepiece-wano-5', name: 'Killer', image: createPlaceholderImage('Killer', '#00A3E0'), universe: 'one-piece' },
-    ],
-  };
-
-  const characters: Character[] = [];
-  filters.forEach((filter) => {
-    const sagaChars = bySaga[filter];
-    if (sagaChars) {
-      characters.push(...sagaChars);
-    }
-  });
-
-  return characters;
-}
 
 function generateDragonBallCharacters(filters: string[]): Character[] {
   const bySpecies: Record<string, Character[]> = {

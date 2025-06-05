@@ -56,28 +56,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
         
-      case 'one-piece':
-        return (
-          <>
-            {/* Ocean waves and treasure map elements */}
-            <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1998439/pexels-photo-1998439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')] opacity-20 bg-cover bg-center"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-900 to-transparent"></div>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <div
-                key={index}
-                className="absolute rounded-full border-2 border-yellow-600 opacity-30"
-                style={{
-                  width: `${Math.random() * 100 + 50}px`,
-                  height: `${Math.random() * 100 + 50}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  borderStyle: 'dashed',
-                  transform: `rotate(${Math.random() * 360}deg)`,
-                }}
-              />
-            ))}
-          </>
-        );
         
       case 'dragon-ball':
         return (
@@ -126,50 +104,6 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
 
-      case 'olive-et-tom':
-        return (
-          <>
-            {/* Simple soccer balls */}
-            {Array.from({ length: 20 }).map((_, index) => (
-              <div
-                key={index}
-                className="absolute rounded-full bg-white border-2 border-black"
-                style={{
-                  width: `${Math.random() * 15 + 10}px`,
-                  height: `${Math.random() * 15 + 10}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  opacity: Math.random() * 0.5 + 0.2,
-                  animation: `float ${Math.random() * 12 + 6}s infinite ease-in-out ${Math.random() * 5}s`,
-                }}
-              />
-            ))}
-          </>
-        );
-
-      case 'dokkan-battle':
-        return (
-          <>
-            {/* Floating ki orbs */}
-            {Array.from({ length: 25 }).map((_, index) => (
-              <div
-                key={index}
-                className="absolute rounded-full"
-                style={{
-                  width: `${Math.random() * 10 + 6}px`,
-                  height: `${Math.random() * 10 + 6}px`,
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                  opacity: Math.random() * 0.6 + 0.3,
-                  backgroundColor: index % 2 === 0 ? '#F9A825' : '#E60012',
-                  boxShadow: `0 0 ${Math.random() * 12 + 6}px ${index % 2 === 0 ? '#F9A82577' : '#E6001277'}`,
-                  animation: `float ${Math.random() * 10 + 5}s infinite ease-in-out ${Math.random() * 5}s`,
-                }}
-              />
-            ))}
-          </>
-        );
-        
       default:
         return null;
     }

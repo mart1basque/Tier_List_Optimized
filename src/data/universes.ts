@@ -1,11 +1,9 @@
 export type UniverseType =
   | 'pokemon'
   | 'naruto'
-  | 'one-piece'
   | 'dragon-ball'
   | 'demon-slayer'
-  | 'olive-et-tom'
-  | 'dokkan-battle';
+  ;
 
 export interface Universe {
   id: UniverseType;
@@ -28,12 +26,6 @@ export const universes: Universe[] = [
     image: 'https://images.pexels.com/photos/1671324/pexels-photo-1671324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   },
   {
-    id: 'one-piece',
-    name: 'One Piece',
-    description: 'Create tier lists of characters from different sagas and islands',
-    image: 'https://images.pexels.com/photos/1998439/pexels-photo-1998439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
     id: 'dragon-ball',
     name: 'Dragon Ball',
     description: 'Rank fighters from Dragon Ball Z, Super, GT, and more',
@@ -44,18 +36,6 @@ export const universes: Universe[] = [
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
     image: 'https://images.pexels.com/photos/6538889/pexels-photo-6538889.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: 'olive-et-tom',
-    name: 'Olive et Tom',
-    description: 'Rank the best players from the Captain Tsubasa series',
-    image: 'https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: 'dokkan-battle',
-    name: 'Dokkan Battle',
-    description: 'Rank characters from the Dokkan Battle mobile game',
-    image: 'https://images.pexels.com/photos/1812869/pexels-photo-1812869.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   },
 ];
 
@@ -116,33 +96,6 @@ export const universeConfig: Record<UniverseType, {
       { id: 'boruto', name: 'Boruto' },
     ],
   },
-  'one-piece': {
-    colors: {
-      primary: '#00A3E0', // One Piece blue
-      secondary: '#FFF200', // One Piece yellow
-      accent: '#E60012', // One Piece red
-      background: '#F8F8F8',
-      text: '#2B2B2B',
-    },
-    backgroundStyle: {
-      background: 'linear-gradient(to bottom, #0077BE, #001F3F)',
-      backgroundSize: 'cover',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    filterOptions: [
-      { id: 'east-blue', name: 'East Blue Saga' },
-      { id: 'alabasta', name: 'Alabasta Saga' },
-      { id: 'sky-island', name: 'Sky Island Saga' },
-      { id: 'water-7', name: 'Water 7 Saga' },
-      { id: 'thriller-bark', name: 'Thriller Bark Saga' },
-      { id: 'summit-war', name: 'Summit War Saga' },
-      { id: 'fishman-island', name: 'Fishman Island Saga' },
-      { id: 'dressrosa', name: 'Dressrosa Saga' },
-      { id: 'whole-cake', name: 'Whole Cake Island Saga' },
-      { id: 'wano', name: 'Wano Country Saga' },
-    ],
-  },
   'dragon-ball': {
     colors: {
       primary: '#FF9232', // Dragon Ball orange
@@ -186,40 +139,4 @@ export const universeConfig: Record<UniverseType, {
       { id: 'season4', name: 'Season 4 (Hashira Training Arc)' },
     ],
   },
-  'olive-et-tom': {
-    colors: {
-      primary: '#1E90FF', // blue
-      secondary: '#FFD700', // gold
-      accent: '#32CD32', // green
-      background: '#F8F8F8',
-      text: '#2B2B2B',
-    },
-    backgroundStyle: {
-      background: 'linear-gradient(to bottom, #1E90FF, #32CD32)',
-      backgroundSize: 'cover',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    filterOptions: [
-      { id: 'original', name: 'Original Series' },
-      { id: 'road-to-2002', name: 'Road to 2002' },
-      { id: '2018', name: '2018' },
-    ],
-  },
-  'dokkan-battle': {
-    colors: {
-      primary: '#E60012', // red
-      secondary: '#F9A825', // yellow
-      accent: '#0E0E0E', // dark
-      background: '#F8F8F8',
-      text: '#2B2B2B',
-    },
-    backgroundStyle: {
-      background: 'linear-gradient(to bottom, #2E2E2E, #000000)',
-      backgroundSize: 'cover',
-      position: 'relative',
-      overflow: 'hidden',
-    },
-    filterOptions: [],
-  },
-};
+}; 
