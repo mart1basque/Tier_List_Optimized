@@ -25,7 +25,12 @@ export const fetchCharacters = async (
   language: 'en' | 'fr' = 'en'
 ): Promise<Character[]> => {
   if (universe === 'pokemon') {
-    return fetchPokemonCharacters(filters, language);
+    try {
+      return await fetchPokemonCharacters(filters, language);
+    } catch (error) {
+      console.error('Error fetching Pokemon characters:', error);
+      return generatePokemonCharacters(filters, language);
+    }
   }
 
   if (universe === 'dragon-ball') {
@@ -96,6 +101,95 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
   return characters;
 }
 
+function generatePokemonCharacters(
+  filters: string[],
+  language: 'en' | 'fr' = 'en'
+): Character[] {
+  const data: Record<string, { id: number; en: string; fr: string }[]> = {
+    gen1: [
+      { id: 1, en: 'Bulbasaur', fr: 'Bulbizarre' },
+      { id: 4, en: 'Charmander', fr: 'Salamèche' },
+      { id: 7, en: 'Squirtle', fr: 'Carapuce' },
+      { id: 25, en: 'Pikachu', fr: 'Pikachu' },
+      { id: 39, en: 'Jigglypuff', fr: 'Rondoudou' },
+    ],
+    gen2: [
+      { id: 152, en: 'Chikorita', fr: 'Germignon' },
+      { id: 155, en: 'Cyndaquil', fr: 'Héricendre' },
+      { id: 158, en: 'Totodile', fr: 'Kaiminus' },
+      { id: 175, en: 'Togepi', fr: 'Togepi' },
+      { id: 196, en: 'Espeon', fr: 'Mentali' },
+    ],
+    gen3: [
+      { id: 252, en: 'Treecko', fr: 'Arcko' },
+      { id: 255, en: 'Torchic', fr: 'Poussifeu' },
+      { id: 258, en: 'Mudkip', fr: 'Gobou' },
+      { id: 280, en: 'Ralts', fr: 'Tarsal' },
+      { id: 300, en: 'Skitty', fr: 'Skitty' },
+    ],
+    gen4: [
+      { id: 387, en: 'Turtwig', fr: 'Tortipouss' },
+      { id: 390, en: 'Chimchar', fr: 'Ouisticram' },
+      { id: 393, en: 'Piplup', fr: 'Tiplouf' },
+      { id: 404, en: 'Luxio', fr: 'Luxio' },
+      { id: 417, en: 'Pachirisu', fr: 'Pachirisu' },
+    ],
+    gen5: [
+      { id: 495, en: 'Snivy', fr: 'Vipélierre' },
+      { id: 498, en: 'Tepig', fr: 'Gruikui' },
+      { id: 501, en: 'Oshawott', fr: 'Moustillon' },
+      { id: 509, en: 'Purrloin', fr: 'Chacripan' },
+      { id: 519, en: 'Pidove', fr: 'Poichigeon' },
+    ],
+    gen6: [
+      { id: 650, en: 'Chespin', fr: 'Marisson' },
+      { id: 653, en: 'Fennekin', fr: 'Feunnec' },
+      { id: 656, en: 'Froakie', fr: 'Grenousse' },
+      { id: 669, en: 'Flabébé', fr: 'Flabébé' },
+      { id: 700, en: 'Sylveon', fr: 'Nymphali' },
+    ],
+    gen7: [
+      { id: 722, en: 'Rowlet', fr: 'Brindibou' },
+      { id: 725, en: 'Litten', fr: 'Flamiaou' },
+      { id: 728, en: 'Popplio', fr: 'Otaquin' },
+      { id: 734, en: 'Yungoos', fr: 'Manglouton' },
+      { id: 743, en: 'Ribombee', fr: 'Rubombelle' },
+    ],
+    gen8: [
+      { id: 810, en: 'Grookey', fr: 'Ouistempo' },
+      { id: 813, en: 'Scorbunny', fr: 'Flambino' },
+      { id: 816, en: 'Sobble', fr: 'Larméléon' },
+      { id: 831, en: 'Wooloo', fr: 'Moumouton' },
+      { id: 845, en: 'Cramorant', fr: 'Nigosier' },
+    ],
+    gen9: [
+      { id: 906, en: 'Sprigatito', fr: 'Poussacha' },
+      { id: 909, en: 'Fuecoco', fr: 'Chochodile' },
+      { id: 912, en: 'Quaxly', fr: 'Coiffeton' },
+      { id: 915, en: 'Lechonk', fr: 'Gourmelet' },
+      { id: 937, en: 'Armarouge', fr: 'Carmadura' },
+    ],
+  };
+
+  const characters: Character[] = [];
+  (filters.length ? filters : Object.keys(data)).forEach((filter) => {
+    const gen = data[filter];
+    if (gen) {
+      gen.forEach((p) => {
+        const name = language === 'fr' ? p.fr : p.en;
+        characters.push({
+          id: `pokemon-${p.id}`,
+          name,
+          image: createPlaceholderImage(name, '#3B4CCA'),
+          universe: 'pokemon',
+        });
+      });
+    }
+  });
+
+  return characters;
+}
+
 async function fetchPokemonCharacters(
   filters: string[],
   language: 'en' | 'fr' = 'en'
@@ -114,8 +208,12 @@ async function fetchPokemonCharacters(
 
   const result: Character[] = [];
 
+  const selectedFilters = filters.length
+    ? filters
+    : (Object.keys(generationIds) as string[]);
+
   await Promise.all(
-    filters.map(async (filter) => {
+    selectedFilters.map(async (filter) => {
       const genId = generationIds[filter];
       if (!genId) return;
 
