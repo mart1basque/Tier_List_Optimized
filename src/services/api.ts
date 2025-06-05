@@ -74,8 +74,12 @@ export const fetchCharacters = async (
   }
 
   if (universe === 'dokkan-battle') {
+    try {
       const chars = await fetchDokkanCharacters();
-      return chars.length > 0 ? chars : generateDokkanCharacters();
+      if (chars.length === 0) {
+        return generateDokkanCharacters();
+      }
+      return chars;
     } catch (error) {
       console.error('Error fetching Dokkan Battle characters:', error);
       return generateDokkanCharacters();
