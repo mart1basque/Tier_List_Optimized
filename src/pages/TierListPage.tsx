@@ -134,6 +134,7 @@ function getImageFromId(id: string) {
              currentUniverse === 'dragon-ball' ? 'Dragon Ball' :
              currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
              currentUniverse === 'olive-et-tom' ? 'Olive et Tom' :
+             currentUniverse === 'dokkan-battle' ? 'Dokkan Battle' :
              'Naruto'} Tier List
           </h1>
           <div className="flex flex-wrap gap-2">
