@@ -10,24 +10,28 @@ export interface Universe {
   image: string;
 }
 
+import pokemonHome from '../assets/pokemon-home.webp';
+import narutoHome from '../assets/naruto-home.png';
+import demonSlayerHome from '../assets/demon-slayer-home.png';
+
 export const universes: Universe[] = [
   {
     id: 'pokemon',
     name: 'Pokémon',
     description: 'Create tier lists of your favorite Pokémon by generation',
-    image: '../assets/pokemon-home.webp',
+    image: pokemonHome,
   },
   {
     id: 'naruto',
     name: 'Naruto',
     description: 'Rank ninjas from the Naruto universe by arc or series',
-    image: '../assets/naruto-home.png',
+    image: narutoHome,
   },
   {
     id: 'demon-slayer',
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
-    image: '../assets/demon-slayer-home.png',
+    image: demonSlayerHome,
   },
 ];
 
