@@ -151,10 +151,11 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'dragon-ball', name: 'Dragon Ball' },
-      { id: 'dragon-ball-z', name: 'Dragon Ball Z' },
-      { id: 'dragon-ball-gt', name: 'Dragon Ball GT' },
-      { id: 'dragon-ball-super', name: 'Dragon Ball Super' },
+      { id: 'saiyan', name: 'Saiyan' },
+      { id: 'human', name: 'Human' },
+      { id: 'namekian', name: 'Namekian' },
+      { id: 'android', name: 'Android' },
+      { id: 'other', name: 'Other Species' },
     ],
   },
   'demon-slayer': {
