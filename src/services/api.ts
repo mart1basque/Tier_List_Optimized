@@ -311,6 +311,7 @@ async function fetchDragonBallCharacters(filters: string[]): Promise<Character[]
       return filters.some((f) => race.includes(f));
     })
     .map((item: any) => {
+
       const rawImage =
         item.image ||
         item.avatar ||
