@@ -4,6 +4,8 @@ export interface Character {
   image: string;
   thumbnail?: string;
   universe: string;
+  rarity?: string;
+  type?: string;
   // Add more properties as needed
 }
 

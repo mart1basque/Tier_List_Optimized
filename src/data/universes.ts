@@ -3,7 +3,7 @@ export type UniverseType =
   | 'naruto'
   | 'dragon-ball'
   | 'demon-slayer'
-  ;
+  | 'dokkan';
 
 export interface Universe {
   id: UniverseType;
@@ -36,6 +36,12 @@ export const universes: Universe[] = [
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
     image: 'https://images.pexels.com/photos/6538889/pexels-photo-6538889.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  },
+  {
+    id: 'dokkan',
+    name: 'Dokkan Battle',
+    description: 'Rank units from the Dragon Ball Z Dokkan Battle mobile game',
+    image: '/backgrounds/dokkan.jpg',
   },
 ];
 
@@ -139,4 +145,20 @@ export const universeConfig: Record<UniverseType, {
       { id: 'season4', name: 'Season 4 (Hashira Training Arc)' },
     ],
   },
-}; 
+  'dokkan': {
+    colors: {
+      primary: '#0F62AE',
+      secondary: '#FFD700',
+      accent: '#E2231A',
+      background: '#F8F8F8',
+      text: '#2B2B2B',
+    },
+    backgroundStyle: {
+      background: "url('/backgrounds/dokkan.jpg') center/cover no-repeat",
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [],
+  },
+};
