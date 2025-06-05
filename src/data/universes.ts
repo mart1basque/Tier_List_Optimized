@@ -15,19 +15,19 @@ export const universes: Universe[] = [
     id: 'pokemon',
     name: 'Pokémon',
     description: 'Create tier lists of your favorite Pokémon by generation',
-    image: 'https://images.pexels.com/photos/1310847/pexels-photo-1310847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: '../assets/pokemon-home.webp',
   },
   {
     id: 'naruto',
     name: 'Naruto',
     description: 'Rank ninjas from the Naruto universe by arc or series',
-    image: 'https://images.pexels.com/photos/1671324/pexels-photo-1671324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: '../assets/naruto-home.png',
   },
   {
     id: 'demon-slayer',
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
-    image: 'https://images.pexels.com/photos/6538889/pexels-photo-6538889.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image: '../assets/demon-slayer-home.png',
   },
 ];
 
