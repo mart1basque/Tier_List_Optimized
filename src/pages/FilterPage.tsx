@@ -106,7 +106,7 @@ const FilterPage: React.FC = () => {
             Select which {currentUniverse === 'pokemon' ? 'generations' :
                         currentUniverse === 'naruto' ? 'series' :
                         currentUniverse === 'one-piece' ? 'sagas' :
-                        currentUniverse === 'dragon-ball' ? 'series' :
+                        currentUniverse === 'dragon-ball' ? 'species' :
                         currentUniverse === 'olive-et-tom' ? 'series' :
                         'seasons'} you want to include in your tier list:
           </p>
