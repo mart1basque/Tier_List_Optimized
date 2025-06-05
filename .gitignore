@@ -1,0 +1,24 @@
+# Node
+node_modules/
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+build/
+
+# IDE / OS
+.vscode/
+.DS_Store
+
+# Env variables
+.env
+.env.*.local
+
+# Logs
+*.log
+
+# Misc
+*.zip
+*.tgz

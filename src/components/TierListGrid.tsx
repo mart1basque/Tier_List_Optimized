@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import { 
   DndContext, 
   DragOverlay,
@@ -188,11 +189,12 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
 
   return (
     <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
+  sensors={sensors}
+  collisionDetection={closestCenter}
+  modifiers={[snapCenterToCursor]}
+  onDragStart={handleDragStart}
+  onDragEnd={handleDragEnd}
+>
       <div className="flex flex-col space-y-4 mb-8">
         <SortableContext items={tiers.map(t => t.id)} strategy={verticalListSortingStrategy}>
           {tiers.map(tier => (

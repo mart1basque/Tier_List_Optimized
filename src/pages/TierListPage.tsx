@@ -9,6 +9,17 @@ import TierListGrid from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
 import { fetchCharacters } from '../services/api';
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { snapCenterToCursor } from '@dnd-kit/modifiers';
+
 
 const TierListPage: React.FC = () => {
   const { universe } = useParams<{ universe: string }>();
@@ -17,6 +28,24 @@ const TierListPage: React.FC = () => {
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+function handleDragStart(event: any) {
+  setActiveId(event.active.id);
+}
+
+function handleDragEnd() {
+  setActiveId(null);
+}
+
+function handleDragCancel() {
+  setActiveId(null);
+}
+
+function getImageFromId(id: string) {
+  const item = characters.find(i => i.id === id);
+  return item?.image ?? '';
+}
   const tierListRef = useRef<HTMLDivElement>(null);
   const [unknownContainer, setUnknownContainer] = useState<HTMLDivElement | null>(null);
   const setUnknownContainerRef = useCallback((node: HTMLDivElement | null) => {
