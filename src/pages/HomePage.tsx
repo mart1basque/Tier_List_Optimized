@@ -41,12 +41,12 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col items-center justify-center text-center mb-16">
           <div className="flex items-center mb-4">
             <Sparkles className="text-yellow-400 mr-2" size={28} />
-            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-              TierSaga
+            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-yellow-400">
+              Mankind Tier List
             </h1>
             <Sparkles className="text-yellow-400 ml-2" size={28} />
           </div>
-          <p className="text-lg md:text-xl max-w-2xl text-purple-200">
+          <p className="text-lg md:text-xl max-w-2xl text-blue-100">
             Create beautiful tier lists for your favorite anime universes
           </p>
         </div>
