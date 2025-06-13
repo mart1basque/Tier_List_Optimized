@@ -505,11 +505,11 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
-// Fetch Capitain Tsubasa characters using Jikan API (2018 series)
+// Fetch Capitain Tsubasa characters using Jikan API (original 1983 series)
 async function fetchCapitainTsubasaCharacters(): Promise<Character[]> {
   const results: Character[] = [];
   try {
-    const { data } = await axios.get('https://api.jikan.moe/v4/anime/36984/characters');
+    const { data } = await axios.get('https://api.jikan.moe/v4/anime/1866/characters');
     const characters = Array.isArray(data?.data) ? data.data : data.results || [];
     characters.forEach((item: any) => {
       results.push({
