@@ -66,6 +66,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'onepiece') {
+    try {
+      return await fetchOnePieceCharacters();
+    } catch (error) {
+      console.error('Error fetching One Piece characters:', error);
+      return generateOnePieceCharacters();
+    }
+  }
+
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -449,6 +458,40 @@ function generateLeagueCharacters(filters: string[]): Character[] {
       name: ch.id,
       image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ch.id}_0.jpg`,
       thumbnail: `https://ddragon.leagueoflegends.com/cdn/${LOL_VERSION}/img/champion/${ch.id}.png`,
-      universe: 'league-of-legends',
-    }));
+    universe: 'league-of-legends',
+  }));
+}
+
+// Fetch One Piece characters using Jikan API
+async function fetchOnePieceCharacters(): Promise<Character[]> {
+  const results: Character[] = [];
+  try {
+    const { data } = await axios.get('https://api.jikan.moe/v4/anime/21/characters');
+    const characters = Array.isArray(data?.data) ? data.data : data.results || [];
+    characters.forEach((item: any) => {
+      results.push({
+        id: `onepiece-${item.character?.mal_id ?? item.mal_id}`,
+        name: item.character?.name ?? item.name,
+        image:
+          item.character?.images?.jpg?.image_url ||
+          item.character?.images?.webp?.image_url ||
+          createPlaceholderImage(item.character?.name ?? item.name, '#2E51A2'),
+        universe: 'onepiece',
+      });
+    });
+  } catch (error) {
+    console.error('Error fetching One Piece characters:', error);
+  }
+
+  return results.length > 0 ? results : generateOnePieceCharacters();
+}
+
+function generateOnePieceCharacters(): Character[] {
+  const names = ['Luffy', 'Zoro', 'Nami', 'Usopp', 'Sanji', 'Chopper', 'Robin', 'Franky', 'Brook', 'Jinbe'];
+  return names.map((name, index) => ({
+    id: `onepiece-${index}`,
+    name,
+    image: createPlaceholderImage(name, '#2E51A2'),
+    universe: 'onepiece',
+  }));
 }

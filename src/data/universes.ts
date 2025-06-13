@@ -2,7 +2,8 @@ export type UniverseType =
   | 'pokemon'
   | 'naruto'
   | 'demon-slayer'
-  | 'league-of-legends';
+  | 'league-of-legends'
+  | 'onepiece';
 
 export interface Universe {
   id: UniverseType;
@@ -15,6 +16,7 @@ import pokemonHome from '../assets/pokemon-home.webp';
 import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
 import lolHome from '../assets/lol-home.svg';
+import onePieceHome from '../assets/onepiece-home.svg';
 
 export const universes: Universe[] = [
   {
@@ -40,6 +42,12 @@ export const universes: Universe[] = [
     name: 'League of Legends',
     description: 'Rank your favorite champions by class using Data Dragon',
     image: lolHome,
+  },
+  {
+    id: 'onepiece',
+    name: 'One Piece',
+    description: 'Create tier lists of characters from One Piece using Jikan',
+    image: onePieceHome,
   },
 ];
 
@@ -143,5 +151,21 @@ export const universeConfig: Record<UniverseType, {
       { id: 'Support', name: 'Support' },
       { id: 'Tank', name: 'Tank' },
     ],
+  },
+  'onepiece': {
+    colors: {
+      primary: '#2E51A2', // blue
+      secondary: '#FFD700', // yellow
+      accent: '#EB2727', // red
+      background: '#F0F8FF',
+      text: '#1F2937',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #09203f, #537895)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [],
   },
 };
