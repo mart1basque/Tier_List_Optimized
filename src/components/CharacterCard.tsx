@@ -18,7 +18,7 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
   isDragging = false,
 }) => (
   <div
-    className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow dark:border-gray-700"
+  className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow dark:border-gray-500"
     style={{ opacity: isDragging ? 0.8 : 1 }}
   >
     <img
@@ -63,7 +63,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         style={style}
         {...attributes}
         {...listeners}
-        className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow dark:border-gray-700"
+        className="relative w-16 h-16 cursor-grab group active:cursor-grabbing rounded-md overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow dark:border-gray-500"
         onClick={() => setModalOpen(true)}
       >
         <img
