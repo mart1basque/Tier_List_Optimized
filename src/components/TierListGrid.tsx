@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
+import type { Modifier } from '@dnd-kit/core';
 import { 
   DndContext, 
   DragOverlay,
@@ -53,6 +54,9 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
+  const initialScroll = useRef({ x: 0, y: 0 });
+  const scrollListener = useRef<() => void>();
+  const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (onUnknownChange) {
@@ -74,9 +78,30 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const snapCenterWithScroll = useCallback<Modifier>(
+    (args) => {
+      const transform = snapCenterToCursor(args);
+      return {
+        ...transform,
+        x: transform.x + scrollOffset.x,
+        y: transform.y + scrollOffset.y,
+      };
+    },
+    [scrollOffset]
+  );
   
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
+    initialScroll.current = { x: window.scrollX, y: window.scrollY };
+    const onScroll = () => {
+      setScrollOffset({
+        x: window.scrollX - initialScroll.current.x,
+        y: window.scrollY - initialScroll.current.y,
+      });
+    };
+    scrollListener.current = onScroll;
+    window.addEventListener('scroll', onScroll);
   };
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -146,6 +171,11 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     }
     
     setActiveId(null);
+    if (scrollListener.current) {
+      window.removeEventListener('scroll', scrollListener.current);
+      scrollListener.current = undefined;
+    }
+    setScrollOffset({ x: 0, y: 0 });
   };
   
   const addTier = () => {
@@ -191,7 +221,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     <DndContext
   sensors={sensors}
   collisionDetection={closestCenter}
-  modifiers={[snapCenterToCursor]}
+  modifiers={[snapCenterWithScroll]}
   onDragStart={handleDragStart}
   onDragEnd={handleDragEnd}
 >
