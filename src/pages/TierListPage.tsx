@@ -129,9 +129,14 @@ function getImageFromId(id: string) {
         
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white drop-shadow-md mb-2">
-            {currentUniverse === 'pokemon' ? 'Pokémon' :
-             currentUniverse === 'demon-slayer' ? 'Demon Slayer' :
-             'Naruto'} Tier List
+            {currentUniverse === 'pokemon'
+              ? 'Pokémon'
+              : currentUniverse === 'demon-slayer'
+              ? 'Demon Slayer'
+              : currentUniverse === 'league-of-legends'
+              ? 'League of Legends'
+              : 'Naruto'}{' '}
+            Tier List
           </h1>
           <div className="flex flex-wrap gap-2">
             {filters.map(filter => (
