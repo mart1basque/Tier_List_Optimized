@@ -28,7 +28,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id });
+  } = useSortable({ id: `tier-${id}` });
   const { setNodeRef: setDroppableRef } = useDroppable({ id });
   
   const style = {
