@@ -66,7 +66,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md mb-6">
+    <div className="p-4 bg-white rounded-lg shadow-md mb-6 dark:bg-gray-800 dark:text-white">
       <h3 className="font-medium mb-4" style={{ color: themeColors.text }}>
         Add Custom Character
       </h3>
@@ -116,7 +116,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
       ) : (
         <div
           className={`border-2 border-dashed rounded-md p-6 text-center transition-colors ${
-            dragActive ? 'border-gray-400 bg-gray-50' : 'border-gray-300'
+            dragActive ? 'border-gray-400 bg-gray-50 dark:bg-gray-700' : 'border-gray-300'
           }`}
           onDragEnter={handleDrag}
           onDragOver={handleDrag}

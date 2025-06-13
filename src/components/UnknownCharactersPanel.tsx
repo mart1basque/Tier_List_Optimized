@@ -17,7 +17,7 @@ const UnknownCharactersPanel: React.FC<UnknownCharactersPanelProps> = ({ id, cha
   const { setNodeRef } = useDroppable({ id });
 
   return (
-    <div ref={setNodeRef} className="p-4 bg-white rounded-lg shadow-md">
+    <div ref={setNodeRef} className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between"
@@ -34,7 +34,7 @@ const UnknownCharactersPanel: React.FC<UnknownCharactersPanelProps> = ({ id, cha
                 <CharacterCard key={char.id} character={char} />
               ))
             ) : (
-              <span className="text-gray-400 italic">No unknown characters</span>
+              <span className="text-gray-400 italic dark:text-gray-500">No unknown characters</span>
             )}
           </div>
         </SortableContext>

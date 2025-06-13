@@ -61,7 +61,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
       <h3 className="font-medium mb-4" style={{ color: themeColors.text }}>
         Export & Share
       </h3>

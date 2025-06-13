@@ -147,7 +147,7 @@ function getImageFromId(id: string) {
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
-            <div ref={tierListRef} className="bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl p-6">
+            <div ref={tierListRef} className="bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl p-6 dark:bg-gray-800 dark:bg-opacity-95 dark:text-white">
               <TierListGrid characters={characters} unknownContainer={unknownContainer} />
             </div>
           </div>

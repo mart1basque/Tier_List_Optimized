@@ -45,7 +45,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col rounded-lg bg-white shadow-md overflow-hidden"
+      className="flex flex-col rounded-lg bg-white shadow-md overflow-hidden dark:bg-gray-800 dark:text-white"
     >
       <div className="flex items-stretch">
         <div
@@ -68,7 +68,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
           )}
         </div>
         
-        <div className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50">
+        <div className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50 dark:bg-gray-700">
           {isEditing ? (
             <input
               type="text"
@@ -86,24 +86,24 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
                 />
               ))
             ) : (
-              <span className="text-gray-400 italic">
+              <span className="text-gray-400 italic dark:text-gray-500">
                 Drag characters here
               </span>
             )
           )}
         </div>
         
-        <div className="flex flex-col bg-gray-100 border-l border-gray-200">
+        <div className="flex flex-col bg-gray-100 border-l border-gray-200 dark:bg-gray-900 dark:border-gray-700">
           <button
             onClick={handleEditSave}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors"
+          className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-white"
             title={isEditing ? "Save" : "Edit tier"}
           >
             <Edit2 size={18} />
           </button>
           <button
             onClick={onRemove}
-            className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors"
+          className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-red-400"
             title="Delete tier"
           >
             <Trash2 size={18} />

@@ -89,7 +89,7 @@ const FilterPage: React.FC = () => {
           <span>Back to Home</span>
         </button>
         
-        <div className="max-w-2xl mx-auto bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-xl p-8">
+        <div className="max-w-2xl mx-auto bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-xl p-8 dark:bg-gray-800 dark:bg-opacity-90 dark:text-white">
           <div className="flex items-center mb-6">
             <Filter className="mr-3" style={{ color: themeColors.primary }} />
             <h2 className="text-2xl font-bold" style={{ color: themeColors.text }}>
@@ -101,7 +101,7 @@ const FilterPage: React.FC = () => {
           
           {languageSelector}
 
-          <p className="mb-6 text-gray-600">
+          <p className="mb-6 text-gray-600 dark:text-gray-300">
             Select which {currentUniverse === 'pokemon' ? 'generations' :
                         currentUniverse === 'naruto' ? 'series' :
                         'seasons'} you want to include in your tier list:
