@@ -509,7 +509,10 @@ function generateOnePieceCharacters(): Character[] {
 async function fetchCapitainTsubasaCharacters(): Promise<Character[]> {
   const results: Character[] = [];
   try {
-    const { data } = await axios.get('https://api.jikan.moe/v4/anime/186/characters');
+    // Limit results to fetch a broader cast of characters
+    const { data } = await axios.get(
+      'https://api.jikan.moe/v4/anime/186/characters?page=1&limit=25'
+    );
     const characters = Array.isArray(data?.data) ? data.data : data.results || [];
     characters.forEach((item: any) => {
       results.push({
