@@ -24,7 +24,9 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
     <img
       src={character.thumbnail ?? character.image}
       alt={character.name}
-      className="w-full h-full object-cover"
+      className={`w-full h-full object-cover ${
+        character.universe === 'league-of-legends' ? 'scale-110' : ''
+      }`}
     />
     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
       <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
@@ -66,7 +68,9 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         <img
           src={character.thumbnail ?? character.image}
           alt={character.name}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${
+            character.universe === 'league-of-legends' ? 'scale-110' : ''
+          }`}
         />
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
           <span className="text-white text-xs font-medium px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity truncate max-w-full">
