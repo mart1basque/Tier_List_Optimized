@@ -93,7 +93,7 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
       {renderBackgroundElements()}
       
       {/* Overlay for better text contrast */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-white/30 dark:bg-black/60"></div>
       
       <style jsx>{`
         @keyframes twinkle {
