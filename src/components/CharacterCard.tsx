@@ -26,6 +26,7 @@ export const PlainCharacterCard: React.FC<CharacterCardProps> = ({
       alt={character.name}
       className={`w-full h-full object-cover ${
         character.universe === 'league-of-legends' ? 'scale-[1.15]' : ''
+
       }`}
     />
     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-end justify-center">
