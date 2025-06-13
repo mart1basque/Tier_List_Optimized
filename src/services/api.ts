@@ -2,6 +2,8 @@ import axios from 'axios';
 import { Character } from '../types/types';
 import { UniverseType } from '../data/universes';
 
+const LOL_VERSION = '13.24.1';
+
 function createPlaceholderImage(name: string, color: string): string {
   const initials = name
     .split(' ')
@@ -55,6 +57,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'league-of-legends') {
+    try {
+      return await fetchLeagueCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching League of Legends characters:', error);
+      return generateLeagueCharacters(filters);
+    }
+  }
+
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -73,6 +84,9 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       break;
     case 'demon-slayer':
       characters = generateDemonSlayerCharacters(filters);
+      break;
+    case 'league-of-legends':
+      characters = generateLeagueCharacters(filters);
       break;
   }
   
@@ -401,4 +415,40 @@ function generateDemonSlayerCharacters(filters: string[]): Character[] {
   });
 
   return characters;
+}
+
+// Fetch League of Legends champions using Riot's Data Dragon API
+async function fetchLeagueCharacters(filters: string[]): Promise<Character[]> {
+  const url = `https://ddragon.leagueoflegends.com/cdn/${LOL_VERSION}/data/en_US/champion.json`;
+  const { data } = await axios.get(url);
+  const champs: any[] = Object.values(data.data);
+  return champs
+    .filter(ch => filters.length === 0 || filters.some(f => ch.tags.includes(f)))
+    .map(ch => ({
+      id: `lol-${ch.id}`,
+      name: ch.name,
+      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ch.id}_0.jpg`,
+      thumbnail: `https://ddragon.leagueoflegends.com/cdn/${LOL_VERSION}/img/champion/${ch.id}.png`,
+      universe: 'league-of-legends',
+    }));
+}
+
+function generateLeagueCharacters(filters: string[]): Character[] {
+  const sample = [
+    { id: 'Aatrox', tags: ['Fighter', 'Tank'] },
+    { id: 'Ahri', tags: ['Mage', 'Assassin'] },
+    { id: 'Garen', tags: ['Fighter', 'Tank'] },
+    { id: 'Lux', tags: ['Mage', 'Support'] },
+    { id: 'Vayne', tags: ['Marksman', 'Assassin'] },
+  ];
+
+  return sample
+    .filter(ch => filters.length === 0 || filters.some(f => ch.tags.includes(f)))
+    .map(ch => ({
+      id: `lol-${ch.id}`,
+      name: ch.id,
+      image: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${ch.id}_0.jpg`,
+      thumbnail: `https://ddragon.leagueoflegends.com/cdn/${LOL_VERSION}/img/champion/${ch.id}.png`,
+      universe: 'league-of-legends',
+    }));
 }

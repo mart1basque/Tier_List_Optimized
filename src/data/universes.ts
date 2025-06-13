@@ -1,7 +1,8 @@
 export type UniverseType =
   | 'pokemon'
   | 'naruto'
-  | 'demon-slayer';
+  | 'demon-slayer'
+  | 'league-of-legends';
 
 export interface Universe {
   id: UniverseType;
@@ -13,6 +14,7 @@ export interface Universe {
 import pokemonHome from '../assets/pokemon-home.webp';
 import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
+import lolHome from '../assets/lol-home.svg';
 
 export const universes: Universe[] = [
   {
@@ -32,6 +34,12 @@ export const universes: Universe[] = [
     name: 'Demon Slayer',
     description: 'Create tier lists of characters from each season of Demon Slayer',
     image: demonSlayerHome,
+  },
+  {
+    id: 'league-of-legends',
+    name: 'League of Legends',
+    description: 'Rank your favorite champions by class using Data Dragon',
+    image: lolHome,
   },
 ];
 
@@ -111,6 +119,29 @@ export const universeConfig: Record<UniverseType, {
       { id: 'season2', name: 'Season 2 (Entertainment District Arc)' },
       { id: 'season3', name: 'Season 3 (Swordsmith Village Arc)' },
       { id: 'season4', name: 'Season 4 (Hashira Training Arc)' },
+    ],
+  },
+  'league-of-legends': {
+    colors: {
+      primary: '#5383E8', // League blue
+      secondary: '#F0E6D2', // parchment
+      accent: '#C89B3C', // gold
+      background: '#000',
+      text: '#E5E5E5',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #0A1428, #000000)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [
+      { id: 'Assassin', name: 'Assassin' },
+      { id: 'Fighter', name: 'Fighter' },
+      { id: 'Mage', name: 'Mage' },
+      { id: 'Marksman', name: 'Marksman' },
+      { id: 'Support', name: 'Support' },
+      { id: 'Tank', name: 'Tank' },
     ],
   },
 };

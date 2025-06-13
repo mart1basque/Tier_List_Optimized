@@ -82,6 +82,25 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
 
+      case 'league-of-legends':
+        return (
+          <>
+            {Array.from({ length: 40 }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute rounded-full bg-yellow-500 opacity-20"
+                style={{
+                  width: `${Math.random() * 8 + 4}px`,
+                  height: `${Math.random() * 8 + 4}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animation: `float ${Math.random() * 12 + 8}s infinite ease-in-out ${Math.random() * 6}s`,
+                }}
+              />
+            ))}
+          </>
+        );
+
       default:
         return null;
     }
