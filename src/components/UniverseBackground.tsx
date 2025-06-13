@@ -88,12 +88,15 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
   };
 
   return (
-    <div className="absolute inset-0 overflow-hidden" style={config.backgroundStyle}>
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={config.backgroundStyle}
+    >
       {/* Universe-specific background elements */}
       {renderBackgroundElements()}
       
       {/* Overlay for better text contrast */}
-      <div className="absolute inset-0 bg-white/30 dark:bg-black/60"></div>
+      <div className="pointer-events-none absolute inset-0 bg-white/30 dark:bg-black/60"></div>
       
       <style jsx>{`
         @keyframes twinkle {
