@@ -75,14 +75,6 @@ export const fetchCharacters = async (
     }
   }
 
-  if (universe === 'capitain-tsubasa') {
-    try {
-      return await fetchCapitainTsubasaCharacters();
-    } catch (error) {
-      console.error('Error fetching Capitain Tsubasa characters:', error);
-      return generateCapitainTsubasaCharacters();
-    }
-  }
 
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
@@ -505,36 +497,3 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
-// Fetch Capitain Tsubasa characters using Jikan API (original 1983 series)
-async function fetchCapitainTsubasaCharacters(): Promise<Character[]> {
-  const results: Character[] = [];
-  try {
-    const { data } = await axios.get('https://api.jikan.moe/v4/anime/1866/characters');
-    const characters = Array.isArray(data?.data) ? data.data : data.results || [];
-    characters.forEach((item: any) => {
-      results.push({
-        id: `capitain-tsubasa-${item.character?.mal_id ?? item.mal_id}`,
-        name: item.character?.name ?? item.name,
-        image:
-          item.character?.images?.jpg?.image_url ||
-          item.character?.images?.webp?.image_url ||
-          createPlaceholderImage(item.character?.name ?? item.name, '#0064B1'),
-        universe: 'capitain-tsubasa',
-      });
-    });
-  } catch (error) {
-    console.error('Error fetching Capitain Tsubasa characters:', error);
-  }
-
-  return results.length > 0 ? results : generateCapitainTsubasaCharacters();
-}
-
-function generateCapitainTsubasaCharacters(): Character[] {
-  const names = ['Tsubasa Oozora', 'Genzo Wakabayashi', 'Kojiro Hyuga', 'Taro Misaki', 'Ryo Ishizaki'];
-  return names.map((name, index) => ({
-    id: `capitain-tsubasa-${index}`,
-    name,
-    image: createPlaceholderImage(name, '#0064B1'),
-    universe: 'capitain-tsubasa',
-  }));
-}
