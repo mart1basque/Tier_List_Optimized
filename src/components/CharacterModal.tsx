@@ -16,7 +16,7 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) =
     >
       <div
         className={`bg-white rounded-lg p-4 relative w-full dark:bg-gray-800 dark:text-white ${
-          character.universe === 'league-of-legends' ? 'max-w-2xl' : 'max-w-sm'
+          character.universe === 'league-of-legends' ? 'max-w-3xl' : 'max-w-sm'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -30,7 +30,7 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) =
           src={character.image}
           alt={character.name}
           className={`w-full h-auto rounded-md mb-4 ${
-            character.universe === 'league-of-legends' ? 'max-h-[600px]' : ''
+            character.universe === 'league-of-legends' ? 'max-h-[700px]' : ''
           }`}
         />
         <h2 className="text-lg font-medium text-center">{character.name}</h2>
