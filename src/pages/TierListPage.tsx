@@ -5,6 +5,7 @@ import { UniverseType } from '../data/universes';
 import { Character } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
+import NightModeToggle from '../components/NightModeToggle';
 import TierListGrid from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
@@ -108,15 +109,16 @@ function getImageFromId(id: string) {
   
   if (!currentUniverse || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen relative pb-16">
+    <div className="min-h-screen relative pb-16 bg-gray-100 dark:bg-gray-900">
       <UniverseBackground universe={currentUniverse} />
+      <NightModeToggle />
       
       <div className="container mx-auto px-4 py-12 relative z-10">
         <button

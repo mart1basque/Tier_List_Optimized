@@ -4,6 +4,7 @@ import { ChevronLeft, Filter, ArrowRight } from 'lucide-react';
 import { UniverseType, universeConfig } from '../data/universes';
 import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
+import NightModeToggle from '../components/NightModeToggle';
 
 const FilterPage: React.FC = () => {
   const { universe } = useParams<{ universe: string }>();
@@ -77,8 +78,9 @@ const FilterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-gray-100 dark:bg-gray-900">
       <UniverseBackground universe={currentUniverse} />
+      <NightModeToggle />
       
       <div className="container mx-auto px-4 py-12 relative z-10">
         <button
