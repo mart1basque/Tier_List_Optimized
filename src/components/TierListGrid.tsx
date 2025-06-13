@@ -64,6 +64,31 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       onUnknownChange(unknownChars);
     }
   }, [characterMap.unknown, characters, onUnknownChange]);
+
+  // Update character map when character or tier lists change
+  useEffect(() => {
+    setCharacterMap(prev => {
+      const charIds = new Set(characters.map(c => c.id));
+
+      const updated: Record<string, string[]> = {
+        pool: prev.pool.filter(id => charIds.has(id)),
+        unknown: prev.unknown.filter(id => charIds.has(id)),
+      };
+
+      tiers.forEach(t => {
+        updated[t.id] = (prev[t.id] || []).filter(id => charIds.has(id));
+      });
+
+      const assigned = new Set<string>(Object.values(updated).flat());
+      characters.forEach(c => {
+        if (!assigned.has(c.id)) {
+          updated.pool.push(c.id);
+        }
+      });
+
+      return updated;
+    });
+  }, [characters, tiers]);
   
   // Find the active character
   const activeCharacter = activeId ? characters.find(char => char.id === activeId) : null;
