@@ -12,6 +12,8 @@ interface ThemeContextType {
     text: string;
   };
   backgroundStyle: React.CSSProperties;
+  isNightMode: boolean;
+  toggleNightMode: () => void;
 }
 
 const defaultTheme = {
@@ -27,6 +29,8 @@ const ThemeContext = createContext<ThemeContextType>({
   setCurrentUniverse: () => {},
   themeColors: defaultTheme,
   backgroundStyle: {},
+  isNightMode: false,
+  toggleNightMode: () => {},
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -35,6 +39,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [currentUniverse, setCurrentUniverse] = useState<UniverseType | null>(null);
   const [themeColors, setThemeColors] = useState(defaultTheme);
   const [backgroundStyle, setBackgroundStyle] = useState<React.CSSProperties>({});
+  const [isNightMode, setIsNightMode] = useState(false);
 
   useEffect(() => {
     if (currentUniverse && universeConfig[currentUniverse]) {
@@ -47,9 +52,19 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   }, [currentUniverse]);
 
+  // Toggle dark class on html element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isNightMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [isNightMode]);
+
   return (
     <ThemeContext.Provider
-      value={{ currentUniverse, setCurrentUniverse, themeColors, backgroundStyle }}
+      value={{ currentUniverse, setCurrentUniverse, themeColors, backgroundStyle, isNightMode, toggleNightMode: () => setIsNightMode(prev => !prev) }}
     >
       {children}
     </ThemeContext.Provider>

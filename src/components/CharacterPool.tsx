@@ -20,7 +20,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
   }, [characters]);
   
   return (
-    <div className="rounded-lg bg-white shadow-md overflow-hidden">
+    <div className="rounded-lg bg-white shadow-md overflow-hidden dark:bg-gray-800 dark:text-white">
       <div
         className="p-3 font-medium"
         style={{ backgroundColor: themeColors.secondary, color: 'white' }}
@@ -30,7 +30,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
       
       <div
         ref={setNodeRef}
-        className="p-4 min-h-40 bg-gray-50"
+        className="p-4 min-h-40 bg-gray-50 dark:bg-gray-700"
       >
         <SortableContext items={localCharacters.map(c => c.id)} strategy={rectSortingStrategy}>
           <div className="flex flex-wrap gap-3">
@@ -39,7 +39,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
                 <CharacterCard key={character.id} character={character} />
               ))
             ) : (
-              <span className="text-gray-400 italic">
+              <span className="text-gray-400 italic dark:text-gray-500">
                 All characters have been assigned to tiers
               </span>
             )}
