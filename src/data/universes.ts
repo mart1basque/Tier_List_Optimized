@@ -3,7 +3,8 @@ export type UniverseType =
   | 'naruto'
   | 'demon-slayer'
   | 'league-of-legends'
-  | 'onepiece';
+  | 'onepiece'
+  | 'capitain-tsubasa';
 
 export interface Universe {
   id: UniverseType;
@@ -17,6 +18,7 @@ import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
 import lolHome from '../assets/lol-home.svg';
 import onePieceHome from '../assets/onepiece-home.svg';
+import capitainTsubasaHome from '../assets/capitain-tsubasa-home.svg';
 
 export const universes: Universe[] = [
   {
@@ -48,6 +50,12 @@ export const universes: Universe[] = [
     name: 'One Piece',
     description: 'Create tier lists of characters from One Piece using Jikan',
     image: onePieceHome,
+  },
+  {
+    id: 'capitain-tsubasa',
+    name: 'Capitain Tsubasa',
+    description: 'Tier lists for characters from the original 1983 series',
+    image: capitainTsubasaHome,
   },
 ];
 
@@ -162,6 +170,22 @@ export const universeConfig: Record<UniverseType, {
     },
     backgroundStyle: {
       background: 'linear-gradient(to bottom, #09203f, #537895)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [],
+  },
+  'capitain-tsubasa': {
+    colors: {
+      primary: '#0064B1',
+      secondary: '#E60026',
+      accent: '#FFC800',
+      background: '#F0F0F0',
+      text: '#1F2937',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #0f5b9e, #0064B1)',
       backgroundSize: 'cover',
       position: 'relative',
       overflow: 'hidden',
