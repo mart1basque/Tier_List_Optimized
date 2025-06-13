@@ -6,12 +6,15 @@ import { useTheme } from '../context/ThemeContext';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentUniverse } = useTheme();
+  const { setCurrentUniverse, isNightMode, toggleNightMode } = useTheme();
   
-  // Reset universe on home page
+  // Reset universe on home page and disable night mode
   useEffect(() => {
     setCurrentUniverse(null);
-  }, [setCurrentUniverse]);
+    if (isNightMode) {
+      toggleNightMode();
+    }
+  }, [setCurrentUniverse, isNightMode, toggleNightMode]);
 
   const handleUniverseSelect = (universeId: string) => {
     setCurrentUniverse(universeId as any);
