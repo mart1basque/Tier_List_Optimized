@@ -2,6 +2,8 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { Character } from '../types/types';
+import { createPlaceholderImage } from '../utils/image';
+import { useTheme } from '../context/ThemeContext';
 
 interface CharacterModalProps {
   character: Character;
@@ -9,6 +11,7 @@ interface CharacterModalProps {
 }
 
 const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) => {
+  const { themeColors } = useTheme();
   return createPortal(
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50"
@@ -29,6 +32,10 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) =
         <img
           src={character.image}
           alt={character.name}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = createPlaceholderImage(character.name, themeColors.primary);
+          }}
           className={`w-full h-auto rounded-md mb-4 ${
             character.universe === 'league-of-legends' ? 'max-h-[700px]' : ''
           }`}
