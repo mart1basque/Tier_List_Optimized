@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import type { Modifier } from '@dnd-kit/core';
-import { 
-  DndContext, 
+import {
+  DndContext,
   DragOverlay,
   closestCenter,
+  pointerWithin,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -114,6 +115,17 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
       };
     },
     [scrollOffset]
+  );
+
+  const collisionDetectionStrategy = useCallback(
+    (...args: Parameters<typeof closestCenter>) => {
+      const pointerIntersections = pointerWithin(...args);
+      if (pointerIntersections.length > 0) {
+        return pointerIntersections;
+      }
+      return closestCenter(...args);
+    },
+    []
   );
   
   const handleDragStart = (event: DragStartEvent) => {
@@ -257,7 +269,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
   return (
     <DndContext
   sensors={sensors}
-  collisionDetection={closestCenter}
+  collisionDetection={collisionDetectionStrategy}
   modifiers={[snapCenterWithScroll]}
   onDragStart={handleDragStart}
   onDragEnd={handleDragEnd}
