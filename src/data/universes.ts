@@ -3,6 +3,7 @@ export type UniverseType =
   | 'naruto'
   | 'demon-slayer'
   | 'league-of-legends'
+  | 'harry-potter'
   | 'onepiece';
 
 export interface Universe {
@@ -42,6 +43,12 @@ export const universes: Universe[] = [
     name: 'League of Legends',
     description: 'Rank your favorite champions by class using Data Dragon',
     image: lolHome,
+  },
+  {
+    id: 'harry-potter',
+    name: 'Harry Potter',
+    description: 'Create tier lists of wizards and witches from the Wizarding World',
+    image: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=800&q=60',
   },
   {
     id: 'onepiece',
@@ -151,6 +158,22 @@ export const universeConfig: Record<UniverseType, {
       { id: 'Support', name: 'Support' },
       { id: 'Tank', name: 'Tank' },
     ],
+  },
+  'harry-potter': {
+    colors: {
+      primary: '#740001',
+      secondary: '#D3A625',
+      accent: '#222F5B',
+      background: '#F5F5F5',
+      text: '#1F2937',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #740001, #000000)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [],
   },
   'onepiece': {
     colors: {

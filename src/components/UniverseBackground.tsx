@@ -101,6 +101,25 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
 
+      case 'harry-potter':
+        return (
+          <>
+            {Array.from({ length: 50 }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute rounded-full bg-yellow-300 opacity-20"
+                style={{
+                  width: `${Math.random() * 6 + 3}px`,
+                  height: `${Math.random() * 6 + 3}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animation: `float ${Math.random() * 15 + 10}s infinite ease-in-out ${Math.random() * 5}s`,
+                }}
+              />
+            ))}
+          </>
+        );
+
       default:
         return null;
     }

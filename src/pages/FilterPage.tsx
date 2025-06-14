@@ -101,6 +101,8 @@ const FilterPage: React.FC = () => {
                 ? 'Demon Slayer'
                 : currentUniverse === 'league-of-legends'
                 ? 'League of Legends'
+                : currentUniverse === 'harry-potter'
+                ? 'Harry Potter'
                 : currentUniverse === 'onepiece'
                 ? 'One Piece'
                 : 'Naruto'} Tier List
@@ -110,15 +112,17 @@ const FilterPage: React.FC = () => {
           {languageSelector}
 
           <p className="mb-6 text-gray-600 dark:text-gray-300">
-            Select which {currentUniverse === 'pokemon'
-              ? 'generations'
-              : currentUniverse === 'naruto'
-              ? 'series'
-              : currentUniverse === 'league-of-legends'
-              ? 'classes'
-              : currentUniverse === 'onepiece'
-              ? 'characters'
-              : 'seasons'} you want to include in your tier list:
+              Select which {currentUniverse === 'pokemon'
+                ? 'generations'
+                : currentUniverse === 'naruto'
+                ? 'series'
+                : currentUniverse === 'league-of-legends'
+                ? 'classes'
+                : currentUniverse === 'harry-potter'
+                ? 'characters'
+                : currentUniverse === 'onepiece'
+                ? 'characters'
+                : 'seasons'} you want to include in your tier list:
           </p>
           
           {filterOptions.length > 0 && (
