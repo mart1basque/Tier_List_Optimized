@@ -506,7 +506,8 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
-const PVZ_API = 'https://pvz-2-api.vercel.app/api';
+const PVZ_BASE = 'https://pvz-2-api.vercel.app';
+const PVZ_API = `${PVZ_BASE}/api`;
 
 async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
   const categories = filters.length > 0 ? filters : ['plants', 'zombies'];
@@ -527,7 +528,7 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
             item.icon_url;
 
           if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
-            url = `${PVZ_API}${url.startsWith('/') ? '' : '/'}${url}`;
+            url = `${PVZ_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
           }
 
           results.push({
