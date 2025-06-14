@@ -131,71 +131,59 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
   
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-
-    if (!over) {
-      setActiveId(null);
-      return;
-    }
-
-    let activeId = active.id as string;
-    let overId = over.id as string;
-
-    // Handle tier reordering
-    if (activeId.startsWith('tier-') && overId.startsWith('tier-')) {
-      const activeIndex = tiers.findIndex(t => `tier-${t.id}` === activeId);
-      const overIndex = tiers.findIndex(t => `tier-${t.id}` === overId);
-      if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
-        setTiers(prev => arrayMove(prev, activeIndex, overIndex));
-      }
-      setActiveId(null);
-      if (scrollListener.current) {
-        window.removeEventListener('scroll', scrollListener.current);
-        scrollListener.current = undefined;
-      }
-      setScrollOffset({ x: 0, y: 0 });
-      return;
-    }
-
-    if (overId.startsWith('tier-')) {
-      overId = overId.slice(5);
-    }
-    if (activeId.startsWith('tier-')) {
-      activeId = activeId.slice(5);
-    }
-
-    if (activeId !== overId) {
+    
+    if (over && active.id !== over.id) {
+      // Extract IDs
+      const activeId = active.id as string;
+      const overId = over.id as string;
+      
+      // Find which container (tier or pool) the items are in
       let activeContainer: string | null = null;
-      let overContainer: string | null = null;
+      let   overContainer: string | null = null;
+      
+      // Find containers
       Object.entries(characterMap).forEach(([containerId, items]) => {
         if (items.includes(activeId)) {
           activeContainer = containerId;
         }
+        
+        // Check if over ID is a container
         if (containerId === overId) {
           overContainer = overId;
         } else if (items.includes(overId)) {
           overContainer = containerId;
         }
       });
-
+      
       if (activeContainer && overContainer) {
+        // If moving between containers
         if (activeContainer !== overContainer) {
           setCharacterMap(prev => {
             const result = { ...prev };
+            
+            // Remove from old container
             result[activeContainer!] = prev[activeContainer!].filter(id => id !== activeId);
+            
+            // Add to new container
             if (overContainer === overId) {
+              // If dropping directly on a container
               result[overContainer] = [...prev[overContainer], activeId];
             } else {
+              // If dropping on an item in a container
               const overIndex = prev[overContainer].indexOf(overId);
               const newItems = [...prev[overContainer]];
               newItems.splice(overIndex, 0, activeId);
               result[overContainer] = newItems;
             }
+            
             return result;
           });
         } else {
+          // If reordering within the same container
           const items = characterMap[activeContainer];
           const activeIndex = items.indexOf(activeId);
           const overIndex = items.indexOf(overId);
+          
           if (activeIndex !== -1 && overIndex !== -1) {
             setCharacterMap(prev => {
               const result = { ...prev };
@@ -206,7 +194,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         }
       }
     }
-
+    
     setActiveId(null);
     if (scrollListener.current) {
       window.removeEventListener('scroll', scrollListener.current);
