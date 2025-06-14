@@ -103,6 +103,8 @@ const FilterPage: React.FC = () => {
                 ? 'League of Legends'
                 : currentUniverse === 'onepiece'
                 ? 'One Piece'
+                : currentUniverse === 'pvz'
+                ? 'Plants vs. Zombies'
                 : 'Naruto'} Tier List
             </h2>
           </div>
@@ -118,6 +120,8 @@ const FilterPage: React.FC = () => {
               ? 'classes'
               : currentUniverse === 'onepiece'
               ? 'characters'
+              : currentUniverse === 'pvz'
+              ? 'types'
               : 'seasons'} you want to include in your tier list:
           </p>
           

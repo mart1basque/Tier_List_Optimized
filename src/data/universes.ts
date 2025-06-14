@@ -3,7 +3,8 @@ export type UniverseType =
   | 'naruto'
   | 'demon-slayer'
   | 'league-of-legends'
-  | 'onepiece';
+  | 'onepiece'
+  | 'pvz';
 
 export interface Universe {
   id: UniverseType;
@@ -17,6 +18,7 @@ import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
 import lolHome from '../assets/lol-home.svg';
 import onePieceHome from '../assets/onepiece-home.svg';
+import pvzHome from '../assets/pvz-home.svg';
 
 export const universes: Universe[] = [
   {
@@ -48,6 +50,12 @@ export const universes: Universe[] = [
     name: 'One Piece',
     description: 'Create tier lists of characters from One Piece using Jikan',
     image: onePieceHome,
+  },
+  {
+    id: 'pvz',
+    name: 'Plants vs. Zombies 2',
+    description: 'Tier lists for plants and zombies from PVZ 2',
+    image: pvzHome,
   },
 ];
 
@@ -167,5 +175,24 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [],
+  },
+  'pvz': {
+    colors: {
+      primary: '#6AAA1E',
+      secondary: '#B6D53C',
+      accent: '#FFB300',
+      background: '#EAF2D6',
+      text: '#1A3B0A',
+    },
+    backgroundStyle: {
+      background: 'linear-gradient(to bottom, #3f8748, #1d3a22)',
+      backgroundSize: 'cover',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    filterOptions: [
+      { id: 'plants', name: 'Plants' },
+      { id: 'zombies', name: 'Zombies' },
+    ],
   },
 };

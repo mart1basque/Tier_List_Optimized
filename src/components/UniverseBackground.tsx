@@ -101,6 +101,25 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
 
+      case 'pvz':
+        return (
+          <>
+            {Array.from({ length: 20 }).map((_, index) => (
+              <div
+                key={index}
+                className="absolute rounded-full bg-yellow-300 opacity-30"
+                style={{
+                  width: `${Math.random() * 10 + 5}px`,
+                  height: `${Math.random() * 10 + 5}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animation: `float ${Math.random() * 15 + 10}s infinite ease-in-out ${Math.random() * 5}s`,
+                }}
+              />
+            ))}
+          </>
+        );
+
       default:
         return null;
     }

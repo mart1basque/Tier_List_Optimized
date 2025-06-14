@@ -75,6 +75,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'pvz') {
+    try {
+      return await fetchPVZCharacters(filters);
+    } catch (error) {
+      console.error('Error fetching PVZ characters:', error);
+      return generatePVZCharacters(filters);
+    }
+  }
+
 
   // For demonstration, simulate an API request with a timeout for other universes
   return new Promise((resolve) => {
@@ -495,5 +504,67 @@ function generateOnePieceCharacters(): Character[] {
     image: createPlaceholderImage(name, '#2E51A2'),
     universe: 'onepiece',
   }));
+}
+
+const PVZ_API = 'https://pvz-2-api.vercel.app/api';
+
+async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
+  const categories = filters.length > 0 ? filters : ['plants', 'zombies'];
+  const results: Character[] = [];
+
+  await Promise.all(
+    categories.map(async (category) => {
+      try {
+        const { data } = await axios.get(`${PVZ_API}/${category}`);
+        const items = Array.isArray(data) ? data : data.data || [];
+        items.forEach((item: any, index: number) => {
+          results.push({
+            id: `pvz-${category}-${index}`,
+            name: item.name || item.nom || `Unknown`,
+            image:
+              item.image ||
+              item.icon ||
+              createPlaceholderImage(item.name || 'PVZ', '#6AAA1E'),
+            universe: 'pvz',
+            type: category,
+          });
+        });
+      } catch (err) {
+        console.error(`Error fetching PVZ ${category}:`, err);
+      }
+    })
+  );
+
+  return results.length > 0 ? results : generatePVZCharacters(filters);
+}
+
+function generatePVZCharacters(filters: string[]): Character[] {
+  const cats = filters.length > 0 ? filters : ['plants', 'zombies'];
+  const characters: Character[] = [];
+  if (cats.includes('plants')) {
+    const plants = ['Peashooter', 'Sunflower', 'Wall-nut', 'Snow Pea', 'Potato Mine'];
+    plants.forEach((name, index) => {
+      characters.push({
+        id: `pvz-plant-${index}`,
+        name,
+        image: createPlaceholderImage(name, '#6AAA1E'),
+        universe: 'pvz',
+        type: 'plant',
+      });
+    });
+  }
+  if (cats.includes('zombies')) {
+    const zombies = ['Zombie', 'Conehead Zombie', 'Buckethead Zombie', 'Imp', 'Gargantuar'];
+    zombies.forEach((name, index) => {
+      characters.push({
+        id: `pvz-zombie-${index}`,
+        name,
+        image: createPlaceholderImage(name, '#6AAA1E'),
+        universe: 'pvz',
+        type: 'zombie',
+      });
+    });
+  }
+  return characters;
 }
 
