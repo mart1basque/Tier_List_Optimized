@@ -518,13 +518,22 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
         const { data } = await axios.get(`${PVZ_API}/${category}`);
         const items = Array.isArray(data) ? data : data.data || [];
         items.forEach((item: any, index: number) => {
+          let url =
+            item.image ||
+            item.imageUrl ||
+            item.image_url ||
+            item.icon ||
+            item.iconUrl ||
+            item.icon_url;
+
+          if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
+            url = `${PVZ_API}${url.startsWith('/') ? '' : '/'}${url}`;
+          }
+
           results.push({
             id: `pvz-${category}-${index}`,
             name: item.name || item.nom || `Unknown`,
-            image:
-              item.image ||
-              item.icon ||
-              createPlaceholderImage(item.name || 'PVZ', '#6AAA1E'),
+            image: url || createPlaceholderImage(item.name || 'PVZ', '#6AAA1E'),
             universe: 'pvz',
             type: category,
           });
