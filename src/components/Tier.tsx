@@ -4,7 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Trash2, Edit2 } from 'lucide-react';
 import { Character } from '../types/types';
-import CharacterCard from './CharacterCard';
+import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import { useTheme } from '../context/ThemeContext';
 
 interface TierProps {
@@ -14,9 +14,10 @@ interface TierProps {
   characters: Character[];
   onRemove: () => void;
   onUpdate: (label: string, color: string) => void;
+  activeCharacter?: Character | null;
 }
 
-const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onUpdate }) => {
+const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onUpdate, activeCharacter }) => {
   const { themeColors } = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   const [newLabel, setNewLabel] = useState(label);
@@ -29,7 +30,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     transform,
     transition,
   } = useSortable({ id: `tier-${id}` });
-  const { setNodeRef: setDroppableRef } = useDroppable({ id });
+  const { setNodeRef: setDroppableRef, isOver } = useDroppable({ id });
 
   const setRefs = useCallback(
     (node: HTMLDivElement | null) => {
@@ -91,14 +92,16 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
             />
           ) : (
             <SortableContext items={characters.map((c) => c.id)} strategy={rectSortingStrategy}>
-              {characters.length > 0 ? (
-                characters.map((character) => (
-                  <CharacterCard key={character.id} character={character} />
-                ))
-              ) : (
+              {characters.map((character) => (
+                <CharacterCard key={character.id} character={character} />
+              ))}
+              {characters.length === 0 && !isOver && (
                 <span className="text-gray-400 italic dark:text-gray-500 block w-full text-center">
                   Drag characters here
                 </span>
+              )}
+              {isOver && activeCharacter && characters.length === 0 && (
+                <PlainCharacterCard character={activeCharacter} isDragging />
               )}
             </SortableContext>
           )}

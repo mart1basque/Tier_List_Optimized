@@ -273,6 +273,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
               characters={characterMap[tier.id].map(id => characters.find(c => c.id === id)!)}
               onRemove={() => removeTier(tier.id)}
               onUpdate={(label, color) => updateTier(tier.id, label, color)}
+              activeCharacter={activeCharacter}
             />
           ))}
         </SortableContext>
