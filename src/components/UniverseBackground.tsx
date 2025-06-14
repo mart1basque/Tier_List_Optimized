@@ -101,7 +101,7 @@ const UniverseBackground: React.FC<UniverseBackgroundProps> = ({ universe }) => 
           </>
         );
 
-      case 'pvz':
+      case 'temtem':
         return (
           <>
             {Array.from({ length: 20 }).map((_, index) => (

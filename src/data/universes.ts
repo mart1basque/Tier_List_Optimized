@@ -4,7 +4,7 @@ export type UniverseType =
   | 'demon-slayer'
   | 'league-of-legends'
   | 'onepiece'
-  | 'pvz';
+  | 'temtem';
 
 export interface Universe {
   id: UniverseType;
@@ -18,7 +18,7 @@ import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
 import lolHome from '../assets/lol-home.png';
 import onePieceHome from '../assets/onepiece-home.png';
-import pvzHome from '../assets/pvz-home.svg';
+import temtemHome from '../assets/temtem-home.svg';
 
 export const universes: Universe[] = [
   {
@@ -52,10 +52,10 @@ export const universes: Universe[] = [
     image: onePieceHome,
   },
   {
-    id: 'pvz',
-    name: 'Plants vs. Zombies 2',
-    description: 'Tier lists for plants and zombies from PVZ 2',
-    image: pvzHome,
+    id: 'temtem',
+    name: 'Temtem',
+    description: 'Rank Temtem creatures by type or check their Luma form',
+    image: temtemHome,
   },
 ];
 
@@ -176,23 +176,33 @@ export const universeConfig: Record<UniverseType, {
     },
     filterOptions: [],
   },
-  'pvz': {
+  'temtem': {
     colors: {
-      primary: '#6AAA1E',
-      secondary: '#B6D53C',
-      accent: '#FFB300',
-      background: '#EAF2D6',
-      text: '#1A3B0A',
+      primary: '#ff6d00',
+      secondary: '#ffd180',
+      accent: '#00bfa5',
+      background: '#fff3e0',
+      text: '#1F2937',
     },
     backgroundStyle: {
-      background: 'linear-gradient(to bottom, #3f8748, #1d3a22)',
+      background: 'linear-gradient(to bottom, #ffe0b2, #ffcc80)',
       backgroundSize: 'cover',
       position: 'relative',
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'plants', name: 'Plants' },
-      { id: 'zombies', name: 'Zombies' },
+      { id: 'Neutral', name: 'Neutral' },
+      { id: 'Wind', name: 'Wind' },
+      { id: 'Earth', name: 'Earth' },
+      { id: 'Water', name: 'Water' },
+      { id: 'Fire', name: 'Fire' },
+      { id: 'Nature', name: 'Nature' },
+      { id: 'Electric', name: 'Electric' },
+      { id: 'Digital', name: 'Digital' },
+      { id: 'Mental', name: 'Mental' },
+      { id: 'Melee', name: 'Melee' },
+      { id: 'Crystal', name: 'Crystal' },
+      { id: 'Toxic', name: 'Toxic' },
     ],
   },
 };

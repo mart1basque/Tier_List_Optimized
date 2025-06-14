@@ -25,7 +25,8 @@ function createPlaceholderImage(name: string, color: string): string {
 export const fetchCharacters = async (
   universe: UniverseType,
   filters: string[],
-  language: 'en' | 'fr' = 'en'
+  language: 'en' | 'fr' = 'en',
+  variant: 'normal' | 'luma' = 'normal'
 ): Promise<Character[]> => {
   if (universe === 'pokemon') {
     try {
@@ -75,12 +76,12 @@ export const fetchCharacters = async (
     }
   }
 
-  if (universe === 'pvz') {
+  if (universe === 'temtem') {
     try {
-      return await fetchPVZCharacters(filters);
+      return await fetchTemtemCharacters(filters, variant);
     } catch (error) {
-      console.error('Error fetching PVZ characters:', error);
-      return generatePVZCharacters(filters);
+      console.error('Error fetching Temtem characters:', error);
+      return generateTemtemCharacters(filters, variant);
     }
   }
 
@@ -506,129 +507,55 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
-const PVZ_BASE = 'https://pvz-2-api.vercel.app';
-const PVZ_API = `${PVZ_BASE}/api`;
+const TEMTEM_BASE = 'https://temtem-api.mael.tech';
 
-async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
-  const categories = filters.length > 0 ? filters : ['plants', 'zombies'];
-  const results: Character[] = [];
-
-  await Promise.all(
-    categories.map(async (category) => {
-      try {
-        const { data } = await axios.get(`${PVZ_API}/${category}`);
-        const names = Array.isArray(data) ? data : data.data || [];
-
-        await Promise.all(
-          names.map(async (entry: any, index: number) => {
-            const rawName = typeof entry === 'string' ? entry : entry.name || entry.nom;
-            if (!rawName) return;
-
-            let detail: any = {};
-            try {
-              const encoded = encodeURIComponent(rawName);
-              const { data: detailData } = await axios.get(
-                `${PVZ_API}/${category}/${encoded}`
-              );
-              detail = detailData?.data || detailData;
-            } catch (innerErr) {
-              console.error(`Error fetching PVZ ${category} ${rawName}:`, innerErr);
-            }
-
-            const name =
-              detail.name ||
-              detail.nom ||
-              detail.plantName ||
-              detail.zombieName ||
-              rawName;
-
-            let url =
-              detail.image ||
-              detail.imageUrl ||
-              detail.image_url ||
-              detail.icon ||
-              detail.iconUrl ||
-              detail.icon_url;
-
-            if (!url && typeof name === 'string') {
-              const encodedName = encodeURIComponent(name);
-              url = `${PVZ_BASE}/assets/${category}/${encodedName}.png`;
-            }
-
-            if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
-              url = `${PVZ_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
-            }
-
-            results.push({
-              id: `pvz-${category}-${index}`,
-              name,
-              image: url || createPlaceholderImage(name, '#6AAA1E'),
-              universe: 'pvz',
-              type: category,
-            });
-          })
-        );
-      } catch (err) {
-        console.error(`Error fetching PVZ ${category}:`, err);
-      }
-    })
-  );
-
-  return results.length > 0 ? results : generatePVZCharacters(filters);
+async function fetchTemtemCharacters(
+  filters: string[],
+  variant: 'normal' | 'luma'
+): Promise<Character[]> {
+  try {
+    const { data } = await axios.get(`${TEMTEM_BASE}/api/temtems`);
+    const temtems = Array.isArray(data) ? data : data.temtems || [];
+    return temtems
+      .filter((t: any) =>
+        filters.length > 0 ? t.types.some((type: string) => filters.includes(type)) : true
+      )
+      .map((t: any) => {
+        const imageField =
+          variant === 'luma'
+            ? t.lumaIcon || t.renderStaticLumaImage || t.wikiRenderStaticLumaUrl
+            : t.icon || t.renderStaticImage || t.wikiRenderStaticUrl;
+        const image =
+          typeof imageField === 'string' && !/^https?:\/\//i.test(imageField)
+            ? `${TEMTEM_BASE}${imageField.startsWith('/') ? '' : '/'}${imageField}`
+            : imageField || createPlaceholderImage(t.name, '#ff6d00');
+        return {
+          id: `temtem-${t.number}`,
+          name: t.name,
+          image,
+          universe: 'temtem',
+          type: (t.types || []).join('/'),
+        } as Character;
+      });
+  } catch (err) {
+    console.error('Error fetching Temtem:', err);
+    return generateTemtemCharacters(filters, variant);
+  }
 }
 
-function generatePVZCharacters(filters: string[]): Character[] {
-  const cats = filters.length > 0 ? filters : ['plants', 'zombies'];
-  const characters: Character[] = [];
-
-  if (cats.includes('plants')) {
-    const plants = [
-      'Peashooter',
-      'Sunflower',
-      'Wall-nut',
-      'Snow Pea',
-      'Potato Mine',
-      'Repeater',
-      'Cherry Bomb',
-      'Cabbage-pult',
-      'Bloomerang',
-      'Kernel-pult',
-    ];
-    plants.forEach((name, index) => {
-      characters.push({
-        id: `pvz-plant-${index}`,
-        name,
-        image: createPlaceholderImage(name, '#6AAA1E'),
-        universe: 'pvz',
-        type: 'plant',
-      });
-    });
-  }
-
-  if (cats.includes('zombies')) {
-    const zombies = [
-      'Zombie',
-      'Conehead Zombie',
-      'Buckethead Zombie',
-      'Imp',
-      'Gargantuar',
-      'Flag Zombie',
-      'Vaulting Zombie',
-      'Digger Zombie',
-      'Yeti Zombie',
-      'Zomboni',
-    ];
-    zombies.forEach((name, index) => {
-      characters.push({
-        id: `pvz-zombie-${index}`,
-        name,
-        image: createPlaceholderImage(name, '#6AAA1E'),
-        universe: 'pvz',
-        type: 'zombie',
-      });
-    });
-  }
-
-  return characters;
+function generateTemtemCharacters(
+  filters: string[],
+  variant: 'normal' | 'luma'
+): Character[] {
+  const names = ['Ganki', 'Saku', 'Valash', 'Paharac', 'Kinu'];
+  return names
+    .filter((_, idx) => idx < 10)
+    .map((name, index) => ({
+      id: `temtem-${index}`,
+      name,
+      image: createPlaceholderImage(name, variant === 'luma' ? '#ffd180' : '#ff6d00'),
+      universe: 'temtem',
+      type: ''
+    }));
 }
 
