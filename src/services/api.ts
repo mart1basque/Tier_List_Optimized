@@ -517,36 +517,57 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
     categories.map(async (category) => {
       try {
         const { data } = await axios.get(`${PVZ_API}/${category}`);
-        const items = Array.isArray(data) ? data : data.data || [];
-        items.forEach((item: any, index: number) => {
-          const name =
-            item.name || item.nom || item.plantName || item.zombieName || `Unknown`;
+        const names = Array.isArray(data) ? data : data.data || [];
 
-          let url =
-            item.image ||
-            item.imageUrl ||
-            item.image_url ||
-            item.icon ||
-            item.iconUrl ||
-            item.icon_url;
+        await Promise.all(
+          names.map(async (entry: any, index: number) => {
+            const rawName = typeof entry === 'string' ? entry : entry.name || entry.nom;
+            if (!rawName) return;
 
-          if (!url && typeof name === 'string') {
-            const encodedName = encodeURIComponent(name);
-            url = `${PVZ_BASE}/assets/${category}/${encodedName}.png`;
-          }
+            let detail: any = {};
+            try {
+              const encoded = encodeURIComponent(rawName);
+              const { data: detailData } = await axios.get(
+                `${PVZ_API}/${category}/${encoded}`
+              );
+              detail = detailData?.data || detailData;
+            } catch (innerErr) {
+              console.error(`Error fetching PVZ ${category} ${rawName}:`, innerErr);
+            }
 
-          if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
-            url = `${PVZ_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
-          }
+            const name =
+              detail.name ||
+              detail.nom ||
+              detail.plantName ||
+              detail.zombieName ||
+              rawName;
 
-          results.push({
-            id: `pvz-${category}-${index}`,
-            name,
-            image: url || createPlaceholderImage(name, '#6AAA1E'),
-            universe: 'pvz',
-            type: category,
-          });
-        });
+            let url =
+              detail.image ||
+              detail.imageUrl ||
+              detail.image_url ||
+              detail.icon ||
+              detail.iconUrl ||
+              detail.icon_url;
+
+            if (!url && typeof name === 'string') {
+              const encodedName = encodeURIComponent(name);
+              url = `${PVZ_BASE}/assets/${category}/${encodedName}.png`;
+            }
+
+            if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
+              url = `${PVZ_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+            }
+
+            results.push({
+              id: `pvz-${category}-${index}`,
+              name,
+              image: url || createPlaceholderImage(name, '#6AAA1E'),
+              universe: 'pvz',
+              type: category,
+            });
+          })
+        );
       } catch (err) {
         console.error(`Error fetching PVZ ${category}:`, err);
       }
