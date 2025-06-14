@@ -550,8 +550,20 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
 function generatePVZCharacters(filters: string[]): Character[] {
   const cats = filters.length > 0 ? filters : ['plants', 'zombies'];
   const characters: Character[] = [];
+
   if (cats.includes('plants')) {
-    const plants = ['Peashooter', 'Sunflower', 'Wall-nut', 'Snow Pea', 'Potato Mine'];
+    const plants = [
+      'Peashooter',
+      'Sunflower',
+      'Wall-nut',
+      'Snow Pea',
+      'Potato Mine',
+      'Repeater',
+      'Cherry Bomb',
+      'Cabbage-pult',
+      'Bloomerang',
+      'Kernel-pult',
+    ];
     plants.forEach((name, index) => {
       characters.push({
         id: `pvz-plant-${index}`,
@@ -562,8 +574,20 @@ function generatePVZCharacters(filters: string[]): Character[] {
       });
     });
   }
+
   if (cats.includes('zombies')) {
-    const zombies = ['Zombie', 'Conehead Zombie', 'Buckethead Zombie', 'Imp', 'Gargantuar'];
+    const zombies = [
+      'Zombie',
+      'Conehead Zombie',
+      'Buckethead Zombie',
+      'Imp',
+      'Gargantuar',
+      'Flag Zombie',
+      'Vaulting Zombie',
+      'Digger Zombie',
+      'Yeti Zombie',
+      'Zomboni',
+    ];
     zombies.forEach((name, index) => {
       characters.push({
         id: `pvz-zombie-${index}`,
@@ -574,6 +598,7 @@ function generatePVZCharacters(filters: string[]): Character[] {
       });
     });
   }
+
   return characters;
 }
 
