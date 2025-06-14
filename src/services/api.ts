@@ -523,19 +523,16 @@ async function fetchTemtemCharacters(
       .map((t: any) => {
        const imageField =
           variant === 'luma'
-            ? t.lumaIcon || t.renderStaticLumaImage || t.wikiRenderStaticLumaUrl
-            : t.icon || t.renderStaticImage || t.wikiRenderStaticUrl;
+            ? t.wikiRenderStaticLumaUrl
+            : t.wikiRenderStaticUrl;
        const image =
           typeof imageField === 'string' && !/^https?:\/\//i.test(imageField)
             ? `${TEMTEM_BASE}${imageField.startsWith('/') ? '' : '/'}${imageField}`
             : imageField || createPlaceholderImage(t.name, '#ff6d00');
         const animatedField =
           variant === 'luma'
-            ? t.renderAnimatedLumaImage ||
-              t.wikiRenderAnimatedLumaUrl ||
-              t.renderAnimatedImage ||
-              t.wikiRenderAnimatedUrl
-            : t.renderAnimatedImage || t.wikiRenderAnimatedUrl;
+            ? t.wikiRenderAnimatedLumaUrl
+            : t.wikiRenderAnimatedUrl;
         const animatedImage =
           typeof animatedField === 'string' && !/^https?:\/\//i.test(animatedField)
             ? `${TEMTEM_BASE}${animatedField.startsWith('/') ? '' : '/'}${animatedField}`
