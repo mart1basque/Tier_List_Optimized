@@ -47,7 +47,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col rounded-lg bg-white shadow-md overflow-hidden dark:bg-gray-800 dark:text-white"
+      className="flex flex-col w-full rounded-lg bg-white shadow-md overflow-hidden dark:bg-gray-800 dark:text-white"
     >
       <div className="flex items-stretch">
         <div
@@ -72,7 +72,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
         
         <div
           ref={setDroppableRef}
-          className="flex-1 min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50 dark:bg-gray-700"
+          className="flex-1 w-full min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50 dark:bg-gray-700"
         >
           {isEditing ? (
             <input
