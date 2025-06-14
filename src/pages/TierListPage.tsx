@@ -56,6 +56,7 @@ function getImageFromId(id: string) {
   // Get selected filters from URL
   const filtersParam = searchParams.get('filters') ?? '';
   const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr';
+  const variant = (searchParams.get('variant') ?? 'normal') as 'normal' | 'luma';
   const filters = useMemo(
     () =>
       filtersParam
@@ -76,7 +77,8 @@ function getImageFromId(id: string) {
           const data = await fetchCharacters(
             universe as UniverseType,
             filters,
-            language
+            language,
+            variant
           );
           setCharacters(data);
         } catch (error) {
@@ -92,7 +94,7 @@ function getImageFromId(id: string) {
     } else {
       navigate('/');
     }
-  }, [universe, filtersParam, language, setCurrentUniverse, navigate]);
+  }, [universe, filtersParam, language, variant, setCurrentUniverse, navigate]);
   
   const handleAddCustomCharacter = (character: Character) => {
     setCharacters(prev => [...prev, character]);
@@ -103,6 +105,7 @@ function getImageFromId(id: string) {
     universe: currentUniverse,
     filters,
     language,
+    variant,
     characters,
     // In a real app, you'd include the tier assignments here
   };
@@ -139,8 +142,8 @@ function getImageFromId(id: string) {
               ? 'League of Legends'
               : currentUniverse === 'onepiece'
               ? 'One Piece'
-              : currentUniverse === 'pvz'
-              ? 'Plants vs. Zombies'
+              : currentUniverse === 'temtem'
+              ? 'Temtem'
               : 'Naruto'}{' '}
             Tier List
           </h1>

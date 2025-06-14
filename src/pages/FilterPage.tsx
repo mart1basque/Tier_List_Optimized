@@ -12,6 +12,7 @@ const FilterPage: React.FC = () => {
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [pokemonLanguage, setPokemonLanguage] = useState<'en' | 'fr' | ''>('');
+  const [temtemVariant, setTemtemVariant] = useState<'normal' | 'luma' | ''>('');
   
   useEffect(() => {
     if (universe && Object.keys(universeConfig).includes(universe as UniverseType)) {
@@ -50,6 +51,26 @@ const FilterPage: React.FC = () => {
       </select>
     </div>
   );
+
+  const variantSelector = currentUniverse === 'temtem' && (
+    <div className="mb-6">
+      <label htmlFor="temtem-variant" className="block mb-2 font-medium">
+        Select Temtem Variant
+      </label>
+      <select
+        id="temtem-variant"
+        value={temtemVariant}
+        onChange={e => setTemtemVariant(e.target.value as 'normal' | 'luma')}
+        className="border rounded p-2 w-full"
+      >
+        <option value="" disabled>
+          Choose variant
+        </option>
+        <option value="normal">Normal</option>
+        <option value="luma">Luma</option>
+      </select>
+    </div>
+  );
   
   const handleFilterToggle = (filterId: string) => {
     setSelectedFilters(prev => 
@@ -67,10 +88,18 @@ const FilterPage: React.FC = () => {
         alert('Please select a language first');
         return;
       }
+      if (currentUniverse === 'temtem' && !temtemVariant) {
+        alert('Please select a variant first');
+        return;
+      }
       const filterParams = selectedFilters.join(',');
       const langParam =
         currentUniverse === 'pokemon' ? `&lang=${pokemonLanguage}` : '';
-      navigate(`/tierlist/${currentUniverse}?filters=${filterParams}${langParam}`);
+      const variantParam =
+        currentUniverse === 'temtem' ? `&variant=${temtemVariant}` : '';
+      navigate(
+        `/tierlist/${currentUniverse}?filters=${filterParams}${langParam}${variantParam}`
+      );
     } else {
       // Show error or notification that at least one filter should be selected
       alert('Please select at least one option to continue');
@@ -103,13 +132,14 @@ const FilterPage: React.FC = () => {
                 ? 'League of Legends'
                 : currentUniverse === 'onepiece'
                 ? 'One Piece'
-                : currentUniverse === 'pvz'
-                ? 'Plants vs. Zombies'
+                : currentUniverse === 'temtem'
+                ? 'Temtem'
                 : 'Naruto'} Tier List
             </h2>
           </div>
           
           {languageSelector}
+          {variantSelector}
 
           <p className="mb-6 text-gray-600 dark:text-gray-300">
             Select which {currentUniverse === 'pokemon'
@@ -120,7 +150,7 @@ const FilterPage: React.FC = () => {
               ? 'classes'
               : currentUniverse === 'onepiece'
               ? 'characters'
-              : currentUniverse === 'pvz'
+              : currentUniverse === 'temtem'
               ? 'types'
               : 'seasons'} you want to include in your tier list:
           </p>
@@ -179,7 +209,8 @@ const FilterPage: React.FC = () => {
               }}
               disabled={
                 (filterOptions.length > 0 && selectedFilters.length === 0) ||
-                (currentUniverse === 'pokemon' && !pokemonLanguage)
+                (currentUniverse === 'pokemon' && !pokemonLanguage) ||
+                (currentUniverse === 'temtem' && !temtemVariant)
               }
             >
               <span className="mr-2">Continue</span>
