@@ -49,12 +49,14 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
     setNodeRef,
     transform,
     transition,
+    isDragging: isActive,
   } = useSortable({ id: character.id });
   
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.8 : 1,
+    visibility: isActive ? 'hidden' as const : 'visible' as const,
   };
   
   return (
