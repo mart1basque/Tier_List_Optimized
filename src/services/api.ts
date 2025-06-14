@@ -521,18 +521,30 @@ async function fetchTemtemCharacters(
         filters.length > 0 ? t.types.some((type: string) => filters.includes(type)) : true
       )
       .map((t: any) => {
-        const imageField =
+       const imageField =
           variant === 'luma'
             ? t.lumaIcon || t.renderStaticLumaImage || t.wikiRenderStaticLumaUrl
             : t.icon || t.renderStaticImage || t.wikiRenderStaticUrl;
-        const image =
+       const image =
           typeof imageField === 'string' && !/^https?:\/\//i.test(imageField)
             ? `${TEMTEM_BASE}${imageField.startsWith('/') ? '' : '/'}${imageField}`
             : imageField || createPlaceholderImage(t.name, '#ff6d00');
+        const animatedField =
+          variant === 'luma'
+            ? t.renderAnimatedLumaImage ||
+              t.wikiRenderAnimatedLumaUrl ||
+              t.renderAnimatedImage ||
+              t.wikiRenderAnimatedUrl
+            : t.renderAnimatedImage || t.wikiRenderAnimatedUrl;
+        const animatedImage =
+          typeof animatedField === 'string' && !/^https?:\/\//i.test(animatedField)
+            ? `${TEMTEM_BASE}${animatedField.startsWith('/') ? '' : '/'}${animatedField}`
+            : animatedField;
         return {
           id: `temtem-${t.number}`,
           name: t.name,
           image,
+          animatedImage,
           universe: 'temtem',
           type: (t.types || []).join('/'),
         } as Character;
@@ -554,6 +566,7 @@ function generateTemtemCharacters(
       id: `temtem-${index}`,
       name,
       image: createPlaceholderImage(name, variant === 'luma' ? '#ffd180' : '#ff6d00'),
+      animatedImage: createPlaceholderImage(name, variant === 'luma' ? '#ffd180' : '#ff6d00'),
       universe: 'temtem',
       type: ''
     }));

@@ -3,6 +3,7 @@ export interface Character {
   name: string;
   image: string;
   thumbnail?: string;
+  animatedImage?: string;
   universe: string;
   rarity?: string;
   type?: string;

@@ -27,11 +27,11 @@ const CharacterModal: React.FC<CharacterModalProps> = ({ character, onClose }) =
           <X size={20} />
         </button>
         <img
-          src={character.image}
+          src={character.animatedImage ?? character.image}
           alt={character.name}
           className={`w-full h-auto rounded-md mb-4 ${
             character.universe === 'league-of-legends' ? 'max-h-[700px]' : ''
-          }`}
+          } ${character.universe === 'temtem' ? 'object-contain' : ''}`}
         />
         <h2 className="text-lg font-medium text-center">{character.name}</h2>
       </div>
