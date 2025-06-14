@@ -15,8 +15,8 @@ export interface Universe {
 import pokemonHome from '../assets/pokemon-home.webp';
 import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
-import lolHome from '../assets/lol-home.svg';
-import onePieceHome from '../assets/onepiece-home.svg';
+import lolHome from '../assets/lol-home.png';
+import onePieceHome from '../assets/onepiece-home.png';
 
 export const universes: Universe[] = [
   {
