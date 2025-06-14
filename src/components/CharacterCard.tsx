@@ -56,7 +56,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.8 : 1,
-    display: isActive ? 'none' as const : undefined,
+    visibility: isActive ? 'hidden' as const : 'visible' as const,
   };
   
   return (
