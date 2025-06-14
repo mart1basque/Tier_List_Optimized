@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useSortable, SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
@@ -25,11 +25,19 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
   const {
     attributes,
     listeners,
-    setNodeRef,
+    setNodeRef: setSortableRef,
     transform,
     transition,
   } = useSortable({ id: `tier-${id}` });
   const { setNodeRef: setDroppableRef } = useDroppable({ id });
+
+  const setRefs = useCallback(
+    (node: HTMLDivElement | null) => {
+      setSortableRef(node);
+      setDroppableRef(node);
+    },
+    [setSortableRef, setDroppableRef]
+  );
   
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -45,7 +53,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
   
   return (
     <div
-      ref={setNodeRef}
+      ref={setRefs}
       style={style}
       className="flex flex-col w-full rounded-lg bg-white shadow-md overflow-hidden dark:bg-gray-800 dark:text-white"
     >
@@ -71,7 +79,6 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
         </div>
         
         <div
-          ref={setDroppableRef}
           className="flex-1 w-full min-h-20 p-2 flex flex-wrap items-center gap-2 bg-gray-50 dark:bg-gray-700"
         >
           {isEditing ? (
@@ -89,7 +96,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
                   <CharacterCard key={character.id} character={character} />
                 ))
               ) : (
-                <span className="text-gray-400 italic dark:text-gray-500">
+                <span className="text-gray-400 italic dark:text-gray-500 block w-full text-center">
                   Drag characters here
                 </span>
               )}
