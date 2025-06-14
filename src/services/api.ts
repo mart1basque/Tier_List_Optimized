@@ -509,28 +509,8 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
+// Fetch Harry Potter characters using the classic HP-API
 async function fetchHarryPotterCharacters(): Promise<Character[]> {
-  // Try PotterDB first as it provides more images
-  try {
-    const { data } = await axios.get(
-      'https://api.potterdb.com/v1/characters?page[size]=500',
-    );
-    const characters = Array.isArray(data?.data) ? data.data : [];
-    if (characters.length > 0) {
-      return characters.map((item: any, index: number) => ({
-        id: `harrypotter-${item.id ?? index}`,
-        name: item.attributes?.name ?? `Character ${index}`,
-        image:
-          item.attributes?.image ||
-          createPlaceholderImage(item.attributes?.name ?? `Character ${index}`, '#740001'),
-        universe: 'harry-potter',
-      }));
-    }
-  } catch (error) {
-    console.error('Error fetching characters from PotterDB:', error);
-  }
-
-  // Fallback to hp-api if PotterDB fails
   try {
     const { data } = await axios.get('https://hp-api.onrender.com/api/characters');
     return data.map((item: any, index: number) => ({
