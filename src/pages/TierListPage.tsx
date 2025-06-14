@@ -139,6 +139,8 @@ function getImageFromId(id: string) {
               ? 'League of Legends'
               : currentUniverse === 'onepiece'
               ? 'One Piece'
+              : currentUniverse === 'pvz'
+              ? 'Plants vs. Zombies'
               : 'Naruto'}{' '}
             Tier List
           </h1>
