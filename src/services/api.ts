@@ -66,6 +66,15 @@ export const fetchCharacters = async (
     }
   }
 
+  if (universe === 'harry-potter') {
+    try {
+      return await fetchHarryPotterCharacters();
+    } catch (error) {
+      console.error('Error fetching Harry Potter characters:', error);
+      return generateHarryPotterCharacters();
+    }
+  }
+
   if (universe === 'onepiece') {
     try {
       return await fetchOnePieceCharacters();
@@ -97,6 +106,9 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
       break;
     case 'league-of-legends':
       characters = generateLeagueCharacters(filters);
+      break;
+    case 'harry-potter':
+      characters = generateHarryPotterCharacters();
       break;
   }
   
@@ -494,6 +506,31 @@ function generateOnePieceCharacters(): Character[] {
     name,
     image: createPlaceholderImage(name, '#2E51A2'),
     universe: 'onepiece',
+  }));
+}
+
+async function fetchHarryPotterCharacters(): Promise<Character[]> {
+  try {
+    const { data } = await axios.get('https://hp-api.onrender.com/api/characters');
+    return data.map((item: any, index: number) => ({
+      id: `harrypotter-${index}`,
+      name: item.name,
+      image: item.image || createPlaceholderImage(item.name, '#740001'),
+      universe: 'harry-potter',
+    }));
+  } catch (error) {
+    console.error('Error fetching Harry Potter characters:', error);
+    return generateHarryPotterCharacters();
+  }
+}
+
+function generateHarryPotterCharacters(): Character[] {
+  const names = ['Harry Potter', 'Hermione Granger', 'Ron Weasley', 'Albus Dumbledore', 'Severus Snape', 'Draco Malfoy'];
+  return names.map((name, index) => ({
+    id: `harrypotter-${index}`,
+    name,
+    image: createPlaceholderImage(name, '#740001'),
+    universe: 'harry-potter',
   }));
 }
 

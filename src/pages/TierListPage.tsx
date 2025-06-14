@@ -137,6 +137,8 @@ function getImageFromId(id: string) {
               ? 'Demon Slayer'
               : currentUniverse === 'league-of-legends'
               ? 'League of Legends'
+              : currentUniverse === 'harry-potter'
+              ? 'Harry Potter'
               : currentUniverse === 'onepiece'
               ? 'One Piece'
               : 'Naruto'}{' '}
