@@ -519,6 +519,9 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
         const { data } = await axios.get(`${PVZ_API}/${category}`);
         const items = Array.isArray(data) ? data : data.data || [];
         items.forEach((item: any, index: number) => {
+          const name =
+            item.name || item.nom || item.plantName || item.zombieName || `Unknown`;
+
           let url =
             item.image ||
             item.imageUrl ||
@@ -527,14 +530,19 @@ async function fetchPVZCharacters(filters: string[]): Promise<Character[]> {
             item.iconUrl ||
             item.icon_url;
 
+          if (!url && typeof name === 'string') {
+            const encodedName = encodeURIComponent(name);
+            url = `${PVZ_BASE}/assets/${category}/${encodedName}.png`;
+          }
+
           if (url && typeof url === 'string' && !/^https?:\/\//i.test(url)) {
             url = `${PVZ_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
           }
 
           results.push({
             id: `pvz-${category}-${index}`,
-            name: item.name || item.nom || `Unknown`,
-            image: url || createPlaceholderImage(item.name || 'PVZ', '#6AAA1E'),
+            name,
+            image: url || createPlaceholderImage(name, '#6AAA1E'),
             universe: 'pvz',
             type: category,
           });
