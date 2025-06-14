@@ -495,12 +495,17 @@ function generateOnePieceCharacters(): Character[] {
   }));
 }
 
-// Fetch Harry Potter characters using the classic HP-API
+// Fetch Harry Potter characters using PotterAPI
+// The API key should be provided via the `VITE_POTTERAPI_KEY` env variable
 async function fetchHarryPotterCharacters(): Promise<Character[]> {
+  const apiKey = import.meta.env.VITE_POTTERAPI_KEY || '';
+  const url =
+    'https://www.potterapi.com/v1/characters' + (apiKey ? `?key=${apiKey}` : '');
+
   try {
-    const { data } = await axios.get('https://hp-api.onrender.com/api/characters');
+    const { data } = await axios.get(url);
     return data.map((item: any, index: number) => ({
-      id: `harrypotter-${index}`,
+      id: item._id ? `harrypotter-${item._id}` : `harrypotter-${index}`,
       name: item.name,
       image: item.image || createPlaceholderImage(item.name, '#740001'),
       universe: 'harry-potter',
