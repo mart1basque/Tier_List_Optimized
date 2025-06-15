@@ -73,9 +73,17 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   }, [isNightMode]);
 
+  const appliedThemeColors = React.useMemo(
+    () => ({
+      ...themeColors,
+      text: isNightMode ? '#ffffff' : themeColors.text,
+    }),
+    [themeColors, isNightMode]
+  );
+
   return (
     <ThemeContext.Provider
-      value={{ currentUniverse, setCurrentUniverse, themeColors, backgroundStyle, isNightMode, toggleNightMode: () => setIsNightMode(prev => !prev) }}
+      value={{ currentUniverse, setCurrentUniverse, themeColors: appliedThemeColors, backgroundStyle, isNightMode, toggleNightMode: () => setIsNightMode(prev => !prev) }}
     >
       {children}
     </ThemeContext.Provider>
