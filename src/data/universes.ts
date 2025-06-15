@@ -143,7 +143,7 @@ export const universeConfig: Record<UniverseType, {
       secondary: '#F0E6D2', // parchment
       accent: '#C89B3C', // gold
       background: '#000',
-      text: '#E5E5E5',
+      text: '#1F2937',
     },
     backgroundStyle: {
       background: 'linear-gradient(to bottom, #0A1428, #000000)',
