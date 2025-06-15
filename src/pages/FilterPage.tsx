@@ -41,7 +41,7 @@ const FilterPage: React.FC = () => {
           setPokemonLanguage(e.target.value as 'en' | 'fr');
           setSelectedFilters([]);
         }}
-        className="border rounded p-2 w-full"
+        className="border rounded p-2 w-full bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="" disabled>
           Choose language
@@ -61,7 +61,7 @@ const FilterPage: React.FC = () => {
         id="temtem-variant"
         value={temtemVariant}
         onChange={e => setTemtemVariant(e.target.value as 'normal' | 'luma')}
-        className="border rounded p-2 w-full"
+        className="border rounded p-2 w-full bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="" disabled>
           Choose variant
