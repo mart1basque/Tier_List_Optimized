@@ -18,7 +18,7 @@ import narutoHome from '../assets/naruto-home.png';
 import demonSlayerHome from '../assets/demon-slayer-home.png';
 import lolHome from '../assets/lol-home.png';
 import onePieceHome from '../assets/onepiece-home.png';
-import temtemHome from '../assets/temtem-home.svg';
+import temtemHome from '../assets/temtem-home.png';
 
 export const universes: Universe[] = [
   {
