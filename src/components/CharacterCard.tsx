@@ -56,7 +56,9 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.8 : 1,
-    visibility: isActive ? 'hidden' as const : 'visible' as const,
+    // Hide the element completely from the layout while dragging so
+    // the original slot collapses and only the overlay remains.
+    display: isActive ? 'none' as const : undefined,
   };
   
   return (
