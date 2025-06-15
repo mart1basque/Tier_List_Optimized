@@ -133,7 +133,10 @@ function getImageFromId(id: string) {
         </button>
         
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white drop-shadow-md mb-2">
+          <h1
+            className="text-3xl font-bold drop-shadow-md mb-2 dark:text-white"
+            style={{ color: themeColors.text }}
+          >
             {currentUniverse === 'pokemon'
               ? 'Pokémon'
               : currentUniverse === 'demon-slayer'
