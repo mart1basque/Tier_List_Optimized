@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { universes } from '../data/universes';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSelector from '../components/LanguageSelector';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { setCurrentUniverse } = useTheme();
+  const { t } = useLanguage();
   
   // Reset universe on home page
   useEffect(() => {
@@ -47,7 +50,7 @@ const HomePage: React.FC = () => {
             <Sparkles className="text-yellow-400 ml-2" size={28} />
           </div>
           <p className="text-lg md:text-xl max-w-2xl text-blue-100">
-            Create beautiful tier lists for your favorite anime universes
+            {t('createBeautiful')}
           </p>
         </div>
 
@@ -76,7 +79,9 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </div>
-      
+
+      <LanguageSelector />
+
       <style jsx>{`
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; }

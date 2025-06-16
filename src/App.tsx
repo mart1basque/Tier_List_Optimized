@@ -4,18 +4,21 @@ import HomePage from './pages/HomePage';
 import FilterPage from './pages/FilterPage';
 import TierListPage from './pages/TierListPage';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/filter/:universe" element={<FilterPage />} />
-          <Route path="/tierlist/:universe" element={<TierListPage />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/filter/:universe" element={<FilterPage />} />
+            <Route path="/tierlist/:universe" element={<TierListPage />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
 

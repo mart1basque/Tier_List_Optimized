@@ -5,13 +5,15 @@ import { UniverseType, universeConfig } from '../data/universes';
 import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
 import NightModeToggle from '../components/NightModeToggle';
+import { useLanguage } from '../context/LanguageContext';
 
 const FilterPage: React.FC = () => {
   const { universe } = useParams<{ universe: string }>();
   const navigate = useNavigate();
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
+  const { t } = useLanguage();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [pokemonLanguage, setPokemonLanguage] = useState<'en' | 'fr' | ''>('');
+  const [pokemonLanguage, setPokemonLanguage] = useState<'en' | 'fr' | 'es' | ''>('');
   const [temtemVariant, setTemtemVariant] = useState<'normal' | 'luma' | ''>('');
   
   useEffect(() => {
@@ -32,22 +34,23 @@ const FilterPage: React.FC = () => {
   const languageSelector = currentUniverse === 'pokemon' && (
     <div className="mb-6">
       <label htmlFor="pokemon-language" className="block mb-2 font-medium">
-        Select Pokémon Language
+        {t('selectPokemonLanguage')}
       </label>
       <select
         id="pokemon-language"
         value={pokemonLanguage}
         onChange={e => {
-          setPokemonLanguage(e.target.value as 'en' | 'fr');
+          setPokemonLanguage(e.target.value as 'en' | 'fr' | 'es');
           setSelectedFilters([]);
         }}
         className="border rounded p-2 w-full bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="" disabled>
-          Choose language
+          {t('chooseLanguage')}
         </option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
+        <option value="en">{t('english')}</option>
+        <option value="fr">{t('french')}</option>
+        <option value="es">{t('spanish')}</option>
       </select>
     </div>
   );
@@ -55,7 +58,7 @@ const FilterPage: React.FC = () => {
   const variantSelector = currentUniverse === 'temtem' && (
     <div className="mb-6">
       <label htmlFor="temtem-variant" className="block mb-2 font-medium">
-        Select Temtem Variant
+        {t('selectTemtemVariant')}
       </label>
       <select
         id="temtem-variant"
@@ -64,10 +67,10 @@ const FilterPage: React.FC = () => {
         className="border rounded p-2 w-full bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="" disabled>
-          Choose variant
+          {t('chooseVariant')}
         </option>
-        <option value="normal">Normal</option>
-        <option value="luma">Luma</option>
+        <option value="normal">{t('normal')}</option>
+        <option value="luma">{t('luma')}</option>
       </select>
     </div>
   );
@@ -85,11 +88,11 @@ const FilterPage: React.FC = () => {
       navigate(`/tierlist/${currentUniverse}?filters=`);
     } else if (selectedFilters.length > 0) {
       if (currentUniverse === 'pokemon' && !pokemonLanguage) {
-        alert('Please select a language first');
+        alert(t('pleaseSelectLanguage'));
         return;
       }
       if (currentUniverse === 'temtem' && !temtemVariant) {
-        alert('Please select a variant first');
+        alert(t('pleaseSelectVariant'));
         return;
       }
       const filterParams = selectedFilters.join(',');
@@ -102,7 +105,7 @@ const FilterPage: React.FC = () => {
       );
     } else {
       // Show error or notification that at least one filter should be selected
-      alert('Please select at least one option to continue');
+      alert(t('pleaseSelectOption'));
     }
   };
 
@@ -117,14 +120,14 @@ const FilterPage: React.FC = () => {
           className="flex items-center text-white mb-8 bg-black bg-opacity-30 rounded-full px-4 py-2 hover:bg-opacity-40 transition-all"
         >
           <ChevronLeft size={20} />
-          <span>Back to Home</span>
+          <span>{t('backToHome')}</span>
         </button>
         
         <div className="max-w-2xl mx-auto bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-xl p-8 dark:bg-gray-800 dark:bg-opacity-90 dark:text-white">
           <div className="flex items-center mb-6">
             <Filter className="mr-3" style={{ color: themeColors.primary }} />
             <h2 className="text-2xl font-bold" style={{ color: themeColors.text }}>
-              Customize Your {currentUniverse === 'pokemon'
+              {t('customizeYour')} {currentUniverse === 'pokemon'
                 ? 'Pokémon'
                 : currentUniverse === 'demon-slayer'
                 ? 'Demon Slayer'
@@ -134,7 +137,7 @@ const FilterPage: React.FC = () => {
                 ? 'One Piece'
                 : currentUniverse === 'temtem'
                 ? 'Temtem'
-                : 'Naruto'} Tier List
+                : 'Naruto'} {t('tierList')}
             </h2>
           </div>
           
@@ -142,7 +145,7 @@ const FilterPage: React.FC = () => {
           {variantSelector}
 
           <p className="mb-6 text-gray-600 dark:text-gray-300">
-            Select which {currentUniverse === 'pokemon'
+            {t('selectWhich')} {currentUniverse === 'pokemon'
               ? 'generations'
               : currentUniverse === 'naruto'
               ? 'series'
@@ -152,7 +155,7 @@ const FilterPage: React.FC = () => {
               ? 'characters'
               : currentUniverse === 'temtem'
               ? 'types'
-              : 'seasons'} you want to include in your tier list:
+              : 'seasons'} {t('youWant')}
           </p>
           
           {filterOptions.length > 0 && (
@@ -213,7 +216,7 @@ const FilterPage: React.FC = () => {
                 (currentUniverse === 'temtem' && !temtemVariant)
               }
             >
-              <span className="mr-2">Continue</span>
+              <span className="mr-2">{t('continue')}</span>
               <ArrowRight size={18} />
             </button>
           </div>
