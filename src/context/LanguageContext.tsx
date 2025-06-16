@@ -46,7 +46,19 @@ const translations: Record<Language, Record<string, string>> = {
     dragCharactersHere: 'Drag characters here',
     save: 'Save',
     editTier: 'Edit tier',
-    deleteTier: 'Delete tier'
+    deleteTier: 'Delete tier',
+    pokemonName: 'Pokémon',
+    pokemonDescription: 'Create tier lists of your favorite Pokémon by generation',
+    narutoName: 'Naruto',
+    narutoDescription: 'Rank ninjas from the Naruto universe by arc or series',
+    demonSlayerName: 'Demon Slayer',
+    demonSlayerDescription: 'Create tier lists of characters from each season of Demon Slayer',
+    leagueOfLegendsName: 'League of Legends',
+    leagueOfLegendsDescription: 'Rank your favorite champions by class using Data Dragon',
+    onepieceName: 'One Piece',
+    onepieceDescription: 'Create tier lists of characters from One Piece using Jikan',
+    temtemName: 'Temtem',
+    temtemDescription: 'Rank Temtem creatures by type or check their Luma form'
   },
   fr: {
     createBeautiful: 'Créez de magnifiques tier lists pour vos univers d\'anime préférés',
@@ -85,7 +97,19 @@ const translations: Record<Language, Record<string, string>> = {
     dragCharactersHere: 'Glissez les personnages ici',
     save: 'Enregistrer',
     editTier: 'Modifier le tier',
-    deleteTier: 'Supprimer le tier'
+    deleteTier: 'Supprimer le tier',
+    pokemonName: 'Pokémon',
+    pokemonDescription: 'Créez des tier lists de vos Pokémon préférés par génération',
+    narutoName: 'Naruto',
+    narutoDescription: 'Classez les ninjas de l\'univers Naruto par arc ou série',
+    demonSlayerName: 'Demon Slayer',
+    demonSlayerDescription: 'Créez des tier lists des personnages de chaque saison de Demon Slayer',
+    leagueOfLegendsName: 'League of Legends',
+    leagueOfLegendsDescription: 'Classez vos champions préférés par classe en utilisant Data Dragon',
+    onepieceName: 'One Piece',
+    onepieceDescription: 'Créez des tier lists des personnages de One Piece avec Jikan',
+    temtemName: 'Temtem',
+    temtemDescription: 'Classez les créatures Temtem par type ou vérifiez leur forme Luma'
   },
   es: {
     createBeautiful: 'Crea listas de niveles para tus universos de anime favoritos',
@@ -124,14 +148,26 @@ const translations: Record<Language, Record<string, string>> = {
     dragCharactersHere: 'Arrastra los personajes aquí',
     save: 'Guardar',
     editTier: 'Editar tier',
-    deleteTier: 'Eliminar tier'
+    deleteTier: 'Eliminar tier',
+    pokemonName: 'Pokémon',
+    pokemonDescription: 'Crea listas de niveles de tus Pokémon favoritos por generación',
+    narutoName: 'Naruto',
+    narutoDescription: 'Clasifica a los ninjas del universo de Naruto por arco o serie',
+    demonSlayerName: 'Demon Slayer',
+    demonSlayerDescription: 'Crea listas de niveles de personajes de cada temporada de Demon Slayer',
+    leagueOfLegendsName: 'League of Legends',
+    leagueOfLegendsDescription: 'Clasifica tus campeones favoritos por clase usando Data Dragon',
+    onepieceName: 'One Piece',
+    onepieceDescription: 'Crea listas de niveles de personajes de One Piece usando Jikan',
+    temtemName: 'Temtem',
+    temtemDescription: 'Clasifica a las criaturas Temtem por tipo o revisa su forma Luma'
   }
 };
 
 const LanguageContext = createContext<LanguageContextType>({
-  language: 'en',
+  language: 'fr',
   setLanguage: () => {},
-  t: key => translations['en'][key] || key
+  t: key => translations['fr'][key] || key
 });
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -139,7 +175,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     if (typeof window !== 'undefined' && localStorage.getItem('language')) {
       return localStorage.getItem('language') as Language;
     }
-    return 'en';
+    return 'fr';
   });
 
   useEffect(() => {
@@ -148,7 +184,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   }, [language]);
 
-  const t = useCallback((key: string) => translations[language][key] || translations['en'][key] || key, [language]);
+  const t = useCallback((key: string) => translations[language][key] || translations['fr'][key] || key, [language]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

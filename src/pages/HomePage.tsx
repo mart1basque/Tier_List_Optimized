@@ -64,15 +64,15 @@ const HomePage: React.FC = () => {
               <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-30 transition-opacity duration-300 z-10"></div>
               <img
                 src={universe.image}
-                alt={universe.name}
+                alt={t(universe.nameKey)}
                 className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 flex flex-col justify-end p-6 z-20">
                 <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-md">
-                  {universe.name}
+                  {t(universe.nameKey)}
                 </h3>
                 <p className="text-white text-sm opacity-90 drop-shadow-md">
-                  {universe.description}
+                  {t(universe.descriptionKey)}
                 </p>
               </div>
             </div>
