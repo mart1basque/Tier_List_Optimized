@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import Flag from './Flag';
 
 const options = [
-  { code: 'en', label: 'English', flag: '🇺🇸' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' }
+  { code: 'en', label: 'English', flag: 'us' },
+  { code: 'fr', label: 'Français', flag: 'fr' },
+  { code: 'es', label: 'Español', flag: 'es' }
 ] as const;
 
 type Option = typeof options[number];
@@ -26,7 +27,7 @@ const LanguageSelector: React.FC = () => {
         className="flex items-center gap-1 bg-white text-black px-3 py-2 rounded shadow"
         onClick={() => setOpen(o => !o)}
       >
-        <span>{current.flag}</span>
+        <Flag code={current.flag} size={16} />
         <span className="font-medium uppercase">{current.code}</span>
       </button>
       {open && (
@@ -37,7 +38,7 @@ const LanguageSelector: React.FC = () => {
               onClick={() => handleSelect(o.code)}
               className="cursor-pointer px-3 py-2 hover:bg-gray-100 flex items-center gap-2 whitespace-nowrap"
             >
-              <span>{o.flag}</span>
+              <Flag code={o.flag} size={16} />
               <span>{o.label}</span>
             </div>
           ))}
