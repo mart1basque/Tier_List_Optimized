@@ -8,8 +8,8 @@ export type UniverseType =
 
 export interface Universe {
   id: UniverseType;
-  name: string;
-  description: string;
+  nameKey: string;
+  descriptionKey: string;
   image: string;
 }
 
@@ -23,38 +23,38 @@ import temtemHome from '../assets/temtem-home.png';
 export const universes: Universe[] = [
   {
     id: 'pokemon',
-    name: 'Pokémon',
-    description: 'Create tier lists of your favorite Pokémon by generation',
+    nameKey: 'pokemonName',
+    descriptionKey: 'pokemonDescription',
     image: pokemonHome,
   },
   {
     id: 'naruto',
-    name: 'Naruto',
-    description: 'Rank ninjas from the Naruto universe by arc or series',
+    nameKey: 'narutoName',
+    descriptionKey: 'narutoDescription',
     image: narutoHome,
   },
   {
     id: 'demon-slayer',
-    name: 'Demon Slayer',
-    description: 'Create tier lists of characters from each season of Demon Slayer',
+    nameKey: 'demonSlayerName',
+    descriptionKey: 'demonSlayerDescription',
     image: demonSlayerHome,
   },
   {
     id: 'league-of-legends',
-    name: 'League of Legends',
-    description: 'Rank your favorite champions by class using Data Dragon',
+    nameKey: 'leagueOfLegendsName',
+    descriptionKey: 'leagueOfLegendsDescription',
     image: lolHome,
   },
   {
     id: 'onepiece',
-    name: 'One Piece',
-    description: 'Create tier lists of characters from One Piece using Jikan',
+    nameKey: 'onepieceName',
+    descriptionKey: 'onepieceDescription',
     image: onePieceHome,
   },
   {
     id: 'temtem',
-    name: 'Temtem',
-    description: 'Rank Temtem creatures by type or check their Luma form',
+    nameKey: 'temtemName',
+    descriptionKey: 'temtemDescription',
     image: temtemHome,
   },
 ];
