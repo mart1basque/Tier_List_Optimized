@@ -49,6 +49,12 @@ const HomePage: React.FC = () => {
           <p className="text-lg md:text-xl max-w-2xl text-blue-100">
             Create beautiful tier lists for your favorite anime universes
           </p>
+          <button
+            onClick={() => navigate('/guide')}
+            className="mt-6 px-5 py-2 bg-indigo-600 rounded-full hover:bg-indigo-700 transition"
+          >
+            Guide
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
