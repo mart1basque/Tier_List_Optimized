@@ -6,6 +6,7 @@ import { Trash2, Edit2 } from 'lucide-react';
 import { Character } from '../types/types';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TierProps {
   id: string;
@@ -19,6 +20,7 @@ interface TierProps {
 
 const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onUpdate, activeCharacter }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [newLabel, setNewLabel] = useState(label);
   const [newColor, setNewColor] = useState(color);
@@ -97,7 +99,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
               ))}
               {characters.length === 0 && !isOver && (
                 <span className="text-gray-400 italic dark:text-gray-500 block w-full text-center">
-                  Drag characters here
+                  {t('dragCharactersHere')}
                 </span>
               )}
               {isOver && activeCharacter && characters.length === 0 && (
@@ -111,14 +113,14 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
           <button
             onClick={handleEditSave}
           className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-white"
-            title={isEditing ? "Save" : "Edit tier"}
+            title={isEditing ? t('save') : t('editTier')}
           >
             <Edit2 size={18} />
           </button>
           <button
             onClick={onRemove}
           className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-red-400"
-            title="Delete tier"
+            title={t('deleteTier')}
           >
             <Trash2 size={18} />
           </button>

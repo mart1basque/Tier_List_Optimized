@@ -25,7 +25,7 @@ function createPlaceholderImage(name: string, color: string): string {
 export const fetchCharacters = async (
   universe: UniverseType,
   filters: string[],
-  language: 'en' | 'fr' = 'en',
+  language: 'en' | 'fr' | 'es' = 'en',
   variant: 'normal' | 'luma' = 'normal'
 ): Promise<Character[]> => {
   if (universe === 'pokemon') {
@@ -115,7 +115,7 @@ function getMockCharacters(universe: UniverseType, filters: string[]): Character
 
 function generatePokemonCharacters(
   filters: string[],
-  language: 'en' | 'fr' = 'en'
+  language: 'en' | 'fr' | 'es' = 'en'
 ): Character[] {
   const data: Record<string, { id: number; en: string; fr: string }[]> = {
     gen1: [
@@ -204,7 +204,7 @@ function generatePokemonCharacters(
 
 async function fetchPokemonCharacters(
   filters: string[],
-  language: 'en' | 'fr' = 'en'
+  language: 'en' | 'fr' | 'es' = 'en'
 ): Promise<Character[]> {
   const generationIds: Record<string, number> = {
     gen1: 1,

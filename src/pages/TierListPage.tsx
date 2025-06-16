@@ -10,6 +10,7 @@ import TierListGrid from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
 import { fetchCharacters } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import {
   DndContext,
   DragOverlay,
@@ -27,6 +28,7 @@ const TierListPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { currentUniverse, setCurrentUniverse, themeColors } = useTheme();
+  const { t } = useLanguage();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -55,7 +57,7 @@ function getImageFromId(id: string) {
 
   // Get selected filters from URL
   const filtersParam = searchParams.get('filters') ?? '';
-  const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr';
+  const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr' | 'es';
   const variant = (searchParams.get('variant') ?? 'normal') as 'normal' | 'luma';
   const filters = useMemo(
     () =>
@@ -129,7 +131,7 @@ function getImageFromId(id: string) {
           className="flex items-center text-white mb-8 bg-black bg-opacity-30 rounded-full px-4 py-2 hover:bg-opacity-40 transition-all"
         >
           <ChevronLeft size={20} />
-          <span>Back to Filters</span>
+          <span>{t('backToFilters')}</span>
         </button>
         
         <div className="mb-8">
@@ -147,8 +149,7 @@ function getImageFromId(id: string) {
               ? 'One Piece'
               : currentUniverse === 'temtem'
               ? 'Temtem'
-              : 'Naruto'}{' '}
-            Tier List
+              : 'Naruto'} {t('tierList')}
           </h1>
           <div className="flex flex-wrap gap-2">
             {filters.map(filter => (

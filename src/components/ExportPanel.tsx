@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toPng } from 'html-to-image';
 import { Download, Share2, Code } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ExportPanelProps {
   tierListRef: React.RefObject<HTMLDivElement>;
@@ -10,6 +11,7 @@ interface ExportPanelProps {
 
 const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   
   const exportAsImage = async () => {
@@ -63,7 +65,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:text-white">
       <h3 className="font-medium mb-4" style={{ color: themeColors.text }}>
-        Export & Share
+        {t('exportShare')}
       </h3>
       
       <div className="flex flex-wrap gap-3">
@@ -76,7 +78,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
           }}
         >
           <Download size={18} className="mr-2" />
-          Save as Image
+          {t('saveAsImage')}
         </button>
         
         <button
@@ -88,7 +90,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
           }}
         >
           <Code size={18} className="mr-2" />
-          Export JSON
+          {t('exportJson')}
         </button>
         
         <button
@@ -100,7 +102,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
           }}
         >
           <Share2 size={18} className="mr-2" />
-          {copied ? 'Link Copied!' : 'Copy Share Link'}
+          {copied ? t('linkCopied') : t('copyShareLink')}
         </button>
       </div>
     </div>

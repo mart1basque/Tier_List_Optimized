@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Upload, Plus, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Character } from '../types/types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ImageUploaderProps {
   onImageUploaded: (character: Character) => void;
@@ -9,6 +10,7 @@ interface ImageUploaderProps {
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const [dragActive, setDragActive] = useState(false);
   const [characterName, setCharacterName] = useState('');
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -68,7 +70,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
   return (
     <div className="p-4 bg-white rounded-lg shadow-md mb-6 dark:bg-gray-800 dark:text-white">
       <h3 className="font-medium mb-4" style={{ color: themeColors.text }}>
-        Add Custom Character
+        {t('addCustomCharacter')}
       </h3>
       
       {previewImage ? (
@@ -80,14 +82,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
             
             <div className="flex-1">
               <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
-                Character Name
+                {t('characterName')}
               </label>
               <input
                 type="text"
                 value={characterName}
                 onChange={(e) => setCharacterName(e.target.value)}
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Enter character name"
+                placeholder={t('enterCharacterName')}
                 autoFocus
               />
             </div>
@@ -101,7 +103,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
               disabled={!characterName.trim()}
             >
               <Plus size={16} className="inline mr-1" />
-              Add to Tier List
+              {t('addToTierList')}
             </button>
             
             <button
@@ -109,7 +111,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
               className="px-4 py-2 rounded-md border"
             >
               <X size={16} className="inline mr-1" />
-              Cancel
+              {t('cancel')}
             </button>
           </div>
         </div>
@@ -129,14 +131,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUploaded }) => {
             style={{ color: themeColors.primary }}
           />
           <p className="mb-2 text-sm" style={{ color: themeColors.text }}>
-            Drag & drop an image, or <span
+            {t('dragDrop')} <span
               className="cursor-pointer font-medium"
               style={{ color: themeColors.primary }}
               onClick={() => fileInputRef.current?.click()}
-            >browse</span>
+            >{t('browse')}</span>
           </p>
           <p className="text-xs text-gray-500">
-            PNG, JPG or GIF up to 5MB
+            {t('fileSize')}
           </p>
           <input
             ref={fileInputRef}

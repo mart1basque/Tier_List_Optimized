@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+
+const options = [
+  { code: 'en', label: 'English', flag: '🇺🇸' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' }
+] as const;
+
+type Option = typeof options[number];
+
+const LanguageSelector: React.FC = () => {
+  const { language, setLanguage } = useLanguage();
+  const [open, setOpen] = useState(false);
+
+  const current = options.find(o => o.code === language) as Option;
+
+  const handleSelect = (code: string) => {
+    setLanguage(code as any);
+    setOpen(false);
+  };
+
+  return (
+    <div className="fixed bottom-4 right-4 text-sm z-50">
+      <button
+        className="flex items-center gap-1 bg-white dark:bg-gray-700 px-3 py-2 rounded shadow"
+        onClick={() => setOpen(o => !o)}
+      >
+        <span>{current.flag}</span>
+        <span className="font-medium uppercase">{current.code}</span>
+      </button>
+      {open && (
+        <div className="absolute right-0 mt-2 bg-white dark:bg-gray-700 rounded shadow overflow-hidden">
+          {options.map(o => (
+            <div
+              key={o.code}
+              onClick={() => handleSelect(o.code)}
+              className="cursor-pointer px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center gap-2 whitespace-nowrap"
+            >
+              <span>{o.flag}</span>
+              <span>{o.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default LanguageSelector;
