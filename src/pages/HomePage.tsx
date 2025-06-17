@@ -39,6 +39,15 @@ const HomePage: React.FC = () => {
           />
         ))}
       </div>
+
+      <a
+        href="https://mankindcorp.fr"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed top-4 left-4 z-50 px-4 py-2 rounded-lg font-semibold bg-gradient-to-r from-pink-500 to-yellow-500 shadow-lg hover:opacity-90"
+      >
+        MankindCorp.fr
+      </a>
       
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col items-center justify-center text-center mb-16">
