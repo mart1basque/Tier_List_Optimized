@@ -6,6 +6,7 @@ import { Character } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
 import NightModeToggle from '../components/NightModeToggle';
+import OrderWebsiteButton from '../components/OrderWebsiteButton';
 import TierListGrid from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
@@ -135,22 +136,25 @@ function getImageFromId(id: string) {
         </button>
         
         <div className="mb-8">
-          <h1
-            className="text-3xl font-bold drop-shadow-md mb-2 dark:text-white"
-            style={{ color: themeColors.text }}
-          >
-            {currentUniverse === 'pokemon'
-              ? 'Pokémon'
-              : currentUniverse === 'demon-slayer'
-              ? 'Demon Slayer'
-              : currentUniverse === 'league-of-legends'
-              ? 'League of Legends'
-              : currentUniverse === 'onepiece'
-              ? 'One Piece'
-              : currentUniverse === 'temtem'
-              ? 'Temtem'
-              : 'Naruto'} {t('tierList')}
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1
+              className="text-3xl font-bold drop-shadow-md mb-2 dark:text-white"
+              style={{ color: themeColors.text }}
+            >
+              {currentUniverse === 'pokemon'
+                ? 'Pokémon'
+                : currentUniverse === 'demon-slayer'
+                ? 'Demon Slayer'
+                : currentUniverse === 'league-of-legends'
+                ? 'League of Legends'
+                : currentUniverse === 'onepiece'
+                ? 'One Piece'
+                : currentUniverse === 'temtem'
+                ? 'Temtem'
+                : 'Naruto'} {t('tierList')}
+            </h1>
+            <OrderWebsiteButton />
+          </div>
           <div className="flex flex-wrap gap-2">
             {filters.map(filter => (
               <span 
