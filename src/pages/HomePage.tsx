@@ -94,20 +94,20 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
 
-        <div className="flex justify-center mt-8">
-          <button
+          <div
+            className="relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer group"
             onClick={() => navigate('/custom')}
-            className="flex items-center px-5 py-2 rounded-full font-semibold text-white shadow-md border hover:opacity-90 transition-colors"
-            style={{
-              backgroundColor: themeColors.primary,
-              borderColor: `${themeColors.primary}80`
-            }}
           >
-            <Plus size={18} className="mr-2" />
-            {t('createCustomTierList')}
-          </button>
+            <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-30 transition-opacity duration-300 z-10" />
+            <div className="w-full h-56 bg-gradient-to-b from-gray-700 to-gray-900 flex items-center justify-center" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-20">
+              <Plus size={36} className="text-white mb-2" />
+              <h3 className="text-xl font-bold text-white drop-shadow-md text-center">
+                {t('createCustomTierList')}
+              </h3>
+            </div>
+          </div>
         </div>
       </div>
 
