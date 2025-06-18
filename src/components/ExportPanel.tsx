@@ -10,22 +10,26 @@ interface ExportPanelProps {
 }
 
 const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData }) => {
-  const { themeColors } = useTheme();
+  const { themeColors, currentUniverse } = useTheme();
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   
   const exportAsImage = async () => {
     if (tierListRef.current) {
+      setImageLoading(true);
       try {
         const dataUrl = await toPng(tierListRef.current, { quality: 0.95 });
-        
-        // Create a link and trigger download
+
         const link = document.createElement('a');
-        link.download = 'tiersaga-tierlist.png';
+        const themeName = currentUniverse ?? 'tierlist';
+        link.download = `mankind_tier_list_${themeName}.png`;
         link.href = dataUrl;
         link.click();
       } catch (error) {
         console.error('Error exporting as image:', error);
+      } finally {
+        setImageLoading(false);
       }
     }
   };
@@ -94,12 +98,16 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
         <button
           onClick={exportAsImage}
           className="flex items-center px-4 py-2 rounded-md transition-all"
-          style={{ 
-            backgroundColor: `${themeColors.primary}15`, 
-            color: themeColors.primary 
+          style={{
+            backgroundColor: `${themeColors.primary}15`,
+            color: themeColors.primary
           }}
         >
-          <Download size={18} className="mr-2" />
+          {imageLoading ? (
+            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-current mr-2"></div>
+          ) : (
+            <Download size={18} className="mr-2" />
+          )}
           {t('saveAsImage')}
         </button>
         
