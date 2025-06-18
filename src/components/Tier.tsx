@@ -113,7 +113,7 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
           <button
             onClick={handleEditSave}
           className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-white"
-            title={isEditing ? t('save') : t('editTier')}
+            title={isEditing ? t('save') : t('editTierDetails')}
           >
             <Edit2 size={18} />
           </button>

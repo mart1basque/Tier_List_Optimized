@@ -94,7 +94,10 @@ const translations: Record<Language, Record<string, string>> = {
     typeMental: 'Mental',
     typeMelee: 'Melee',
     typeCrystal: 'Crystal',
-    typeToxic: 'Toxic'
+    typeToxic: 'Toxic',
+    activateNightMode: 'Activate night mode',
+    activateDayMode: 'Activate day mode',
+    editTierDetails: 'Edit tier title and color'
   },
   fr: {
     createBeautiful: 'Commence ta tier liste en choisissant ton univers préférére',
@@ -181,7 +184,10 @@ const translations: Record<Language, Record<string, string>> = {
     typeMental: 'Mental',
     typeMelee: 'Mêlée',
     typeCrystal: 'Cristal',
-    typeToxic: 'Toxique'
+    typeToxic: 'Toxique',
+    activateNightMode: 'Activer le mode nuit',
+    activateDayMode: 'Activer le mode jour',
+    editTierDetails: 'Modifier le titre et la couleur du tier'
   },
   es: {
     createBeautiful: 'Crea listas de niveles para tus universos de anime favoritos',
@@ -268,7 +274,10 @@ const translations: Record<Language, Record<string, string>> = {
     typeMental: 'Mental',
     typeMelee: 'Cuerpo a Cuerpo',
     typeCrystal: 'Cristal',
-    typeToxic: 'Tóxico'
+    typeToxic: 'Tóxico',
+    activateNightMode: 'Activar modo noche',
+    activateDayMode: 'Activar modo día',
+    editTierDetails: 'Modificar el título y el color del tier'
   }
 };
 
