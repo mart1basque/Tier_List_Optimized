@@ -95,10 +95,10 @@ const HomePage: React.FC = () => {
             </div>
           ))}
 
-          <div
-            className="relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer group"
-            onClick={() => navigate('/custom')}
-          >
+        <div
+          className="relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 cursor-pointer group lg:col-start-2"
+          onClick={() => navigate('/custom')}
+        >
             <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-30 transition-opacity duration-300 z-10" />
             <div className="w-full h-56 bg-gradient-to-b from-gray-700 to-gray-900 flex items-center justify-center" />
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-20">
