@@ -19,7 +19,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
     if (tierListRef.current) {
       setImageLoading(true);
       try {
-        const dataUrl = await toPng(tierListRef.current, { quality: 0.95 });
+        const dataUrl = await toPng(tierListRef.current, {
+          quality: 0.95,
+          filter: (node) =>
+            !(node instanceof HTMLElement && node.dataset.exportIgnore === 'true'),
+        });
 
         const link = document.createElement('a');
         const themeName = currentUniverse ?? 'tierlist';
