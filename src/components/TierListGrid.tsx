@@ -57,6 +57,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
+  const initialMapRef = useRef<Record<string, string[]> | null>(null);
   const initialScroll = useRef({ x: 0, y: 0 });
   const scrollListener = useRef<() => void>();
   const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
@@ -132,6 +133,20 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
   
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
+    initialMapRef.current = characterMap;
+
+    // Remove active character from its container so we can preview placement
+    const id = event.active.id as string;
+    if (!id.startsWith('tier-')) {
+      Object.entries(characterMap).forEach(([containerId, items]) => {
+        if (items.includes(id)) {
+          setCharacterMap(prev => ({
+            ...prev,
+            [containerId]: prev[containerId].filter(cId => cId !== id),
+          }));
+        }
+      });
+    }
     initialScroll.current = { x: window.scrollX, y: window.scrollY };
     const onScroll = () => {
       setScrollOffset({
@@ -142,84 +157,93 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
     scrollListener.current = onScroll;
     window.addEventListener('scroll', onScroll);
   };
-  
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
 
-    if (!over) {
-      setActiveId(null);
-      return;
-    }
+  const handleDragOver = (event: any) => {
+    const { active, over } = event;
+    if (!over) return;
 
     let activeId = active.id as string;
     let overId = over.id as string;
 
-    // Handle tier reordering
     if (activeId.startsWith('tier-') && overId.startsWith('tier-')) {
       const activeIndex = tiers.findIndex(t => `tier-${t.id}` === activeId);
       const overIndex = tiers.findIndex(t => `tier-${t.id}` === overId);
       if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
         setTiers(prev => arrayMove(prev, activeIndex, overIndex));
       }
-      setActiveId(null);
-      if (scrollListener.current) {
-        window.removeEventListener('scroll', scrollListener.current);
-        scrollListener.current = undefined;
-      }
-      setScrollOffset({ x: 0, y: 0 });
       return;
     }
 
-    if (overId.startsWith('tier-')) {
-      overId = overId.slice(5);
-    }
-    if (activeId.startsWith('tier-')) {
-      activeId = activeId.slice(5);
-    }
+    if (overId.startsWith('tier-')) overId = overId.slice(5);
+    if (activeId.startsWith('tier-')) activeId = activeId.slice(5);
 
-    if (activeId !== overId) {
-      let activeContainer: string | null = null;
-      let overContainer: string | null = null;
-      Object.entries(characterMap).forEach(([containerId, items]) => {
-        if (items.includes(activeId)) {
-          activeContainer = containerId;
-        }
-        if (containerId === overId) {
-          overContainer = overId;
-        } else if (items.includes(overId)) {
-          overContainer = containerId;
-        }
-      });
+    if (activeId === overId) return;
 
-      if (activeContainer && overContainer) {
-        if (activeContainer !== overContainer) {
+    let activeContainer: string | null = null;
+    let overContainer: string | null = null;
+
+    Object.entries(characterMap).forEach(([containerId, items]) => {
+      if (items.includes(activeId)) {
+        activeContainer = containerId;
+      }
+      if (containerId === overId) {
+        overContainer = overId;
+      } else if (items.includes(overId)) {
+        overContainer = containerId;
+      }
+    });
+
+    if (activeContainer && overContainer) {
+      if (activeContainer !== overContainer) {
+        setCharacterMap(prev => {
+          const result = { ...prev };
+          result[activeContainer!] = prev[activeContainer!].filter(id => id !== activeId);
+          if (overContainer === overId) {
+            result[overContainer] = [...prev[overContainer], activeId];
+          } else {
+            const overIndex = prev[overContainer].indexOf(overId);
+            const newItems = [...prev[overContainer]];
+            newItems.splice(overIndex, 0, activeId);
+            result[overContainer] = newItems;
+          }
+          return result;
+        });
+      } else {
+        const items = characterMap[activeContainer];
+        const activeIndex = items.indexOf(activeId);
+        const overIndex = items.indexOf(overId);
+        if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
           setCharacterMap(prev => {
             const result = { ...prev };
-            result[activeContainer!] = prev[activeContainer!].filter(id => id !== activeId);
-            if (overContainer === overId) {
-              result[overContainer] = [...prev[overContainer], activeId];
-            } else {
-              const overIndex = prev[overContainer].indexOf(overId);
-              const newItems = [...prev[overContainer]];
-              newItems.splice(overIndex, 0, activeId);
-              result[overContainer] = newItems;
-            }
+            result[activeContainer!] = arrayMove(items, activeIndex, overIndex);
             return result;
           });
-        } else {
-          const items = characterMap[activeContainer];
-          const activeIndex = items.indexOf(activeId);
-          const overIndex = items.indexOf(overId);
-          if (activeIndex !== -1 && overIndex !== -1) {
-            setCharacterMap(prev => {
-              const result = { ...prev };
-              result[activeContainer!] = arrayMove(items, activeIndex, overIndex);
-              return result;
-            });
-          }
         }
       }
     }
+  };
+
+  const handleDragCancel = () => {
+    if (initialMapRef.current) {
+      setCharacterMap(initialMapRef.current);
+    }
+    setActiveId(null);
+    if (scrollListener.current) {
+      window.removeEventListener('scroll', scrollListener.current);
+      scrollListener.current = undefined;
+    }
+    setScrollOffset({ x: 0, y: 0 });
+  };
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { over } = event;
+
+    if (!over) {
+      handleDragCancel();
+      return;
+    }
+
+    handleDragOver(event);
 
     setActiveId(null);
     if (scrollListener.current) {
@@ -274,6 +298,8 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
   collisionDetection={collisionDetectionStrategy}
   modifiers={[snapCenterWithScroll]}
   onDragStart={handleDragStart}
+  onDragOver={handleDragOver}
+  onDragCancel={handleDragCancel}
   onDragEnd={handleDragEnd}
 >
       <div className="flex flex-col space-y-4 mb-8">
