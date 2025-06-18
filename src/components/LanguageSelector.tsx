@@ -22,7 +22,7 @@ const LanguageSelector: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-4 right-4 text-sm z-50">
+    <div className="fixed bottom-4 right-4 text-sm z-50">
       <button
         className="flex items-center gap-1 bg-white text-black px-3 py-2 rounded shadow"
         onClick={() => setOpen(o => !o)}
@@ -31,7 +31,7 @@ const LanguageSelector: React.FC = () => {
         <span className="font-medium uppercase">{current.code}</span>
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 bg-white text-black rounded shadow overflow-hidden">
+        <div className="absolute right-0 bottom-full mb-2 bg-white text-black rounded shadow overflow-hidden">
           {options.map(o => (
             <div
               key={o.code}
