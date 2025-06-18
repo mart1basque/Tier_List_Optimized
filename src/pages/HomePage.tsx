@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
 import { universes } from '../data/universes';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -56,11 +55,9 @@ const HomePage: React.FC = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col items-center justify-center text-center mb-16">
           <div className="flex items-center mb-4">
-            <Sparkles className="text-yellow-400 mr-2" size={28} />
-            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-yellow-400">
+            <h1 className="text-4xl md:text-6xl font-bold text-blue-600 dark:text-blue-400">
               Mankind Tier List
             </h1>
-            <Sparkles className="text-yellow-400 ml-2" size={28} />
           </div>
           <p className="text-lg md:text-xl max-w-2xl text-blue-900 dark:text-blue-100">
             {t('createBeautiful')}
