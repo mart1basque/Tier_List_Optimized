@@ -33,7 +33,7 @@ import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import CharacterPool from './CharacterPool';
 import UnknownCharactersPanel from './UnknownCharactersPanel';
-import { Character } from '../types/types';
+import { Character, Tier as TierType } from '../types/types';
 
 interface TierListGridProps {
   characters: Character[];
@@ -41,6 +41,7 @@ interface TierListGridProps {
   unknownContainer?: HTMLElement | null;
   initialTiers?: { id: string; label: string; color: string }[];
   initialCharacterMap?: Record<string, string[]>;
+  onLayoutChange?: (layout: { tiers: TierType[]; characterMap: Record<string, string[]> }) => void;
 }
 
 export interface TierListGridHandle {
@@ -62,7 +63,7 @@ const defaultTiers = [
 
 const TierListGrid = forwardRef<TierListGridHandle, TierListGridProps>(
   (
-    { characters, onUnknownChange, unknownContainer, initialTiers, initialCharacterMap },
+    { characters, onUnknownChange, unknownContainer, initialTiers, initialCharacterMap, onLayoutChange },
     ref
   ) => {
     const { themeColors } = useTheme();
@@ -121,6 +122,12 @@ const TierListGrid = forwardRef<TierListGridHandle, TierListGridProps>(
       return updated;
     });
   }, [characters, tiers]);
+
+  useEffect(() => {
+    if (onLayoutChange) {
+      onLayoutChange({ tiers, characterMap });
+    }
+  }, [tiers, characterMap, onLayoutChange]);
   
   // Find the active character
   const activeCharacter = activeId ? characters.find(char => char.id === activeId) : null;
