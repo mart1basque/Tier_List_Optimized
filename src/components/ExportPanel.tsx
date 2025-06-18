@@ -49,10 +49,14 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
   
   const generateShareableLink = async () => {
     try {
+      // Ensure we actually have data to share
+      const data = getTierListData ? getTierListData() : undefined;
+      if (!data) {
+        throw new Error('No tier list data available');
+      }
+
       // Simplified - in a real app, you might want to compress this or use a service
-      const encodedData = encodeURIComponent(
-        JSON.stringify(getTierListData())
-      );
+      const encodedData = encodeURIComponent(JSON.stringify(data));
       const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
