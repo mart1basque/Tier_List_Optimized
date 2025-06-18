@@ -325,12 +325,13 @@ const TierListGrid = forwardRef<TierListGridHandle, TierListGridProps>(
           onClick={addTier}
           className="py-2 px-4 rounded-md text-white self-start transition-all hover:opacity-90"
           style={{ backgroundColor: themeColors.primary }}
+          data-export-ignore="true"
         >
           + {t('addTier')}
         </button>
       </div>
-      
-      <div className="mb-16">
+
+      <div className="mb-16" data-export-ignore="true">
         <CharacterPool
           id="pool"
           characters={characterMap.pool.map(id => characters.find(c => c.id === id)!)}
