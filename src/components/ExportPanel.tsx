@@ -104,11 +104,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
         </button>
         
         <button
-          onClick={exportAsJson}
+          onClick={() => {}}
           className="flex items-center px-4 py-2 rounded-md transition-all"
-          style={{ 
-            backgroundColor: `${themeColors.secondary}15`, 
-            color: themeColors.secondary 
+          style={{
+            backgroundColor: `${themeColors.secondary}15`,
+            color: themeColors.secondary
           }}
         >
           <Code size={18} className="mr-2" />
@@ -116,11 +116,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
         </button>
         
         <button
-          onClick={generateShareableLink}
+          onClick={() => {}}
           className="flex items-center px-4 py-2 rounded-md transition-all"
-          style={{ 
-            backgroundColor: `${themeColors.accent}15`, 
-            color: themeColors.accent 
+          style={{
+            backgroundColor: `${themeColors.accent}15`,
+            color: themeColors.accent
           }}
         >
           <Share2 size={18} className="mr-2" />
