@@ -56,7 +56,7 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col items-center justify-center text-center mb-16">
           <div className="flex items-center mb-4">
             <h1 className="text-4xl md:text-6xl font-bold text-blue-600 dark:text-blue-400">
-              Mankind Tier List
+              TierSaga
             </h1>
           </div>
           <p className="text-lg md:text-xl max-w-2xl text-blue-900 dark:text-blue-100">

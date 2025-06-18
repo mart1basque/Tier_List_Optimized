@@ -10,7 +10,7 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   en: {
-    createBeautiful: 'Create beautiful tier lists for your favorite anime universes',
+    createBeautiful: 'Craft stylish tier lists for your favorite anime worlds',
     selectPokemonLanguage: 'Select Pokémon Language',
     chooseLanguage: 'Choose language',
     english: 'English',
@@ -100,7 +100,7 @@ const translations: Record<Language, Record<string, string>> = {
     editTierDetails: 'Edit tier title and color'
   },
   fr: {
-    createBeautiful: 'Commence ta tier liste en choisissant ton univers préférére',
+    createBeautiful: 'Crée des tier lists élégantes pour tes univers d\'anime favoris',
     selectPokemonLanguage: 'Sélectionnez la langue des Pokémon',
     chooseLanguage: 'Choisissez la langue',
     english: 'Anglais',
@@ -190,7 +190,7 @@ const translations: Record<Language, Record<string, string>> = {
     editTierDetails: 'Modifier le titre et la couleur du tier'
   },
   es: {
-    createBeautiful: 'Crea listas de niveles para tus universos de anime favoritos',
+    createBeautiful: 'Crea tier lists elegantes para tus universos de anime favoritos',
     selectPokemonLanguage: 'Selecciona el idioma de Pokémon',
     chooseLanguage: 'Elige el idioma',
     english: 'Inglés',
