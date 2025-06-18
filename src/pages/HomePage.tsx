@@ -9,7 +9,7 @@ import OrderWebsiteButton from '../components/OrderWebsiteButton';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentUniverse, isNightMode } = useTheme();
+  const { setCurrentUniverse, isNightMode, themeColors } = useTheme();
   const { t } = useLanguage();
   
   // Reset universe on home page
@@ -55,11 +55,17 @@ const HomePage: React.FC = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col items-center justify-center text-center mb-16">
           <div className="flex items-center mb-4">
-            <h1 className="text-4xl md:text-6xl font-bold text-blue-600 dark:text-blue-400">
+            <h1
+              className="text-4xl md:text-6xl font-bold"
+              style={{ color: themeColors.primary }}
+            >
               Mankind Tier List
             </h1>
           </div>
-          <p className="text-lg md:text-xl max-w-2xl text-blue-900 dark:text-blue-100">
+          <p
+            className="text-lg md:text-xl max-w-2xl"
+            style={{ color: themeColors.text }}
+          >
             {t('createBeautiful')}
           </p>
         </div>
