@@ -10,7 +10,7 @@ import OrderWebsiteButton from '../components/OrderWebsiteButton';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentUniverse } = useTheme();
+  const { setCurrentUniverse, isNightMode } = useTheme();
   const { t } = useLanguage();
   
   // Reset universe on home page
@@ -24,23 +24,31 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-indigo-900 text-white">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 50 }).map((_, index) => (
-          <div
-            key={index}
-            className="absolute rounded-full bg-white"
-            style={{
-              width: `${Math.random() * 4 + 1}px`,
-              height: `${Math.random() * 4 + 1}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              opacity: Math.random() * 0.5 + 0.2,
-              animation: `twinkle ${Math.random() * 5 + 3}s infinite ease-in-out ${Math.random() * 5}s`,
-            }}
-          />
-        ))}
-      </div>
+    <div
+      className={`min-h-screen relative text-gray-800 dark:text-white ${
+        isNightMode
+          ? 'bg-gradient-to-b from-purple-900 to-indigo-900'
+          : 'bg-gradient-to-b from-indigo-100 to-purple-200'
+      }`}
+    >
+      {isNightMode && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {Array.from({ length: 50 }).map((_, index) => (
+            <div
+              key={index}
+              className="absolute rounded-full bg-white"
+              style={{
+                width: `${Math.random() * 4 + 1}px`,
+                height: `${Math.random() * 4 + 1}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.5 + 0.2,
+                animation: `twinkle ${Math.random() * 5 + 3}s infinite ease-in-out ${Math.random() * 5}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="fixed top-4 left-4 z-50">
         <OrderWebsiteButton />
@@ -56,7 +64,7 @@ const HomePage: React.FC = () => {
             </h1>
             <Sparkles className="text-yellow-400 ml-2" size={28} />
           </div>
-          <p className="text-lg md:text-xl max-w-2xl text-blue-100">
+          <p className="text-lg md:text-xl max-w-2xl text-blue-900 dark:text-blue-100">
             {t('createBeautiful')}
           </p>
         </div>
