@@ -4,6 +4,7 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Character } from '../types/types';
 import CharacterCard from './CharacterCard';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CharacterPoolProps {
   id: string;
@@ -12,6 +13,7 @@ interface CharacterPoolProps {
 
 const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const { setNodeRef } = useDroppable({ id });
   const [localCharacters, setLocalCharacters] = useState<Character[]>(characters);
 
@@ -25,7 +27,7 @@ const CharacterPool: React.FC<CharacterPoolProps> = ({ id, characters }) => {
         className="p-3 font-medium"
         style={{ backgroundColor: themeColors.secondary, color: 'white' }}
       >
-        Characters Pool ({localCharacters.length})
+        {t('charactersPool')} ({localCharacters.length})
       </div>
       
       <div

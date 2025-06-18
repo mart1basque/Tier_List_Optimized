@@ -21,6 +21,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import Tier from './Tier';
 import CharacterCard, { PlainCharacterCard } from './CharacterCard';
 import CharacterPool from './CharacterPool';
@@ -45,6 +46,7 @@ const defaultTiers = [
 
 const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange, unknownContainer }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const [tiers, setTiers] = useState(defaultTiers);
   const [characterMap, setCharacterMap] = useState<Record<string, string[]>>(() => {
     // Initialize with all characters in the pool
@@ -295,7 +297,7 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
           className="py-2 px-4 rounded-md text-white self-start transition-all hover:opacity-90"
           style={{ backgroundColor: themeColors.primary }}
         >
-          + Add Tier
+          + {t('addTier')}
         </button>
       </div>
       
