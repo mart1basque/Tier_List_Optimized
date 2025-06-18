@@ -110,20 +110,28 @@ const Tier: React.FC<TierProps> = ({ id, label, color, characters, onRemove, onU
         </div>
         
         <div className="flex flex-col bg-gray-100 border-l border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-          <button
-            onClick={handleEditSave}
-          className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-white"
-            title={isEditing ? t('save') : t('editTierDetails')}
-          >
-            <Edit2 size={18} />
-          </button>
-          <button
-            onClick={onRemove}
-          className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-red-400"
-            title={t('deleteTier')}
-          >
-            <Trash2 size={18} />
-          </button>
+          <div className="relative group">
+            <button
+              onClick={handleEditSave}
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-white"
+            >
+              <Edit2 size={18} />
+            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 px-2 py-1 rounded bg-gray-700 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap">
+              {isEditing ? t('save') : t('editTierDetails')}
+            </span>
+          </div>
+          <div className="relative group">
+            <button
+              onClick={onRemove}
+              className="p-2 text-gray-600 hover:text-red-600 hover:bg-gray-200 transition-colors dark:text-gray-300 dark:hover:text-red-400"
+            >
+              <Trash2 size={18} />
+            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 px-2 py-1 rounded bg-gray-700 text-white text-xs opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap">
+              {t('deleteTier')}
+            </span>
+          </div>
         </div>
       </div>
     </div>
