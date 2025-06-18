@@ -195,7 +195,11 @@ const FilterPage: React.FC = () => {
                       </svg>
                     )}
                   </div>
-                  <span className="font-medium">{t(option.nameKey)}</span>
+                  <span className="font-medium">
+                    {'nameKey' in option && option.nameKey
+                      ? t(option.nameKey)
+                      : option.name}
+                  </span>
                 </div>
               </div>
               ))}
