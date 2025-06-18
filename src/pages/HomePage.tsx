@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector';
 import NightModeToggle from '../components/NightModeToggle';
 import OrderWebsiteButton from '../components/OrderWebsiteButton';
+import { Plus } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -98,9 +99,13 @@ const HomePage: React.FC = () => {
         <div className="flex justify-center mt-8">
           <button
             onClick={() => navigate('/custom')}
-            className="px-6 py-3 rounded-lg text-white font-medium transition-all"
-            style={{ backgroundColor: themeColors.primary }}
+            className="flex items-center px-5 py-2 rounded-full font-semibold text-white shadow-md border hover:opacity-90 transition-colors"
+            style={{
+              backgroundColor: themeColors.primary,
+              borderColor: `${themeColors.primary}80`
+            }}
           >
+            <Plus size={18} className="mr-2" />
             {t('createCustomTierList')}
           </button>
         </div>
