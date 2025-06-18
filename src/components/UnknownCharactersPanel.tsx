@@ -4,6 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { Character } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import CharacterCard from './CharacterCard';
 
 interface UnknownCharactersPanelProps {
@@ -13,6 +14,7 @@ interface UnknownCharactersPanelProps {
 
 const UnknownCharactersPanel: React.FC<UnknownCharactersPanelProps> = ({ id, characters }) => {
   const { themeColors } = useTheme();
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const { setNodeRef } = useDroppable({ id });
 
@@ -23,7 +25,7 @@ const UnknownCharactersPanel: React.FC<UnknownCharactersPanelProps> = ({ id, cha
         className="w-full flex items-center justify-between"
         style={{ color: themeColors.text }}
       >
-        <span className="font-medium">Unknown Characters ({characters.length})</span>
+        <span className="font-medium">{t('unknownCharacters')} ({characters.length})</span>
         <Trash2 size={18} />
       </button>
       {open && (
@@ -34,7 +36,7 @@ const UnknownCharactersPanel: React.FC<UnknownCharactersPanelProps> = ({ id, cha
                 <CharacterCard key={char.id} character={char} />
               ))
             ) : (
-              <span className="text-gray-400 italic dark:text-gray-500">No unknown characters</span>
+              <span className="text-gray-400 italic dark:text-gray-500">{t('noUnknownCharacters')}</span>
             )}
           </div>
         </SortableContext>
