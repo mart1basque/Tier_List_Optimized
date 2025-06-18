@@ -27,8 +27,8 @@ const HomePage: React.FC = () => {
     <div
       className={`min-h-screen relative text-gray-800 dark:text-white ${
         isNightMode
-          ? 'bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364]'
-          : 'bg-gradient-to-br from-[#fdfbfb] via-[#ebedee] to-[#cfd9df]'
+          ? 'bg-gray-900'
+          : 'bg-gradient-to-b from-indigo-100 to-purple-200'
       }`}
     >
       {isNightMode && (
