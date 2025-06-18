@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { UniverseType } from '../data/universes';
-import { Character } from '../types/types';
+import { Character, Tier as TierType } from '../types/types';
 import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
 import NightModeToggle from '../components/NightModeToggle';
@@ -78,12 +78,36 @@ function getImageFromId(id: string) {
     searchParams.get('variant') ?? parsedData?.variant ?? 'normal'
   ) as 'normal' | 'luma';
 
+  const storageKey = `tierlist-${universe}-${filtersParam}-${language}-${variant}`;
+  const savedData = typeof window !== 'undefined'
+    ? (() => {
+        try {
+          const raw = localStorage.getItem(storageKey);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          console.error('Failed to parse cached tier list', e);
+          return null;
+        }
+      })()
+    : null;
+
   let initialTiers: { id: string; label: string; color: string }[] | undefined;
   let initialCharacterMap: Record<string, string[]> | undefined;
   if (parsedData && parsedData.tiers && parsedData.characterMap) {
     initialTiers = parsedData.tiers;
     initialCharacterMap = parsedData.characterMap;
+  } else if (savedData && savedData.tiers && savedData.characterMap) {
+    initialTiers = savedData.tiers;
+    initialCharacterMap = savedData.characterMap;
   }
+
+  const [layout, setLayout] = useState<{
+    tiers: TierType[];
+    characterMap: Record<string, string[]>;
+  }>({
+    tiers: initialTiers ?? [],
+    characterMap: initialCharacterMap ?? {},
+  });
     
   const filters = useMemo(
     () =>
@@ -116,7 +140,13 @@ function getImageFromId(id: string) {
   useEffect(() => {
     if (universe && Object.keys(universeConfig).includes(universe as UniverseType)) {
       setCurrentUniverse(universe as UniverseType);
-      
+
+      if (savedData && savedData.characters) {
+        setCharacters(savedData.characters);
+        setLoading(false);
+        return;
+      }
+
       // Fetch characters based on universe and filters
       const loadCharacters = async () => {
         setLoading(true);
@@ -136,29 +166,48 @@ function getImageFromId(id: string) {
           setLoading(false);
         }
       };
-      
+
       loadCharacters();
     } else {
       navigate('/');
     }
-  }, [universe, filtersParam, language, variant, setCurrentUniverse, navigate]);
+  }, [universe, filtersParam, language, variant, setCurrentUniverse, navigate, savedData]);
   
   const handleAddCustomCharacter = (character: Character) => {
     setCharacters(prev => [...prev, character]);
   };
+
+  const handleLayoutChange = useCallback(
+    (l: { tiers: TierType[]; characterMap: Record<string, string[]> }) => {
+      setLayout(l);
+    },
+    []
+  );
   
   const getTierListData = useCallback(() => {
-    const layout = gridRef.current?.getLayout();
+    const gridLayout = gridRef.current?.getLayout();
     return {
       universe: currentUniverse,
       filters,
       language,
       variant,
       characters,
-      tiers: layout?.tiers ?? [],
-      characterMap: layout?.characterMap ?? {},
+      tiers: gridLayout?.tiers ?? layout.tiers,
+      characterMap: gridLayout?.characterMap ?? layout.characterMap,
     };
-  }, [currentUniverse, filters, language, variant, characters]);
+  }, [currentUniverse, filters, language, variant, characters, layout]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({ tiers: layout.tiers, characterMap: layout.characterMap, characters })
+      );
+    } catch (e) {
+      console.error('Failed to save tier list', e);
+    }
+  }, [layout, characters, storageKey]);
   
   if (!currentUniverse || loading) {
     return (
@@ -221,8 +270,13 @@ function getImageFromId(id: string) {
                 ref={gridRef}
                 characters={characters}
                 unknownContainer={unknownContainer}
-                initialTiers={initialTiers}
-                initialCharacterMap={initialCharacterMap}
+                initialTiers={layout.tiers.length ? layout.tiers : initialTiers}
+                initialCharacterMap={
+                  Object.keys(layout.characterMap).length
+                    ? layout.characterMap
+                    : initialCharacterMap
+                }
+                onLayoutChange={handleLayoutChange}
               />
             </div>
           </div>
