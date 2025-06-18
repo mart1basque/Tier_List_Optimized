@@ -94,6 +94,16 @@ const HomePage: React.FC = () => {
             </div>
           ))}
         </div>
+
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => navigate('/custom')}
+            className="px-6 py-3 rounded-lg text-white font-medium transition-all"
+            style={{ backgroundColor: themeColors.primary }}
+          >
+            {t('createCustomTierList')}
+          </button>
+        </div>
       </div>
 
       <LanguageSelector />
