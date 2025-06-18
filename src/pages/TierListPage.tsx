@@ -84,6 +84,7 @@ function getImageFromId(id: string) {
     initialTiers = parsedData.tiers;
     initialCharacterMap = parsedData.characterMap;
   }
+    
   const filters = useMemo(
     () =>
       filtersParam
