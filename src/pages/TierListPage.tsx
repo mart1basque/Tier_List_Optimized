@@ -74,7 +74,17 @@ function getImageFromId(id: string) {
     const options = universeConfig[currentUniverse].filterOptions;
     return filters.map(f => {
       const found = options.find(o => o.id === f);
-      return found ? t(found.nameKey) : f;
+      if (!found) return f;
+      if (currentUniverse === 'pokemon') {
+        const match = /^gen(\d+)$/.exec(found.id);
+        if (match) {
+          return `gen ${match[1]}`;
+        }
+      }
+      if ('nameKey' in found && found.nameKey) {
+        return t(found.nameKey);
+      }
+      return found.name ?? f;
     });
   }, [filters, currentUniverse, t]);
   
