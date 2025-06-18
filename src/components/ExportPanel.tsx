@@ -47,16 +47,30 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
     }
   };
   
-  const generateShareableLink = () => {
+  const generateShareableLink = async () => {
     try {
       // Simplified - in a real app, you might want to compress this or use a service
       const encodedData = encodeURIComponent(JSON.stringify(tierListData));
       const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
-      
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      });
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = shareUrl;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       console.error('Error generating shareable link:', error);
     }
