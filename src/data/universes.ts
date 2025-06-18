@@ -68,7 +68,7 @@ export const universeConfig: Record<UniverseType, {
     text: string;
   };
   backgroundStyle: React.CSSProperties;
-  filterOptions: { id: string; name: string }[];
+  filterOptions: { id: string; nameKey: string }[];
 }> = {
   'pokemon': {
     colors: {
@@ -85,15 +85,15 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'gen1', name: 'Generation 1' },
-      { id: 'gen2', name: 'Generation 2' },
-      { id: 'gen3', name: 'Generation 3' },
-      { id: 'gen4', name: 'Generation 4' },
-      { id: 'gen5', name: 'Generation 5' },
-      { id: 'gen6', name: 'Generation 6' },
-      { id: 'gen7', name: 'Generation 7' },
-      { id: 'gen8', name: 'Generation 8' },
-      { id: 'gen9', name: 'Generation 9' },
+      { id: 'gen1', nameKey: 'generation1' },
+      { id: 'gen2', nameKey: 'generation2' },
+      { id: 'gen3', nameKey: 'generation3' },
+      { id: 'gen4', nameKey: 'generation4' },
+      { id: 'gen5', nameKey: 'generation5' },
+      { id: 'gen6', nameKey: 'generation6' },
+      { id: 'gen7', nameKey: 'generation7' },
+      { id: 'gen8', nameKey: 'generation8' },
+      { id: 'gen9', nameKey: 'generation9' },
     ],
   },
   'naruto': {
@@ -131,10 +131,10 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'season1', name: 'Season 1' },
-      { id: 'season2', name: 'Season 2 (Entertainment District Arc)' },
-      { id: 'season3', name: 'Season 3 (Swordsmith Village Arc)' },
-      { id: 'season4', name: 'Season 4 (Hashira Training Arc)' },
+      { id: 'season1', nameKey: 'season1' },
+      { id: 'season2', nameKey: 'season2' },
+      { id: 'season3', nameKey: 'season3' },
+      { id: 'season4', nameKey: 'season4' },
     ],
   },
   'league-of-legends': {
@@ -152,12 +152,12 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'Assassin', name: 'Assassin' },
-      { id: 'Fighter', name: 'Fighter' },
-      { id: 'Mage', name: 'Mage' },
-      { id: 'Marksman', name: 'Marksman' },
-      { id: 'Support', name: 'Support' },
-      { id: 'Tank', name: 'Tank' },
+      { id: 'Assassin', nameKey: 'assassin' },
+      { id: 'Fighter', nameKey: 'fighter' },
+      { id: 'Mage', nameKey: 'mage' },
+      { id: 'Marksman', nameKey: 'marksman' },
+      { id: 'Support', nameKey: 'support' },
+      { id: 'Tank', nameKey: 'tank' },
     ],
   },
   'onepiece': {
@@ -191,18 +191,18 @@ export const universeConfig: Record<UniverseType, {
       overflow: 'hidden',
     },
     filterOptions: [
-      { id: 'Neutral', name: 'Neutral' },
-      { id: 'Wind', name: 'Wind' },
-      { id: 'Earth', name: 'Earth' },
-      { id: 'Water', name: 'Water' },
-      { id: 'Fire', name: 'Fire' },
-      { id: 'Nature', name: 'Nature' },
-      { id: 'Electric', name: 'Electric' },
-      { id: 'Digital', name: 'Digital' },
-      { id: 'Mental', name: 'Mental' },
-      { id: 'Melee', name: 'Melee' },
-      { id: 'Crystal', name: 'Crystal' },
-      { id: 'Toxic', name: 'Toxic' },
+      { id: 'Neutral', nameKey: 'typeNeutral' },
+      { id: 'Wind', nameKey: 'typeWind' },
+      { id: 'Earth', nameKey: 'typeEarth' },
+      { id: 'Water', nameKey: 'typeWater' },
+      { id: 'Fire', nameKey: 'typeFire' },
+      { id: 'Nature', nameKey: 'typeNature' },
+      { id: 'Electric', nameKey: 'typeElectric' },
+      { id: 'Digital', nameKey: 'typeDigital' },
+      { id: 'Mental', nameKey: 'typeMental' },
+      { id: 'Melee', nameKey: 'typeMelee' },
+      { id: 'Crystal', nameKey: 'typeCrystal' },
+      { id: 'Toxic', nameKey: 'typeToxic' },
     ],
   },
 };

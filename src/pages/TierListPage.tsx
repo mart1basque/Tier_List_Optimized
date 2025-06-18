@@ -68,6 +68,15 @@ function getImageFromId(id: string) {
         .filter(f => f.length > 0),
     [filtersParam]
   );
+
+  const filterNames = useMemo(() => {
+    if (!currentUniverse) return filters;
+    const options = universeConfig[currentUniverse].filterOptions;
+    return filters.map(f => {
+      const found = options.find(o => o.id === f);
+      return found ? t(found.nameKey) : f;
+    });
+  }, [filters, currentUniverse, t]);
   
   useEffect(() => {
     if (universe && Object.keys(universeConfig).includes(universe as UniverseType)) {
@@ -156,12 +165,12 @@ function getImageFromId(id: string) {
             <OrderWebsiteButton />
           </div>
           <div className="flex flex-wrap gap-2">
-            {filters.map(filter => (
-              <span 
-                key={filter}
+            {filterNames.map((name, index) => (
+              <span
+                key={filters[index]}
                 className="px-3 py-1 rounded-full text-sm font-medium text-white bg-black bg-opacity-30"
               >
-                {filter}
+                {name}
               </span>
             ))}
           </div>
