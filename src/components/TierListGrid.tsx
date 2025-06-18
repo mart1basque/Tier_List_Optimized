@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { snapCenterToCursor } from '@dnd-kit/modifiers';
 import type { Modifier } from '@dnd-kit/core';
@@ -32,6 +39,15 @@ interface TierListGridProps {
   characters: Character[];
   onUnknownChange?: (chars: Character[]) => void;
   unknownContainer?: HTMLElement | null;
+  initialTiers?: { id: string; label: string; color: string }[];
+  initialCharacterMap?: Record<string, string[]>;
+}
+
+export interface TierListGridHandle {
+  getLayout: () => {
+    tiers: { id: string; label: string; color: string }[];
+    characterMap: Record<string, string[]>;
+  };
 }
 
 // Default tier ranks
@@ -44,22 +60,35 @@ const defaultTiers = [
   { id: 'F', label: 'F', color: '#636E72' }
 ];
 
-const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange, unknownContainer }) => {
-  const { themeColors } = useTheme();
-  const { t } = useLanguage();
-  const [tiers, setTiers] = useState(defaultTiers);
+const TierListGrid = forwardRef<TierListGridHandle, TierListGridProps>(
+  (
+    { characters, onUnknownChange, unknownContainer, initialTiers, initialCharacterMap },
+    ref
+  ) => {
+    const { themeColors } = useTheme();
+    const { t } = useLanguage();
+  const [tiers, setTiers] = useState(initialTiers ?? defaultTiers);
   const [characterMap, setCharacterMap] = useState<Record<string, string[]>>(() => {
-    // Initialize with all characters in the pool
+    if (initialCharacterMap) {
+      return initialCharacterMap;
+    }
     return {
       pool: characters.map(char => char.id),
       unknown: [],
-      ...Object.fromEntries(tiers.map(tier => [tier.id, []]))
+      ...Object.fromEntries((initialTiers ?? defaultTiers).map(tier => [tier.id, []]))
     };
   });
   const [activeId, setActiveId] = useState<string | null>(null);
   const initialScroll = useRef({ x: 0, y: 0 });
   const scrollListener = useRef<() => void>();
   const [scrollOffset, setScrollOffset] = useState({ x: 0, y: 0 });
+
+  useImperativeHandle(ref, () => ({
+    getLayout: () => ({
+      tiers,
+      characterMap,
+    }),
+  }));
 
   useEffect(() => {
     if (onUnknownChange) {
@@ -325,6 +354,6 @@ const TierListGrid: React.FC<TierListGridProps> = ({ characters, onUnknownChange
         )}
     </DndContext>
   );
-};
+});
 
 export default TierListGrid;

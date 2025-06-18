@@ -6,10 +6,10 @@ import { useLanguage } from '../context/LanguageContext';
 
 interface ExportPanelProps {
   tierListRef: React.RefObject<HTMLDivElement>;
-  tierListData: any; // Simplified for this example
+  getTierListData: () => any;
 }
 
-const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) => {
+const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData }) => {
   const { themeColors } = useTheme();
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
@@ -32,7 +32,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
   
   const exportAsJson = () => {
     try {
-      const jsonString = JSON.stringify(tierListData, null, 2);
+      const jsonString = JSON.stringify(getTierListData(), null, 2);
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       
@@ -50,7 +50,9 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
   const generateShareableLink = async () => {
     try {
       // Simplified - in a real app, you might want to compress this or use a service
-      const encodedData = encodeURIComponent(JSON.stringify(tierListData));
+      const encodedData = encodeURIComponent(
+        JSON.stringify(getTierListData())
+      );
       const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
