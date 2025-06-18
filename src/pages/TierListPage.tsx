@@ -57,25 +57,34 @@ function getImageFromId(id: string) {
     setUnknownContainer(node);
   }, []);
 
-  // Get selected filters from URL
-  const filtersParam = searchParams.get('filters') ?? '';
-  const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr' | 'es';
-  const variant = (searchParams.get('variant') ?? 'normal') as 'normal' | 'luma';
+  // Parse share data if provided
   const dataParam = searchParams.get('data');
-
-  let initialTiers: { id: string; label: string; color: string }[] | undefined;
-  let initialCharacterMap: Record<string, string[]> | undefined;
+  let parsedData: any | undefined;
   if (dataParam) {
     try {
-      const parsed = JSON.parse(decodeURIComponent(dataParam));
-      if (parsed.tiers && parsed.characterMap) {
-        initialTiers = parsed.tiers;
-        initialCharacterMap = parsed.characterMap;
-      }
+      parsedData = JSON.parse(decodeURIComponent(dataParam));
     } catch (e) {
       console.error('Invalid data parameter', e);
     }
   }
+
+  const filtersParam =
+    searchParams.get('filters') ??
+    (parsedData?.filters ? parsedData.filters.join(',') : '');
+  const language = (
+    searchParams.get('lang') ?? parsedData?.language ?? 'en'
+  ) as 'en' | 'fr' | 'es';
+  const variant = (
+    searchParams.get('variant') ?? parsedData?.variant ?? 'normal'
+  ) as 'normal' | 'luma';
+
+  let initialTiers: { id: string; label: string; color: string }[] | undefined;
+  let initialCharacterMap: Record<string, string[]> | undefined;
+  if (parsedData && parsedData.tiers && parsedData.characterMap) {
+    initialTiers = parsedData.tiers;
+    initialCharacterMap = parsedData.characterMap;
+  }
+    
   const filters = useMemo(
     () =>
       filtersParam

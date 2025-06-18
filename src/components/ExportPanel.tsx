@@ -55,9 +55,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
         throw new Error('No tier list data available');
       }
 
-      // Simplified - in a real app, you might want to compress this or use a service
+      // Include existing query params so filters/language/etc. are preserved
+      const params = new URLSearchParams(window.location.search);
       const encodedData = encodeURIComponent(JSON.stringify(data));
-      const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
+      params.set('data', encodedData);
+      const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(shareUrl);
