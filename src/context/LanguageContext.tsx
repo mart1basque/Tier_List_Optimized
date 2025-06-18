@@ -61,7 +61,7 @@ const translations: Record<Language, Record<string, string>> = {
     temtemDescription: 'Rank Temtem creatures by type or check their Luma form'
   },
   fr: {
-    createBeautiful: 'Créez de magnifiques tier lists pour vos univers d\'anime préférés',
+    createBeautiful: 'Commence ta tier liste en choisissant ton univers préférére',
     selectPokemonLanguage: 'Sélectionnez la langue des Pokémon',
     chooseLanguage: 'Choisissez la langue',
     english: 'Anglais',
