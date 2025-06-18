@@ -5,9 +5,9 @@ const OrderWebsiteButton: React.FC = () => (
     href="https://mankindcorp.fr"
     target="_blank"
     rel="noopener noreferrer"
-    className="px-4 py-2 rounded-lg font-semibold bg-gradient-to-r from-pink-500 to-yellow-500 shadow-lg hover:opacity-90"
+    className="px-5 py-2 rounded-full font-semibold text-white bg-violet-600 shadow-md border border-violet-500/50 hover:bg-violet-500 transition-colors"
   >
-    Commander un site web
+    Ton site web sur-mesure ici
   </a>
 );
 
