@@ -6,10 +6,10 @@ import { useLanguage } from '../context/LanguageContext';
 
 interface ExportPanelProps {
   tierListRef: React.RefObject<HTMLDivElement>;
-  tierListData: any; // Simplified for this example
+  getTierListData: () => any;
 }
 
-const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) => {
+const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData }) => {
   const { themeColors } = useTheme();
   const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
@@ -32,7 +32,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
   
   const exportAsJson = () => {
     try {
-      const jsonString = JSON.stringify(tierListData, null, 2);
+      const jsonString = JSON.stringify(getTierListData(), null, 2);
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       
@@ -47,16 +47,36 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, tierListData }) 
     }
   };
   
-  const generateShareableLink = () => {
+  const generateShareableLink = async () => {
     try {
+      // Ensure we actually have data to share
+      const data = getTierListData ? getTierListData() : undefined;
+      if (!data) {
+        throw new Error('No tier list data available');
+      }
+
       // Simplified - in a real app, you might want to compress this or use a service
-      const encodedData = encodeURIComponent(JSON.stringify(tierListData));
+      const encodedData = encodeURIComponent(JSON.stringify(data));
       const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
-      
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      });
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = shareUrl;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       console.error('Error generating shareable link:', error);
     }

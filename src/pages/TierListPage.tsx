@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import UniverseBackground from '../components/UniverseBackground';
 import NightModeToggle from '../components/NightModeToggle';
 import OrderWebsiteButton from '../components/OrderWebsiteButton';
-import TierListGrid from '../components/TierListGrid';
+import TierListGrid, { TierListGridHandle } from '../components/TierListGrid';
 import ExportPanel from '../components/ExportPanel';
 import ImageUploader from '../components/ImageUploader';
 import { fetchCharacters } from '../services/api';
@@ -51,6 +51,7 @@ function getImageFromId(id: string) {
   return item?.image ?? '';
 }
   const tierListRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<TierListGridHandle>(null);
   const [unknownContainer, setUnknownContainer] = useState<HTMLDivElement | null>(null);
   const setUnknownContainerRef = useCallback((node: HTMLDivElement | null) => {
     setUnknownContainer(node);
@@ -60,6 +61,21 @@ function getImageFromId(id: string) {
   const filtersParam = searchParams.get('filters') ?? '';
   const language = (searchParams.get('lang') ?? 'en') as 'en' | 'fr' | 'es';
   const variant = (searchParams.get('variant') ?? 'normal') as 'normal' | 'luma';
+  const dataParam = searchParams.get('data');
+
+  let initialTiers: { id: string; label: string; color: string }[] | undefined;
+  let initialCharacterMap: Record<string, string[]> | undefined;
+  if (dataParam) {
+    try {
+      const parsed = JSON.parse(decodeURIComponent(dataParam));
+      if (parsed.tiers && parsed.characterMap) {
+        initialTiers = parsed.tiers;
+        initialCharacterMap = parsed.characterMap;
+      }
+    } catch (e) {
+      console.error('Invalid data parameter', e);
+    }
+  }
   const filters = useMemo(
     () =>
       filtersParam
@@ -122,15 +138,18 @@ function getImageFromId(id: string) {
     setCharacters(prev => [...prev, character]);
   };
   
-  // Mock tier list data for export
-  const tierListData = {
-    universe: currentUniverse,
-    filters,
-    language,
-    variant,
-    characters,
-    // In a real app, you'd include the tier assignments here
-  };
+  const getTierListData = useCallback(() => {
+    const layout = gridRef.current?.getLayout();
+    return {
+      universe: currentUniverse,
+      filters,
+      language,
+      variant,
+      characters,
+      tiers: layout?.tiers ?? [],
+      characterMap: layout?.characterMap ?? {},
+    };
+  }, [currentUniverse, filters, language, variant, characters]);
   
   if (!currentUniverse || loading) {
     return (
@@ -189,13 +208,19 @@ function getImageFromId(id: string) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div ref={tierListRef} className="bg-white bg-opacity-95 backdrop-blur-sm rounded-xl shadow-xl p-6 dark:bg-gray-800 dark:bg-opacity-95 dark:text-white">
-              <TierListGrid characters={characters} unknownContainer={unknownContainer} />
+              <TierListGrid
+                ref={gridRef}
+                characters={characters}
+                unknownContainer={unknownContainer}
+                initialTiers={initialTiers}
+                initialCharacterMap={initialCharacterMap}
+              />
             </div>
           </div>
           
           <div className="space-y-6">
             <ImageUploader onImageUploaded={handleAddCustomCharacter} />
-            <ExportPanel tierListRef={tierListRef} tierListData={tierListData} />
+            <ExportPanel tierListRef={tierListRef} getTierListData={getTierListData} />
             <div ref={setUnknownContainerRef} />
           </div>
         </div>
