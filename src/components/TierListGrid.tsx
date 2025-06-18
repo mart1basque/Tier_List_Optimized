@@ -305,7 +305,7 @@ const TierListGrid = forwardRef<TierListGridHandle, TierListGridProps>(
   onDragStart={handleDragStart}
   onDragEnd={handleDragEnd}
 >
-      <div className="flex flex-col space-y-4 mb-8">
+      <div className="flex flex-col space-y-4 mb-8" data-export-trim="true">
         <SortableContext items={tiers.map(t => `tier-${t.id}`)} strategy={verticalListSortingStrategy}>
           {tiers.map(tier => (
             <Tier

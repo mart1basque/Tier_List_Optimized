@@ -16,25 +16,39 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ tierListRef, getTierListData 
   const [imageLoading, setImageLoading] = useState(false);
   
   const exportAsImage = async () => {
-    if (tierListRef.current) {
-      setImageLoading(true);
-      try {
-        const dataUrl = await toPng(tierListRef.current, {
-          quality: 0.95,
-          filter: (node) =>
-            !(node instanceof HTMLElement && node.dataset.exportIgnore === 'true'),
-        });
+    if (!tierListRef.current) return;
+    setImageLoading(true);
+    try {
+      const ignoredNodes = Array.from(
+        tierListRef.current.querySelectorAll('[data-export-ignore="true"]')
+      ) as HTMLElement[];
+      const prevDisplay = ignoredNodes.map(n => n.style.display);
+      ignoredNodes.forEach(n => (n.style.display = 'none'));
 
-        const link = document.createElement('a');
-        const themeName = currentUniverse ?? 'tierlist';
-        link.download = `mankind_tier_list_${themeName}.png`;
-        link.href = dataUrl;
-        link.click();
-      } catch (error) {
-        console.error('Error exporting as image:', error);
-      } finally {
-        setImageLoading(false);
-      }
+      const trimNode = tierListRef.current.querySelector(
+        '[data-export-trim="true"]'
+      ) as HTMLElement | null;
+      const prevMargin = trimNode ? trimNode.style.marginBottom : '';
+      if (trimNode) trimNode.style.marginBottom = '0';
+
+      const dataUrl = await toPng(tierListRef.current, {
+        quality: 0.95,
+        filter: node =>
+          !(node instanceof HTMLElement && node.dataset.exportIgnore === 'true'),
+      });
+
+      if (trimNode) trimNode.style.marginBottom = prevMargin;
+      ignoredNodes.forEach((n, i) => (n.style.display = prevDisplay[i]));
+
+      const link = document.createElement('a');
+      const themeName = currentUniverse ?? 'tierlist';
+      link.download = `mankind_tier_list_${themeName}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error('Error exporting as image:', error);
+    } finally {
+      setImageLoading(false);
     }
   };
   
