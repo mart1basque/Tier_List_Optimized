@@ -27,28 +27,16 @@ const HomePage: React.FC = () => {
     <div
       className={`min-h-screen relative text-gray-800 dark:text-white ${
         isNightMode
-<<<<<<< 76za0k-codex/modifier-fond-d-écran-accueil-avec-mode-nuit/jour
-          ? 'bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364]'
-          : 'bg-gradient-to-br from-[#fdfbfb] via-[#ebedee] to-[#cfd9df]'
-=======
-          ? 'bg-gradient-to-b from-purple-900 to-indigo-900'
+          ? 'bg-gray-900'
           : 'bg-gradient-to-b from-indigo-100 to-purple-200'
->>>>>>> main
       }`}
     >
       {isNightMode && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-<<<<<<< 76za0k-codex/modifier-fond-d-écran-accueil-avec-mode-nuit/jour
           {Array.from({ length: 80 }).map((_, index) => (
             <div
               key={index}
               className="absolute rounded-full bg-white/80"
-=======
-          {Array.from({ length: 50 }).map((_, index) => (
-            <div
-              key={index}
-              className="absolute rounded-full bg-white"
->>>>>>> main
               style={{
                 width: `${Math.random() * 4 + 1}px`,
                 height: `${Math.random() * 4 + 1}px`,
