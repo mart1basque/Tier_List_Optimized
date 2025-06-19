@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import useIconMode from '../hooks/useIconMode';
 
 const FeedbackButton: React.FC = () => {
   const { t } = useLanguage();
+  const ref = useRef<HTMLAnchorElement>(null);
+  const iconMode = useIconMode(ref);
+
   return (
     <a
+      ref={ref}
       href="https://discord.com" // replace with actual server link
       target="_blank"
       rel="noopener noreferrer"
@@ -17,7 +22,7 @@ const FeedbackButton: React.FC = () => {
         alt="Discord"
         className="w-5 h-5 mr-0 md:mr-2"
       />
-      <span className="hidden md:inline">{t('giveFeedback')}</span>
+      {!iconMode && <span className="ml-2">{t('giveFeedback')}</span>}
     </a>
   );
 };
