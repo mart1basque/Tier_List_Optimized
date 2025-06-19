@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
         </div>
       )}
 
-      <div className="fixed top-4 left-4 z-50 flex flex-col gap-2">
+      <div className="absolute top-4 left-4 z-50 flex flex-col gap-2">
         <OrderWebsiteButton />
         <FeedbackButton />
       </div>
