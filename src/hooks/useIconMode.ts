@@ -10,16 +10,24 @@ export default function useIconMode(ref: RefObject<HTMLElement>): boolean {
   const [iconMode, setIconMode] = useState(false);
 
   useEffect(() => {
-    const checkSize = () => {
-      if (ref.current) {
-        const { width } = ref.current.getBoundingClientRect();
-        setIconMode(width / window.innerWidth > 0.18);
-      }
+    const el = ref.current;
+    if (!el) return;
+
+    const update = () => {
+      const { width } = el.getBoundingClientRect();
+      setIconMode(width / window.innerWidth > 0.18);
     };
 
-    checkSize();
-    window.addEventListener('resize', checkSize);
-    return () => window.removeEventListener('resize', checkSize);
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    window.addEventListener('resize', update);
+
+    update();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+    };
   }, [ref]);
 
   return iconMode;
