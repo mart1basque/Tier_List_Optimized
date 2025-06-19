@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from '../components/LanguageSelector';
 import NightModeToggle from '../components/NightModeToggle';
 import OrderWebsiteButton from '../components/OrderWebsiteButton';
+import FeedbackButton from '../components/FeedbackButton';
 import { Plus } from 'lucide-react';
 
 const HomePage: React.FC = () => {
@@ -48,8 +49,9 @@ const HomePage: React.FC = () => {
         </div>
       )}
 
-      <div className="fixed top-4 left-4 z-50">
+      <div className="fixed top-4 left-4 z-50 flex flex-col gap-2">
         <OrderWebsiteButton />
+        <FeedbackButton />
       </div>
       <NightModeToggle />
       
