@@ -1,16 +1,12 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import useIconMode from '../hooks/useIconMode';
 
 const OrderWebsiteButton: React.FC = () => {
   const { t } = useLanguage();
-  const ref = useRef<HTMLAnchorElement>(null);
-  const iconMode = useIconMode(ref);
 
   return (
     <a
-      ref={ref}
       href="https://mankindcorp.fr"
       target="_blank"
       rel="noopener noreferrer"
@@ -18,7 +14,7 @@ const OrderWebsiteButton: React.FC = () => {
       title={t('orderWebsite')}
     >
       <Globe size={18} className="mr-0 md:mr-2" />
-      {!iconMode && <span className="ml-2">{t('orderWebsite')}</span>}
+      <span className="hidden md:inline">{t('orderWebsite')}</span>
     </a>
   );
 };
